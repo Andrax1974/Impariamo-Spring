@@ -1,0 +1,89 @@
+.navbar-brand img {
+	height: 100%
+}
+
+#dropdownMenu1 {
+	margin: 0.3em;
+	margin-right: 5.8em;
+	background-color: transparent;
+}
+
+#dropdownMenu1 button.thumbnail {
+	margin: 0;
+	padding: 0;
+}
+
+#dropdownMenu1 img {
+	max-height: 2.0em;
+	border-radius: 0.3em;
+}
+
+#SignUp {
+	margin-right: 0.5em;
+	width: 6em;
+}
+
+#SignIn {
+	margin-left: 0.5em;
+	width: 6em;
+}
+
+footer p {
+	display: inline;
+	margin-left: 10px;
+}
+
+footer a {
+	color: inherit;
+}
+
+.jumbotron-billboard .img {
+	margin-bottom: 0px;
+	opacity: 0.2;
+	color: #fff;
+	background: #000
+		url("http://localhost:8080/AlphaShop_V1/static/images/grocery.jpg")
+		top center no-repeat;
+	width: 100%;
+	height: 100%;
+	background-size: cover;
+	overflow: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1;
+}
+
+.jumbotron h2 {
+	margin-top: 0;
+}
+
+.jumbotron {
+	position: relative;
+	padding-top: 50px;
+	padding-bottom: 50px;
+}
+
+.jumbotron .container {
+	position: relative;
+	z-index: 2;
+}
+
+@media screen and (max-width: 768px) {
+	.jumbotron {
+		padding-top: 20px;
+		padding-bottom: 20px;
+	}
+}
+
+@media ( min-width : 544px) {
+	text-sm-left {
+		text-align: left !important;
+	}
+	.text-sm-right {
+		text-align: right !important;
+	}
+	.text-sm-center {
+		text-align: center !important;
+	}
+}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" 
+"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+	<definition name="baseLayout" template="/WEB-INF/layouts/template/base.jsp">
+		<put-attribute name="titolo" value="" />
+		<put-attribute name="content" value="" />
+		<put-attribute name="footer" value="/WEB-INF/layouts/template/footer.jsp" />
+	</definition>
+	
+	<definition name="index" extends="baseLayout">
+		<put-attribute name="titolo"  value="Benvenuti in AlphaShop" />
+		<put-attribute name="content" value="/WEB-INF/view/welcome.jsp" />  
+	</definition>
+
+</tiles-definitions>
