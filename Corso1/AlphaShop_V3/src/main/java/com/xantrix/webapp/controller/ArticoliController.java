@@ -170,5 +170,14 @@ public class ArticoliController
 			return "infoArticolo";
 	} 
 	
+	@RequestMapping(value = "/aggiungi", method = RequestMethod.GET)
+	public String InsArticoli(Model model)
+	{
+		Articoli articolo = new Articoli();
+		model.addAttribute("Articolo", articolo);
+
+		return "insArticolo";
+	}
+	
 
 }
