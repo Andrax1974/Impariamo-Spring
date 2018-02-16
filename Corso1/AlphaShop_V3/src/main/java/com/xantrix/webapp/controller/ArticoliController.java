@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.Date;
@@ -13,13 +14,18 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.MatrixVariable;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.xantrix.webapp.domain.Articoli;
+import com.xantrix.webapp.domain.FamAssort;
+import com.xantrix.webapp.domain.Iva;
 import com.xantrix.webapp.service.ArticoliService;
+import com.xantrix.webapp.service.FamAssortService;
+import com.xantrix.webapp.service.IvaService;
 
 @Controller
 @RequestMapping("/articoli")
@@ -27,6 +33,12 @@ public class ArticoliController
 {
 	@Autowired
 	private ArticoliService articoliService;
+
+	@Autowired
+	private FamAssortService famAssortService;
+
+	@Autowired
+	private IvaService ivaService;
 
 	private int NumArt = 0;
 	private List<Articoli> recordset;
@@ -97,12 +109,8 @@ public class ArticoliController
 
 		List<Articoli> recordset = articoliService.SelArticoliByFilter(Filter, orderBy, tipo);
 
-		recordset = recordset
-				.stream()
-				.filter(u -> IdRep.contains(Integer.toString(u.getIdFamAss())))
-				.filter(u -> u.getQtaMag() > 0)
-				.filter(u -> u.getPrezzo() > 0)
-				.collect(Collectors.toList());
+		recordset = recordset.stream().filter(u -> IdRep.contains(Integer.toString(u.getIdFamAss())))
+				.filter(u -> u.getQtaMag() > 0).filter(u -> u.getPrezzo() > 0).collect(Collectors.toList());
 
 		if (recordset != null)
 			NumArt = recordset.size();
@@ -117,9 +125,6 @@ public class ArticoliController
 		 * recordset.stream().sorted(Comparator.comparing(Articoli::getCodArt).
 		 * reversed()) .collect(Collectors.toList());
 		 */
-		
-		 //List<String> Categorie = recordset.stream().map(Articoli::getDesFamAss).distinct().collect(Collectors.toList());
-		 
 
 		model.addAttribute("Articoli", recordset);
 		model.addAttribute("NumArt", NumArt);
@@ -127,57 +132,98 @@ public class ArticoliController
 
 		return "articoli";
 	}
-	
+
 	// http://localhost:8080/AlphaShop/articoli/cerca/barilla/creati?daData=2010-10-31&aData=2015-10-31
 	@RequestMapping(value = "/cerca/{filter}/creati", method = RequestMethod.GET)
 	public String GetArticoliByFilterDate(@PathVariable("filter") String Filter,
-				@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("daData") Date startDate,
-				@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("aData") Date endDate, 
-				Model model)
+			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("daData") Date startDate,
+			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("aData") Date endDate, Model model)
 	{
 
-			List<Articoli> recordset = articoliService.SelArticoliByFilter(Filter)
-					.stream()
-					.filter(u -> u.getDataCreaz().after(startDate))
-					.filter(U -> U.getDataCreaz().before(endDate))
-					.collect(Collectors.toList());
+		List<Articoli> recordset = articoliService.SelArticoliByFilter(Filter)
+				.stream()
+				.filter(u -> u.getDataCreaz().after(startDate))
+				.filter(U -> U.getDataCreaz().before(endDate))
+				.collect(Collectors.toList());
 
-			if (recordset != null)
-				NumArt = recordset.size();
+		if (recordset != null)
+			NumArt = recordset.size();
 
-			model.addAttribute("NumArt", NumArt);
-			model.addAttribute("Titolo", "Ricerca Articoli");
-			model.addAttribute("Titolo2", "Risultati Ricerca " + Filter);
-			model.addAttribute("Articoli", recordset);
+		model.addAttribute("NumArt", NumArt);
+		model.addAttribute("Titolo", "Ricerca Articoli");
+		model.addAttribute("Titolo2", "Risultati Ricerca " + Filter);
+		model.addAttribute("Articoli", recordset);
 
-			return "articoli";
+		return "articoli";
 	}
-	
+
 	// http://localhost:8080/alphashop/articoli/infoart/000087101
 	@RequestMapping(value = "/infoart/{codart}", method = RequestMethod.GET)
 	public String GetDettArticolo(@PathVariable("codart") String CodArt, Model model)
 	{
-			Articoli articolo = null;
-			recordset = articoliService.SelArticoliByFilter(CodArt);
-			
-			if (recordset != null)
-				articolo = recordset.get(0);
+		Articoli articolo = null;
+		recordset = articoliService.SelArticoliByFilter(CodArt);
 
-			model.addAttribute("Titolo", "Dettaglio Articolo");
-			model.addAttribute("Titolo2", "Dati Articolo " + CodArt);
-			model.addAttribute("articolo", articolo);
+		if (recordset != null)
+			articolo = recordset.get(0);
 
-			return "infoArticolo";
-	} 
-	
+		model.addAttribute("Titolo", "Dettaglio Articolo");
+		model.addAttribute("Titolo2", "Dati Articolo " + CodArt);
+		model.addAttribute("articolo", articolo);
+
+		return "infoArticolo";
+	}
+
+	// http://localhost:8080/alphashop/articoli/lastart
+	@RequestMapping(value = "/lastart", method = RequestMethod.GET)
+	public String GetArticoliByFilter(@RequestParam(value = "numart", defaultValue="1", 
+			required = false) long NumArt, Model model)
+	{
+
+		List<Articoli> recordset = articoliService.SelArticoliByFilter("","DATACREAZIONE","DESC");
+		
+		recordset = recordset
+					.stream()
+					.limit(NumArt)
+					.collect(Collectors.toList());
+
+		if (recordset != null)
+			NumArt = recordset.size();
+
+		model.addAttribute("NumArt", NumArt);
+		model.addAttribute("Titolo", "Ricerca Articoli");
+		model.addAttribute("Titolo2", "Ultimi " + NumArt + " Articoli Creati");
+		model.addAttribute("Articoli", recordset);
+
+		return "articoli";
+	}
+
 	@RequestMapping(value = "/aggiungi", method = RequestMethod.GET)
 	public String InsArticoli(Model model)
 	{
+
+		// List<Articoli> recordset = articoliService.SelArticoliByFilter("");
+		List<FamAssort> famAssort = famAssortService.SelFamAssort();
+		List<Iva> iva = ivaService.SelIva();
+
+		// List<Integer> idCat =
+		// recordset.stream().map(Articoli::getIdFamAss).distinct().collect(Collectors.toList());
+
 		Articoli articolo = new Articoli();
-		model.addAttribute("Articolo", articolo);
+
+		model.addAttribute("newArticolo", articolo);
+		model.addAttribute("famAssort", famAssort);
+		model.addAttribute("Iva", iva);
 
 		return "insArticolo";
 	}
-	
+
+	@RequestMapping(value = "/aggiungi", method = RequestMethod.POST)
+	public String GestInsArticoli(@ModelAttribute("newArticolo") Articoli articolo)
+	{
+		articoliService.InsArticolo(articolo);
+
+		return "redirect:/articoli/lastart";
+	}
 
 }

@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %> 
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 
 <div class="jumbotron jumbotron-billboard">
@@ -59,9 +60,10 @@
 							<fmt:formatNumber value = "${Articoli.prezzo}"  minFractionDigits = "2" type = "number"/>
 							</td>
 							<td>${Articoli.desFamAss}</td>
-							<td><a href=" <spring:url value="/articoli/infoart/${Articoli.codArt}" /> " class="btn btn-primary">
-							<span class="oi oi-plus"/></span> Dettaglio 
-      						</a> 
+							<td>
+								<a href="<spring:url value="/articoli/infoart/${Articoli.codArt}" /> " class="btn btn-primary">
+								<span class="oi oi-plus"/></span> Dettaglio 
+      							</a> 
       						</td>
 						</tr>
 					</c:forEach>

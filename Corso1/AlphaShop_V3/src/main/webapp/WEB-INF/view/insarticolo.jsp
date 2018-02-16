@@ -22,7 +22,7 @@
             </div>
 		 </div>
 		<div class="portlet-body form">
-				<form:form  method="POST" modelAttribute="Articolo">
+				<form:form  method="POST" modelAttribute="newArticolo">
 				<div class="form-body">
 				
 					<div class="form-group">
@@ -40,7 +40,7 @@
 						<form:select path="um" class="form-control">
 							<form:option value="PZ" label="Pezzi"/>
 							<form:option value="LT" label="Litri"/>
-							<form:option value="KG" label="Kili"/>
+							<form:option value="KG" label="Kilogrammi"/>
 						</form:select>
 					</div>
 					
@@ -58,7 +58,7 @@
 						<div class="form-group col-md-4">
 							<label for="idIva">Aliquota IVA:</label>
 							<form:select path="idIva" class="form-control">
-								 <form:options items="${aliquoteIVA}" />
+								 <form:options items="${Iva}" itemValue="Id" itemLabel="Descrizione" />
 							</form:select>
 						</div>
 					</div>
@@ -87,8 +87,7 @@
 					<div class="form-group">
 						<label for="idFamAss">Famiglia Assortimento:</label>
 						<form:select path="idFamAss" class="form-control">
-							 <form:option value="-1" label="NON CODIFICATO"/>
-							 <form:options items="${categorie}" />
+							 <form:options items="${famAssort}" itemValue="Id" itemLabel="Descrizione" />
 						</form:select>
 					</div>
 					
