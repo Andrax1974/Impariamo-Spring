@@ -1,5 +1,6 @@
 package com.xantrix.webapp.repository;
 
+import java.util.Formatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,13 +42,17 @@ public class ArticoliRepositoryImpl implements ArticoliRepository
 	@Override
 	public void InsArticolo(Articoli articolo)
 	{
+		
+		String PesoNetto = Double.toString(articolo.getPesoNetto()).replaceAll(",", ".");
+		String CodArt =  String.format("%10s", articolo.getCodArt()).replace(' ', '0');
+	
 		String Sql = "EXEC Sp_InsArticolo '" + 
-				 articolo.getCodArt() + "','" + 
+				 CodArt + "','" + 
 				 articolo.getDescrizione().replace("'", "''") + "','" + 
 				 articolo.getUm() + "','" +
 				 articolo.getCodStat() + "','" +
 				 articolo.getPzCart() + "','" + 
-				 articolo.getPesoNetto() + "','" + 
+				 PesoNetto + "','" + 
 				 articolo.getIdIva() + "','" + 
 				 articolo.getIdStatoArt() + "','" +
 				 articolo.getIdFamAss() + "'";
@@ -64,6 +69,11 @@ public class ArticoliRepositoryImpl implements ArticoliRepository
 		jdbcTemplate.update(Sql);
 		
 	}
+	
+	private boolean isNumeric(String str)
+	{ 
+		return str.matches("-?\\d+(\\.\\d+)?");   
+	} 
 
 
 	

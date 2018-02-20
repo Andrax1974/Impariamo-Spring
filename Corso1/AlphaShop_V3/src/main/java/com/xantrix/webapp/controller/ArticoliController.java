@@ -2,17 +2,23 @@ package com.xantrix.webapp.controller;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.time.LocalDate;
-import java.util.Comparator;
+
+import javax.swing.text.DateFormatter;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.MatrixVariable;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -140,10 +146,8 @@ public class ArticoliController
 			@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam("aData") Date endDate, Model model)
 	{
 
-		List<Articoli> recordset = articoliService.SelArticoliByFilter(Filter)
-				.stream()
-				.filter(u -> u.getDataCreaz().after(startDate))
-				.filter(U -> U.getDataCreaz().before(endDate))
+		List<Articoli> recordset = articoliService.SelArticoliByFilter(Filter).stream()
+				.filter(u -> u.getDataCreaz().after(startDate)).filter(U -> U.getDataCreaz().before(endDate))
 				.collect(Collectors.toList());
 
 		if (recordset != null)
@@ -176,16 +180,13 @@ public class ArticoliController
 
 	// http://localhost:8080/alphashop/articoli/lastart
 	@RequestMapping(value = "/lastart", method = RequestMethod.GET)
-	public String GetArticoliByFilter(@RequestParam(value = "numart", defaultValue="1", 
-			required = false) long NumArt, Model model)
+	public String GetArticoliByFilter(@RequestParam(value = "numart", defaultValue = "1", required = false) long NumArt,
+			Model model)
 	{
 
-		List<Articoli> recordset = articoliService.SelArticoliByFilter("","DATACREAZIONE","DESC");
-		
-		recordset = recordset
-					.stream()
-					.limit(NumArt)
-					.collect(Collectors.toList());
+		List<Articoli> recordset = articoliService.SelArticoliByFilter("", "DATACREAZIONE", "DESC");
+
+		recordset = recordset.stream().limit(NumArt).collect(Collectors.toList());
 
 		if (recordset != null)
 			NumArt = recordset.size();
@@ -202,15 +203,12 @@ public class ArticoliController
 	public String InsArticoli(Model model)
 	{
 
-		// List<Articoli> recordset = articoliService.SelArticoliByFilter("");
 		List<FamAssort> famAssort = famAssortService.SelFamAssort();
 		List<Iva> iva = ivaService.SelIva();
 
-		// List<Integer> idCat =
-		// recordset.stream().map(Articoli::getIdFamAss).distinct().collect(Collectors.toList());
-
 		Articoli articolo = new Articoli();
 
+		model.addAttribute("Titolo", "Inserimento Nuovo Articolo");
 		model.addAttribute("newArticolo", articolo);
 		model.addAttribute("famAssort", famAssort);
 		model.addAttribute("Iva", iva);
@@ -219,11 +217,27 @@ public class ArticoliController
 	}
 
 	@RequestMapping(value = "/aggiungi", method = RequestMethod.POST)
-	public String GestInsArticoli(@ModelAttribute("newArticolo") Articoli articolo)
+	public String GestInsArticoli(@ModelAttribute("newArticolo") Articoli articolo, BindingResult result)
 	{
-		articoliService.InsArticolo(articolo);
+		if (result.getSuppressedFields().length > 0)
+			throw new RuntimeException("ERRORE: Tentativo di eseguire il binding dei seguenti campi NON consentiti: "
+					+ StringUtils.arrayToCommaDelimitedString(result.getSuppressedFields()));
+		else
+		{
+			articoliService.InsArticolo(articolo);
+
+		}
 
 		return "redirect:/articoli/lastart";
+	}
+
+	@InitBinder
+	public void initialiseBinder(WebDataBinder binder)
+	{
+		binder.setAllowedFields("codArt", "descrizione", "um", "pzCart", "pesoNetto", "idIva", "idStatoArt","idFamAss","dataCreaz");
+
+		binder.setDisallowedFields("prezzo");
+
 	}
 
 }
