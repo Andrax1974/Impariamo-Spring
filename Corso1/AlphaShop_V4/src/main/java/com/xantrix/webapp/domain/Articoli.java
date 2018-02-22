@@ -3,25 +3,52 @@ package com.xantrix.webapp.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.web.multipart.MultipartFile;
+
 public class Articoli implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 	
 	private int Riga;
+	
+	@NotEmpty(message = "{NotNull.Articoli.CodArt.validation}")
+	@Size(min=4, max=20, message="{Size.Articoli.CodArt.validation}")
 	private String CodArt;
+	
+	@Size(min=8, max=60, message="{Size.Articoli.Descrizione.validation}")
 	private String Descrizione;	
+	
 	private Double Prezzo;
 	private Double PrezzoKg;
+	
+	@NotNull(message= "{NotNull.Articoli.Um.validation}") 
 	private String Um;
+	
 	private String CodStat;
+	
 	private int PzCart;
+
+	@Digits(integer=4, fraction=2, message="{Digits.Articoli.PesoNetto.validation}")
 	private double PesoNetto;
 	private float QtaMag;
+	
+	@NotNull(message= "{NotNull.Articoli.IdIva.validation}") 
 	private int IdIva;
+	
+	@NotNull(message= "{NotNull.Articoli.IdStatoArt.validation}") 
 	private String IdStatoArt;
 	private Date DataCreaz;
+	
+	@NotNull(message= "{NotNull.Articoli.IdFamAss.validation}") 
 	private int IdFamAss;
 	private String DesFamAss;
+	
+	private MultipartFile Immagine; 
 	
 	public String getCodArt()
 	{
@@ -171,6 +198,16 @@ public class Articoli implements Serializable
 	public void setPrezzoKg(Double prezzoKg)
 	{
 		PrezzoKg = prezzoKg;
+	}
+
+	public MultipartFile getImmagine()
+	{
+		return Immagine;
+	}
+
+	public void setImmagine(MultipartFile immagine)
+	{
+		Immagine = immagine;
 	}
 	
 	

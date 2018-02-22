@@ -20,23 +20,26 @@
             	<i class="icon-settings oi oi-pencil"></i>
              	<span class="caption-subject bold uppercase"><spring:message code="insarticolo.form.titolo.label"/></span>
             </div>
-            <section class = "locale-link"> 
-            		<a href="?language=en"><img src="<c:url value="/static/images/US.png" />"></a> - 
-            		<a href="?language=it" ><img src="<c:url value="/static/images/IT.png" />"></a>                
+             <section class = "locale-link"> 
+            	<a href="?language=en"><img src="<c:url value="/img/US.png" />"></a> - 
+            	<a href="?language=it"><img src="<c:url value="/img/IT.png" />"></a>                
       		</section> 
 		 </div>
 		<div class="portlet-body form">
-				<form:form  method="POST" modelAttribute="newArticolo">
+				<form:form  method="POST" modelAttribute="newArticolo" enctype="multipart/form-data">
+				<form:errors path="*" cssClass="alert alert-danger" element="div"/> 
 				<div class="form-body">
 				
 					<div class="form-group">
 						<label for="codArt"><spring:message code="insarticolo.form.codArt.label"/></label>
 						<form:input id="codArt" path="codArt" type="text" class="form-control" placeholder="Codice Articolo"/>  
+						<form:errors path="CodArt" cssClass="text-danger"/>
 					</div>
 					
 					<div class="form-group">
 						<label for="descrizione"><spring:message code="insarticolo.form.descrizione.label"/></label>
 						<form:input id="descrizione" path="descrizione" type="text" class="form-control" placeholder="Descrizione Articolo"/> 	 
+						<form:errors path="Descrizione" cssClass="text-danger"/>
 					</div>
 					
 					<div class="form-group">
@@ -93,6 +96,11 @@
 						<form:select path="idFamAss" class="form-control">
 							 <form:options items="${famAssort}" itemValue="Id" itemLabel="Descrizione" />
 						</form:select>
+					</div>
+					
+					<div class="form-group">
+						<label for="immagine"><spring:message code="insarticolo.form.immagine.label"/></label>
+						<form:input id="immagine" path="immagine" type="file" class="form:input-large" />  
 					</div>
 					
 				</div>

@@ -18,7 +18,7 @@
 	<div class="row">
 		
 		<div class="card">
-			<img class="card-img-top card-image" src="<c:url value="/static/images/food.jpg" />" alt="Card image cap">
+			<img class="card-img-top card-image" src="<c:url value="/img/articoli/${articolo.codArt}.png"></c:url>" alt="Card image cap">
 			<div class="card-body">
     			<h3 class="card-title price-art">
     				Euro <fmt:formatNumber value = "${articolo.prezzo}"  minFractionDigits = "2" type = "number"/> 

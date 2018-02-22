@@ -4,10 +4,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
+import java.io.File;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -20,6 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.xantrix.webapp.domain.Articoli;
 import com.xantrix.webapp.domain.FamAssort;
@@ -198,22 +204,61 @@ public class ArticoliController
 	public String InsArticoli(Model model)
 	{
 
-		List<FamAssort> famAssort = famAssortService.SelFamAssort();
-		List<Iva> iva = ivaService.SelIva();
+		// List<FamAssort> famAssort = famAssortService.SelFamAssort();
+		// List<Iva> iva = ivaService.SelIva();
 
 		Articoli articolo = new Articoli();
 
 		model.addAttribute("Titolo", "Inserimento Nuovo Articolo");
 		model.addAttribute("newArticolo", articolo);
-		model.addAttribute("famAssort", famAssort);
-		model.addAttribute("Iva", iva);
+		model.addAttribute("famAssort", getFamAssort());
+		model.addAttribute("Iva", getIva());
 
 		return "insArticolo";
 	}
 
-	@RequestMapping(value = "/aggiungi", method = RequestMethod.POST)
-	public String GestInsArticoli(@ModelAttribute("newArticolo") Articoli articolo, BindingResult result)
+	@ModelAttribute("famAssort")
+	public List<FamAssort> getFamAssort()
 	{
+		List<FamAssort> famAssort = famAssortService.SelFamAssort();
+
+		return famAssort;
+	}
+
+	@ModelAttribute("Iva")
+	public List<Iva> getIva()
+	{
+		List<Iva> iva = ivaService.SelIva();
+
+		return iva;
+	}
+
+	@RequestMapping(value = "/aggiungi", method = RequestMethod.POST)
+	public String GestInsArticoli(@Valid @ModelAttribute("newArticolo") Articoli articolo, BindingResult result,
+			Model model, HttpServletRequest request)
+	{
+
+		if (result.hasErrors())
+		{
+			return "insArticolo";
+		}
+
+		MultipartFile productImage = articolo.getImmagine();
+
+		if (productImage != null && !productImage.isEmpty())
+		{
+			try
+			{
+				String rootDirectory = request.getSession().getServletContext().getRealPath("/");
+				String PathName = rootDirectory + "static\\images\\articoli\\" + articolo.getCodArt().trim() + ".png";
+
+				productImage.transferTo(new File(PathName));
+			} catch (Exception ex)
+			{
+				throw new RuntimeException("Errore trasferimento file", ex);
+			}
+		}
+
 		if (result.getSuppressedFields().length > 0)
 			throw new RuntimeException("ERRORE: Tentativo di eseguire il binding dei seguenti campi NON consentiti: "
 					+ StringUtils.arrayToCommaDelimitedString(result.getSuppressedFields()));
@@ -229,10 +274,16 @@ public class ArticoliController
 	@InitBinder
 	public void initialiseBinder(WebDataBinder binder)
 	{
-		binder.setAllowedFields("codArt", "descrizione", "um", "pzCart", "pesoNetto", "idIva", 
-				"idStatoArt","idFamAss","dataCreaz","language");
+		binder.setAllowedFields("codArt", "descrizione", "um", "pzCart", "pesoNetto", "idIva", "idStatoArt", "idFamAss",
+				"dataCreaz", "language", "immagine");
 
 		binder.setDisallowedFields("prezzo");
+
+		
+		NumberStyleFormatter numberFormatter = new NumberStyleFormatter();
+		numberFormatter.setPattern("###.##");
+		binder.addCustomFormatter(numberFormatter, "pzCart");
+		
 
 	}
 
