@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.MatrixVariable;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,10 +27,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.xantrix.webapp.domain.Articoli;
 import com.xantrix.webapp.domain.FamAssort;
 import com.xantrix.webapp.domain.Iva;
+import com.xantrix.webapp.exception.NoInfoArtFoundException;
 import com.xantrix.webapp.service.ArticoliService;
 import com.xantrix.webapp.service.FamAssortService;
 import com.xantrix.webapp.service.IvaService;
@@ -169,7 +172,9 @@ public class ArticoliController
 		Articoli articolo = null;
 		recordset = articoliService.SelArticoliByFilter(CodArt);
 
-		if (recordset != null)
+		if (recordset == null || recordset.isEmpty())
+			throw new NoInfoArtFoundException(CodArt); 
+		else
 			articolo = recordset.get(0);
 
 		model.addAttribute("Titolo", "Dettaglio Articolo");
@@ -177,6 +182,20 @@ public class ArticoliController
 		model.addAttribute("articolo", articolo);
 
 		return "infoArticolo";
+	}
+	
+	@ExceptionHandler(NoInfoArtFoundException.class)
+	public ModelAndView handleError(HttpServletRequest request, NoInfoArtFoundException exception)
+	{
+		ModelAndView mav = new ModelAndView();
+
+		mav.addObject("codice", exception.getCodArt());
+		mav.addObject("exception", exception);
+		mav.addObject("url", request.getRequestURL() + "?" + request.getQueryString());
+		
+		mav.setViewName("noInfoArt");
+
+		return mav;
 	}
 
 	// http://localhost:8080/alphashop/articoli/lastart

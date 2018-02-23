@@ -30,5 +30,11 @@
 		<put-attribute name="titolo"  value="Inserimento Articolo" />
 		<put-attribute name="content" value="/WEB-INF/view/insarticolo.jsp" />  
 	</definition>
+	
+	<definition name="noInfoArt" extends="baseLayout">
+		<put-attribute name="titolo"  value="Articolo non Trovato" />
+		<put-attribute name="content" value="/WEB-INF/view/noInfoArt.jsp" />  
+	</definition>
+	
 
 </tiles-definitions>
