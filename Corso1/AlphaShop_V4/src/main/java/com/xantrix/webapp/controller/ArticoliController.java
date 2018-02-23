@@ -253,7 +253,9 @@ public class ArticoliController
 				String PathName = rootDirectory + "static\\images\\articoli\\" + articolo.getCodArt().trim() + ".png";
 
 				productImage.transferTo(new File(PathName));
-			} catch (Exception ex)
+				
+			} 
+			catch (Exception ex)
 			{
 				throw new RuntimeException("Errore trasferimento file", ex);
 			}
@@ -268,7 +270,7 @@ public class ArticoliController
 
 		}
 
-		return "redirect:/articoli/lastart";
+		return "redirect:/articoli/infoart/" + articolo.getCodArt().trim();
 	}
 
 	@InitBinder
@@ -281,9 +283,13 @@ public class ArticoliController
 
 		
 		NumberStyleFormatter numberFormatter = new NumberStyleFormatter();
+		/*
 		numberFormatter.setPattern("###.##");
-		binder.addCustomFormatter(numberFormatter, "pzCart");
+		binder.addCustomFormatter(numberFormatter, "pesoNetto");
+		*/
 		
+		numberFormatter.setPattern("##");
+		binder.addCustomFormatter(numberFormatter, "pzCart");
 
 	}
 

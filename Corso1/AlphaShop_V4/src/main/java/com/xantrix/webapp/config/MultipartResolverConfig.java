@@ -13,12 +13,13 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 @Configuration
-public class MultipartResolverContext implements ResourceLoaderAware
+public class MultipartResolverConfig implements ResourceLoaderAware
 {
 	private final long MAX_UPLOAD_SIZE = FileUtils.ONE_MB * 256;
+	private final long MAX_UPLOAD_SIZE_PER_FILE = FileUtils.ONE_MB * 3;
 	private final String DEFAULT_ENCODING = "UTF-8";
 	private Logger LOG = LoggerFactory.getLogger(getClass());
-	private final String UPLOAD_TEMP_DIR = "c:\\Temp\\";
+	private final String UPLOAD_TEMP_DIR = "/tmp";
 	private ResourceLoader resourceLoader;
 
 	@Override
@@ -32,7 +33,9 @@ public class MultipartResolverContext implements ResourceLoaderAware
 	{
 		CommonsMultipartResolver resolver = new CommonsMultipartResolver();
 		resolver.setDefaultEncoding(DEFAULT_ENCODING);
-		resolver.setMaxUploadSize(MAX_UPLOAD_SIZE);
+		resolver.setMaxUploadSize(MAX_UPLOAD_SIZE); 
+		resolver.setMaxUploadSizePerFile(MAX_UPLOAD_SIZE_PER_FILE);
+		resolver.setMaxInMemorySize(0);
 
 		try
 		{
@@ -43,7 +46,7 @@ public class MultipartResolverContext implements ResourceLoaderAware
 		} 
 		catch (IOException e)
 		{
-			LOG.error(String.format("#getResource(%s) FAIL, FALLBACK.", UPLOAD_TEMP_DIR), e);
+			LOG.error(String.format("ERRORE TEMP DIR", UPLOAD_TEMP_DIR), e);
 		}
 
 		return resolver;

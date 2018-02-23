@@ -31,10 +31,7 @@ import org.springframework.web.util.UrlPathHelper;
 @EnableWebMvc
 @ComponentScan(basePackages = "com.xantrix.webapp")
 public class WebApplicationContextConfig implements WebMvcConfigurer
-{
-	private final long MAX_UPLOAD_SIZE = FileUtils.ONE_MB * 5;
-	private final String DEFAULT_ENCODING = "UTF-8";
-	
+{	
 	@Bean
 	public InternalResourceViewResolver getInternalResourceViewResolver()
 	{
@@ -82,18 +79,6 @@ public class WebApplicationContextConfig implements WebMvcConfigurer
 		return bean;
 	}
 
-	/*
-	@Bean
-	public CommonsMultipartResolver multipartResolver()
-	{
-		CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-		resolver.setDefaultEncoding(DEFAULT_ENCODING);
-		resolver.setMaxUploadSize(MAX_UPLOAD_SIZE);
-
-		return resolver;
-	}
-	*/
-	
 	@Override
 	public void configureViewResolvers(ViewResolverRegistry registry)
 	{

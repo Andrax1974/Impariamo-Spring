@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -31,9 +32,11 @@ public class Articoli implements Serializable
 	
 	private String CodStat;
 	
+	@Max(99)
+	@Digits(integer=2, fraction=0, message="{Digits.Articoli.PzCart.validation}")
 	private int PzCart;
 
-	@Digits(integer=4, fraction=2, message="{Digits.Articoli.PesoNetto.validation}")
+	@Digits(integer=4, fraction=3, message="{Digits.Articoli.PesoNetto.validation}")
 	private double PesoNetto;
 	private float QtaMag;
 	
@@ -42,6 +45,7 @@ public class Articoli implements Serializable
 	
 	@NotNull(message= "{NotNull.Articoli.IdStatoArt.validation}") 
 	private String IdStatoArt;
+	
 	private Date DataCreaz;
 	
 	@NotNull(message= "{NotNull.Articoli.IdFamAss.validation}") 
