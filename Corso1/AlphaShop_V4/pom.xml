@@ -7,7 +7,7 @@
 	<packaging>war</packaging>
 
 	<properties>
-		<springframework.version>5.0.3.RELEASE</springframework.version>
+		<springframework.version>5.0.4.RELEASE</springframework.version>
 	</properties>
 
 	<dependencies>
@@ -21,6 +21,11 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-oxm</artifactId>
 			<version>${springframework.version}</version>
 		</dependency>
 
@@ -69,6 +74,7 @@
 			<version>5.4.2.Final</version>
 		</dependency>
 
+		<!--File Upload -->
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
@@ -80,6 +86,20 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.6</version>
 		</dependency>
+
+		<!-- Jackson (JSON) -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.9.3</version>
+		</dependency>
+
+
 
 
 	</dependencies>
