@@ -3,11 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.xantrix.webapp</groupId>
 	<artifactId>alphashop</artifactId>
-	<version>0.0.4-SNAPSHOT</version>
+	<version>0.0.5-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<properties>
 		<springframework.version>5.0.4.RELEASE</springframework.version>
+		<hibernate.version>5.2.13.Final</hibernate.version>
 	</properties>
 
 	<dependencies>
@@ -26,6 +27,16 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-oxm</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
 			<version>${springframework.version}</version>
 		</dependency>
 
@@ -73,6 +84,25 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>5.4.2.Final</version>
 		</dependency>
+
+		<!-- Hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-c3p0</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.mchange</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.5.2</version>
+		</dependency>
+
 
 		<!--File Upload -->
 		<dependency>
