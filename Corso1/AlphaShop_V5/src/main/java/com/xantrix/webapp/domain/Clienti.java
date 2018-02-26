@@ -11,16 +11,18 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "CLIENTI")
+@Table(name = "CLIENTI",  uniqueConstraints = {
+		@UniqueConstraint(columnNames = "CODFIDELITY")})
 public class Clienti  implements Serializable
 {
 	private static final long serialVersionUID = -7414142881348723650L;
 
 	@Id
 	@Column(name = "CODFIDELITY")
-	private String IdFidelity;
+	private String codFidelity;
 	
 	@Column(name = "NOME", nullable = false)
 	private String Nome;
@@ -55,14 +57,14 @@ public class Clienti  implements Serializable
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
 	private Set<Utenti> Utenti = new HashSet<>();
 
-	public String getIdFidelity()
+	public String getCodFidelity()
 	{
-		return IdFidelity;
+		return codFidelity;
 	}
 
-	public void setIdFidelity(String idFidelity)
+	public void setCodFidelity(String codFidelity)
 	{
-		IdFidelity = idFidelity;
+		this.codFidelity = codFidelity;
 	}
 
 	public String getNome()

@@ -1,6 +1,5 @@
 package com.xantrix.webapp.repository;
 
-import java.util.Formatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +43,6 @@ public class ArticoliRepositoryImpl implements ArticoliRepository
 	{
 		
 		String PesoNetto = Double.toString(articolo.getPesoNetto()).replaceAll(",", ".");
-		//String CodArt =  String.format("%9s", articolo.getCodArt()).replace(' ', '0');
 		String CodArt = articolo.getCodArt().trim();
 		String DesArt = articolo.getDescrizione().replace("'", "''").trim();
 		

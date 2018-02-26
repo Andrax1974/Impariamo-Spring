@@ -9,8 +9,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import javax.persistence.UniqueConstraint;
+
 @Entity
-@Table(name = "UTENTI")
+@Table(name = "UTENTI", uniqueConstraints = {
+		@UniqueConstraint(columnNames = "CODFIDELITY"),
+		@UniqueConstraint(columnNames = "USERID") })
 public class Utenti implements Serializable
 {
 	private static final long serialVersionUID = 8473057964112587082L;

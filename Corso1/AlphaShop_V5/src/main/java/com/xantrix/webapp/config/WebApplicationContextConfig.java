@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -36,6 +37,7 @@ import com.xantrix.webapp.domain.Articoli;
 
 @Configuration
 @EnableWebMvc
+@EnableJpaRepositories(basePackages = {"com.xantrix.webapp"})
 @ComponentScan(basePackages = "com.xantrix.webapp")
 public class WebApplicationContextConfig implements WebMvcConfigurer
 {
