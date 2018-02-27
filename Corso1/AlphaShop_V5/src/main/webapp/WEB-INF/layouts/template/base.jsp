@@ -102,6 +102,6 @@
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script type="text/javascript" src="<c:url value="/static/js/jquery-3.2.1.min.js" />"></script>
     <script type="text/javascript" src="<c:url value="/static/js/bootstrap.min.js" />"></script>
-     <script type="text/javascript" src="<c:url value="/static/js/main.js" />"></script>
+    <script type="text/javascript" src="<c:url value="/static/js/main.js" />"></script>
   </body>
 </html>

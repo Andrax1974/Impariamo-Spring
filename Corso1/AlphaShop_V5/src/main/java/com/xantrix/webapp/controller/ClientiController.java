@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.xantrix.webapp.domain.Articoli;
 import com.xantrix.webapp.domain.Clienti;
 import com.xantrix.webapp.service.ClientiService;
 
@@ -35,5 +36,17 @@ public class ClientiController
 		*/
 
 		return "articoli";
+	}
+	
+	@RequestMapping(value = "/aggiungi", method = RequestMethod.GET)
+	public String InsArticoli(Model model)
+	{
+
+		Clienti cliente = new Clienti();
+
+		model.addAttribute("Titolo", "Inserimento Nuovo Cliente");
+		model.addAttribute("newCliente", cliente);
+		 
+		return "insCliente";
 	}
 }

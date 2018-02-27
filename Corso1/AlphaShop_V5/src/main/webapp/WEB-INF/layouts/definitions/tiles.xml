@@ -36,5 +36,10 @@
 		<put-attribute name="content" value="/WEB-INF/view/noInfoArt.jsp" />  
 	</definition>
 	
+	<definition name="insCliente" extends="baseLayout">
+		<put-attribute name="titolo"  value="Dati Cliente" />
+		<put-attribute name="content" value="/WEB-INF/view/inscliente.jsp" />  
+	</definition>
+	
 
 </tiles-definitions>

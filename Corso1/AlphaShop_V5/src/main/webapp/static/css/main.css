@@ -222,8 +222,23 @@ card li {
 	color: #E26A6A !important;
 }
 
+.font-blue-madison {
+	color: #578ebe !important;
+}
+
+.btn-green {
+	color: #FFF;
+	background-color: #26a1ab;
+	border-color: #2499a3;
+}
+
+.uppercase {
+	text-transform: uppercase !important;
+}
+
 .portlet.light>.portlet-title>.caption>.caption-subject {
 	font-size: 16px;
+	margin-right: 20px;
 }
 
 .portlet.light .form .form-actions, .portlet.light .portlet-form .form-actions
@@ -328,6 +343,20 @@ label {
 	padding-bottom: 0.5em;
 }
 
+.locale-link-left {
+	margin-left: 15px;
+	padding-top: 2px;
+	text-align: left;
+}
+
+.locale-link-left img {
+	height: auto;
+	width: auto;
+	max-width: 50px;
+	max-height: 50px;
+	padding-bottom: 0.5em;
+}
+
 .error-template {
 	padding: 40px 15px;
 	text-align: center;
@@ -340,6 +369,66 @@ label {
 
 .error-actions .btn {
 	margin-right: 10px;
+}
+
+.portlet>.portlet-title>.nav {
+	font-size: 15px;
+	color: #333;
+	background: 0 0;
+	margin: 1px 0 0;
+	float: right;
+	display: inline-block;
+	border: 0;
+}
+
+.nav {
+	margin-bottom: 0;
+	padding-left: 0;
+	list-style: none;
+	list-style-type: none;
+	list-style-image: none;
+	list-style-position: outside;
+}
+
+.portlet.light>.portlet-title>.nav>li {
+	margin: 0;
+	padding: 0;
+}
+
+.nav>li {
+	float: left;
+	margin-bottom: -1px;
+}
+
+.nav>li, .nav>li>a {
+	display: block;
+	position: relative;
+	line-height: 1.42857;
+	text-shadow: none;
+}
+
+.tabbable-line>.nav>li.active {
+	background: 0 0;
+	border-bottom: 4px solid #36c6d3;
+	position: relative;
+}
+
+.portlet.light>.portlet-title>.nav>li>a {
+	margin: 0;
+	padding: 12px 13px 13px;
+	font-size: 13px;
+	color: #666;
+}
+
+.portlet>.portlet-title>.nav-tabs>li.active>a, .portlet>.portlet-title>.nav-tabs>li:hover>a
+	{
+	color: #333;
+	background: #fff;
+	border: 0;
+}
+
+.tab-content>.active {
+	display: block;
 }
 
 @media screen and (max-width: 768px) {
