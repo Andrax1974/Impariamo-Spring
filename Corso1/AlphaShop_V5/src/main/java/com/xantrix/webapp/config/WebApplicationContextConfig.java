@@ -37,7 +37,7 @@ import com.xantrix.webapp.domain.Articoli;
 
 @Configuration
 @EnableWebMvc
-@EnableJpaRepositories(basePackages = {"com.xantrix.webapp"})
+//@EnableJpaRepositories(basePackages = {"com.xantrix.webapp"})
 @ComponentScan(basePackages = "com.xantrix.webapp")
 public class WebApplicationContextConfig implements WebMvcConfigurer
 {

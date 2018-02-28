@@ -1,4 +1,4 @@
-package com.xantrix.webapp.domain;
+package com.xantrix.webapp.entities;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -8,8 +8,11 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -21,41 +24,47 @@ public class Clienti  implements Serializable
 	private static final long serialVersionUID = -7414142881348723650L;
 
 	@Id
-	@Column(name = "CODFIDELITY")
+	@Column(name = "CODFIDELITY",unique = true, nullable = false)
 	private String codFidelity;
 	
 	@Column(name = "NOME", nullable = false)
-	private String Nome;
+	private String nome;
 	
 	@Column(name = "COGNOME", nullable = false)
-	private String Cognome;
+	private String cognome;
 	
 	@Column(name = "INDIRIZZO", nullable = true)
-	private String Indirizzo;
+	private String indirizzo;
 	
 	@Column(name = "COMUNE", nullable = true)
-	private String Comune;
+	private String comune;
 	
 	@Column(name = "CAP", nullable = true)
-	private String Cap;
+	private String cap;
 	
 	@Column(name = "PROV", nullable = true)
-	private String Prov;
+	private String prov;
 	
 	@Column(name = "TELEFONO", nullable = true)
-	private String Telefono;
+	private String telefono;
 	
 	@Column(name = "MAIL", nullable = true)
-	private String Mail;
+	private String mail;
 	
 	@Column(name = "STATO", nullable = true)
-	private String Stato;
+	private String stato;
 
 	@Column(name = "DATACREAZ", nullable = true)
-	private Date DataCreaz;
+	private Date dataCreaz;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
-	private Set<Utenti> Utenti = new HashSet<>();
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "clienti", cascade = CascadeType.ALL)
+	private Set<Utenti> utenti = new HashSet<>();
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	@PrimaryKeyJoinColumn
+	private Cards card;
+	
+	public Clienti() { }
 
 	public String getCodFidelity()
 	{
@@ -69,112 +78,122 @@ public class Clienti  implements Serializable
 
 	public String getNome()
 	{
-		return Nome;
+		return nome;
 	}
 
 	public void setNome(String nome)
 	{
-		Nome = nome;
+		this.nome = nome;
 	}
 
 	public String getCognome()
 	{
-		return Cognome;
+		return cognome;
 	}
 
 	public void setCognome(String cognome)
 	{
-		Cognome = cognome;
+		this.cognome = cognome;
 	}
 
 	public String getIndirizzo()
 	{
-		return Indirizzo;
+		return indirizzo;
 	}
 
 	public void setIndirizzo(String indirizzo)
 	{
-		Indirizzo = indirizzo;
+		this.indirizzo = indirizzo;
 	}
 
 	public String getComune()
 	{
-		return Comune;
+		return comune;
 	}
 
 	public void setComune(String comune)
 	{
-		Comune = comune;
+		this.comune = comune;
 	}
 
 	public String getCap()
 	{
-		return Cap;
+		return cap;
 	}
 
 	public void setCap(String cap)
 	{
-		Cap = cap;
+		this.cap = cap;
 	}
 
 	public String getProv()
 	{
-		return Prov;
+		return prov;
 	}
 
 	public void setProv(String prov)
 	{
-		Prov = prov;
+		this.prov = prov;
 	}
 
 	public String getTelefono()
 	{
-		return Telefono;
+		return telefono;
 	}
 
 	public void setTelefono(String telefono)
 	{
-		Telefono = telefono;
+		this.telefono = telefono;
 	}
 
 	public String getMail()
 	{
-		return Mail;
+		return mail;
 	}
 
 	public void setMail(String mail)
 	{
-		Mail = mail;
+		this.mail = mail;
 	}
 
 	public String getStato()
 	{
-		return Stato;
+		return stato;
 	}
 
 	public void setStato(String stato)
 	{
-		Stato = stato;
+		this.stato = stato;
 	}
 
 	public Date getDataCreaz()
 	{
-		return DataCreaz;
+		return dataCreaz;
 	}
 
 	public void setDataCreaz(Date dataCreaz)
 	{
-		DataCreaz = dataCreaz;
+		this.dataCreaz = dataCreaz;
 	}
 
 	public Set<Utenti> getUtenti()
 	{
-		return Utenti;
+		return utenti;
 	}
 
 	public void setUtenti(Set<Utenti> utenti)
 	{
-		Utenti = utenti;
+		this.utenti = utenti;
+	}
+
+	public Cards getCard()
+	{
+		return card;
+	}
+
+	public void setCard(Cards card)
+	{
+		this.card = card;
 	}
 	
 	

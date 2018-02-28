@@ -56,12 +56,12 @@
 						<div class="form-row">
 							<div class="form-group col-md-6" >
 								<label for="nome"><spring:message code="inscliente.form.nome.label"/></label>
-								<form:input id="nome" path="nome" type="text" value="0" class="form-control"/>  
+								<form:input id="nome" path="nome" type="text" class="form-control"/>  
 							</div>
 							
 							<div class="form-group col-md-6">
 								<label for="cognome"><spring:message code="inscliente.form.cognome.label"/></label>
-								<form:input id="cognome" path="cognome" type="text" value="0" class="form-control"/>  
+								<form:input id="cognome" path="cognome" type="text" class="form-control"/>  
 							</div>
 						</div>
 						
@@ -127,7 +127,54 @@
 					
 					</form:form>
 				</div>
-				<div class="tab-pane fade" id="avatar" role="tabpanel" aria-labelledby="avatar-tab"><p>Test1</p></div>
+				<div class="tab-pane fade" id="avatar" role="tabpanel" aria-labelledby="avatar-tab">
+				
+				<form:form  method="POST" modelAttribute="newUtente" enctype="multipart/form-data">
+				<form:errors path="*" cssClass="alert alert-danger" element="div"/> 
+				
+				<div class="form-body">
+				
+					<div class="form-group">
+						<label for="userId"><spring:message code="inscliente.form.userId.label"/></label>
+						<form:input id="userId" path="userId" type="text" class="form-control" placeholder="User Id"/>  
+						<form:errors path="userId" cssClass="text-danger"/>
+					</div>
+					
+					<div class="form-group">
+						<label for="password"><spring:message code="inscliente.form.password.label"/></label>
+						<form:input id="password" path="pwd" type="password" class="form-control" placeholder="password"/>  
+						<form:errors path="pwd" cssClass="text-danger"/>
+					</div>
+					
+					<div class="form-group">
+						<label for="abilitato"><spring:message code="inscliente.form.stato.label"/></label>
+						<div class="mt-radio-inline">
+							<label class="mt-radio">
+								<form:radiobutton id="abilitato" class="form-check-input" path="abilitato" value="Si" checked="true" /> 
+								Attivo 
+								<span></span> 
+							</label>
+							<label class="mt-radio">
+								<form:radiobutton class="form-check-input" path="abilitato" value="No" /> 
+								Sospeso
+								<span></span> 
+							</label>
+						</div>
+					</div>
+					
+					
+					<hr class="line-form">
+							
+					<div class="form-actions">
+						<input type="submit" id="btnAdd" class="btn btn-green form-buttons" value = <spring:message code="insarticolo.form.btnAdd.label"/> />
+						<input type="submit" id="btnAbort" class="btn btn-default form-buttons" value = <spring:message code="insarticolo.form.btnAbort.label"/> />
+					</div>
+					
+				</div>
+				
+				
+				</form:form>
+				</div>
 				<div class="tab-pane fade" id="utenti" role="tabpanel" aria-labelledby="utenti-tab"><p>Test2</p></div>
 			</div>
 		</div>
