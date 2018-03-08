@@ -12,15 +12,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.xantrix.webapp.entities.Clienti;
-import com.xantrix.webapp.entities.Utenti;
-
 import org.springframework.core.env.Environment;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -43,16 +37,16 @@ public class HibernateConfig
 	@Bean
 	LocalContainerEntityManagerFactoryBean entityManagerFactory()
 	{
-		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
-		
-		entityManagerFactoryBean.setDataSource(dataSource);
-		entityManagerFactoryBean.setJpaVendorAdapter(this.jpaVendorAdapter());
-		entityManagerFactoryBean.setPackagesToScan("com.xantrix.webapp.entities");
-		entityManagerFactoryBean.setSharedCacheMode(SharedCacheMode.ENABLE_SELECTIVE);
-		entityManagerFactoryBean.setValidationMode(ValidationMode.NONE);
-		entityManagerFactoryBean.setJpaProperties(this.hibernateProperties());
+		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
 
-		return entityManagerFactoryBean;
+		factory.setJpaVendorAdapter(this.jpaVendorAdapter());
+		factory.setDataSource(this.dataSource);
+		factory.setPackagesToScan("com.xantrix.webapp.entities");
+		factory.setSharedCacheMode(SharedCacheMode.ENABLE_SELECTIVE);
+		factory.setValidationMode(ValidationMode.NONE);
+		factory.setJpaProperties(this.hibernateProperties());
+
+		return factory;
 	}
 	
 	@Bean
@@ -71,9 +65,9 @@ public class HibernateConfig
 	{
 		Properties jpaProperties = new Properties();
 
-		jpaProperties.put(DIALECT, env.getRequiredProperty("hibernate.dialect"));
-		jpaProperties.put(HBM2DDL_AUTO, env.getRequiredProperty("hibernate.hbm2ddl.auto"));
-		jpaProperties.put(SHOW_SQL, env.getRequiredProperty("hibernate.show_sql"));
+		jpaProperties.put("javax.persistence.schema-generation.database.action", "none");
+		jpaProperties.put("hibernate.dialect", env.getRequiredProperty("hibernate.dialect"));
+		jpaProperties.put("hibernate.show_sql", env.getRequiredProperty("hibernate.show_sql"));
 		jpaProperties.put("hibernate.format_sql", env.getRequiredProperty("hibernate.format_sql"));
 
 		// Setting C3P0 properties
@@ -87,10 +81,10 @@ public class HibernateConfig
 	}
 
 	@Bean
-	JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory)
+	public JpaTransactionManager transactionManager()
 	{
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
-		transactionManager.setEntityManagerFactory(entityManagerFactory);
+		transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
 		
 		return transactionManager;
 	}

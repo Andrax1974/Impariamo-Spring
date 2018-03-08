@@ -13,14 +13,13 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "CARDS",  uniqueConstraints = {
-		@UniqueConstraint(columnNames = "CODFIDELITY")})
+@Table(name = "CARDS")
 public class Cards implements Serializable
 {
 	private static final long serialVersionUID = -3751231307546162427L;
 	
 	@Id
-	@Column(name = "CODFIDELITY",unique = true, nullable = false)
+	@Column(name = "CODFIDELITY")
 	private String codFidelity;
 	
 	@Column(name = "BOLLINI")
@@ -32,8 +31,9 @@ public class Cards implements Serializable
 	@Column(name = "OBSOLETO")
 	private String obsoleto;
 	
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "card", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "card")
 	private Clienti cliente;
+	
 
 	public String getCodFidelity()
 	{
@@ -85,6 +85,4 @@ public class Cards implements Serializable
 		this.cliente = cliente;
 	}
 	
-	
-
 }

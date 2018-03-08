@@ -15,20 +15,24 @@ public class ClientiDaoImpl extends AbstractDao<Clienti, Integer>
 	implements ClientiDao
 {
 
-	private Root<Clienti> recordset;
-	
 	@Override
 	public Clienti SelById(String id)
 	{
+		Clienti retVal;
+		
 		CriteriaBuilder queryBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Clienti> queryDefinition = queryBuilder.createQuery(Clienti.class);
 		
-		recordset = queryDefinition.from(Clienti.class);
+		Root<Clienti> recordset = queryDefinition.from(Clienti.class);
 		
 		queryDefinition.select(recordset).
 						where(queryBuilder.equal(recordset.get("codFidelity"), id));
 		
-		return entityManager.createQuery(queryDefinition).getSingleResult();
+		retVal = entityManager.createQuery(queryDefinition).getSingleResult();
+		
+		entityManager.clear();
+		
+		return retVal;
 	}
 	
 	//http://www.objectdb.com/java/jpa/query/jpql/string
@@ -40,7 +44,7 @@ public class ClientiDaoImpl extends AbstractDao<Clienti, Integer>
 		
 		String ToSearch = "%" + Nome + "%";
 		
-		recordset = queryDefinition.from(Clienti.class);
+		Root<Clienti> recordset = queryDefinition.from(Clienti.class);
 		
 		queryDefinition.select(recordset).
 						where(queryBuilder.like(recordset.get("descrizione"), ToSearch)).
@@ -48,23 +52,29 @@ public class ClientiDaoImpl extends AbstractDao<Clienti, Integer>
 		
 		return entityManager.createQuery(queryDefinition).getResultList();
 	}
+	
+	@Override
+	public List<Clienti> SelTutti()
+	{
+		return super.SelTutti();
+	}
 
 	@Override
 	public void Salva(Clienti cliente)
 	{
-		 super.Inserisci(cliente);
+		super.Inserisci(cliente);
 	}
 	
 	@Override
 	public void Aggiorna(Clienti cliente)
 	{
-		entityManager.remove(cliente);
+		super.Aggiorna(cliente);
 	}
 
 	@Override
 	public void Elimina(Clienti cliente)
 	{
-		entityManager.remove(cliente);
+		super.Elimina(cliente);
 	}
 
 }

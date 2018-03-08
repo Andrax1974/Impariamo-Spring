@@ -9,7 +9,7 @@ public interface ClientiDao
 	Clienti SelById(String id);
 
 	List<Clienti> SelTutti();
-
+	
 	List<Clienti> SelByNome(String Nome, String OrderBy);
 
 	void Salva(Clienti cliente);

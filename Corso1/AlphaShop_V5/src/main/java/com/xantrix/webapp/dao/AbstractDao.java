@@ -56,18 +56,23 @@ public abstract class AbstractDao<I extends Serializable, Id extends Serializabl
 	public void Inserisci(I entity)
 	{
 		this.entityManager.persist(entity);
+		flushAndClear();
 	}
 	
 	@Override
 	public void Aggiorna(I entity)
 	{
-		this.entityManager.merge(entity);
+		this.entityManager.merge(entity); 
+		flushAndClear();
 	}
 	
 	@Override
 	public void Elimina(I entity)
 	{
-		this.entityManager.remove(entity);
+		
+		this.entityManager.remove(this.entityManager.contains(entity) ? entity : this.entityManager.merge(entity));
+		flushAndClear();
+		
 	}
 	
 	@Override
@@ -82,5 +87,11 @@ public abstract class AbstractDao<I extends Serializable, Id extends Serializabl
 								query.from(this.entityClass)
 								.get("id"), id)
         )).executeUpdate();
+	}
+	
+	private void flushAndClear() 
+	{
+	    entityManager.flush();
+	    entityManager.clear();
 	}
 }

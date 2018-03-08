@@ -1,61 +1,59 @@
 package com.xantrix.webapp.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+
 import javax.persistence.UniqueConstraint;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 @Entity
-@Table(name = "UTENTI", uniqueConstraints = {
-		@UniqueConstraint(columnNames = "ID")})
+@Table(name = "UTENTI", uniqueConstraints =
+{ @UniqueConstraint(columnNames = "CODFIDELITY") })
 public class Utenti implements Serializable
 {
 	private static final long serialVersionUID = 8473057964112587082L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID", unique = true, nullable = false)
-	private int id;
+	@Column(name = "CODFIDELITY",unique = true, nullable = false, length = 20)
+	private String codFidelity;
 	
-	@Column(name = "USERID")
+	@Column(name = "USERID",nullable = false, length = 50)
 	private String userId;
 
-	@Column(name = "PASSWORD", nullable = false)
+	@Column(name = "PASSWORD", nullable = false, length = 30)
 	private String pwd;
 
-	@Column(name = "ABILITATO", nullable = false)
+	@Column(name = "ABILITATO", nullable = false,  length = 2)
 	private String abilitato;
-	
-	@ManyToOne
-	@JoinColumn(name = "CODFIDELITY", referencedColumnName = "CODFIDELITY", nullable = false)
-	@JsonBackReference
+
+	@OneToOne
+	@PrimaryKeyJoinColumn
 	private Clienti clienti;
 	
-	public Utenti() { }
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,  mappedBy = "utente", orphanRemoval = true)
+	private Set<Profili> profili = new HashSet<>();
 
-	public int getId()
+	public Utenti()
 	{
-		return id;
 	}
-
-	public void setId(int id)
+	
+	public Utenti(String CodFidelity)
 	{
-		this.id = id;
+		this.codFidelity = CodFidelity;
 	}
-
+	
 	public String getUserId()
 	{
 		return userId;
@@ -85,6 +83,16 @@ public class Utenti implements Serializable
 	{
 		this.abilitato = abilitato;
 	}
+	
+	public String getCodFidelity()
+	{
+		return codFidelity;
+	}
+
+	public void setCodFidelity(String codFidelity)
+	{
+		this.codFidelity = codFidelity;
+	}
 
 	public Clienti getClienti()
 	{
@@ -95,4 +103,56 @@ public class Utenti implements Serializable
 	{
 		this.clienti = clienti;
 	}
+
+	public Set<Profili> getProfili()
+	{
+		return profili;
+	}
+
+	public void setProfili(Set<Profili> profili)
+	{
+		this.profili = profili;
+	}	
+	
+	
 }
+
+
+
+/*
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+@Column(name = "ID", unique = true, nullable = false)
+private int id;
+*/
+
+/*
+@ManyToOne
+@JoinColumn(name = "CODFIDELITY", referencedColumnName = "CODFIDELITY", nullable = false)
+@JsonBackReference
+private Clienti clienti;
+*/
+
+/*
+public String getCodFidelity()
+{
+	return codFidelity;
+}
+
+public void setCodFidelity(String codFidelity)
+{
+	this.codFidelity = codFidelity;
+}
+
+/*
+	public int getId()
+	{
+		return id;
+	}
+
+	public void setId(int id)
+	{
+		this.id = id;
+	}
+	*/
+

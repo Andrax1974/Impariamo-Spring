@@ -2,9 +2,10 @@ package com.xantrix.webapp.entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,55 +15,57 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 
 @Entity
-@Table(name = "CLIENTI",  uniqueConstraints = {
-		@UniqueConstraint(columnNames = "CODFIDELITY")})
+@Table(name = "CLIENTI")
 public class Clienti  implements Serializable
 {
 	private static final long serialVersionUID = -7414142881348723650L;
 
 	@Id
-	@Column(name = "CODFIDELITY",unique = true, nullable = false)
+	@Column(name = "CODFIDELITY")
 	private String codFidelity;
 	
-	@Column(name = "NOME", nullable = false)
+	@Column(name = "NOME")
 	private String nome;
 	
-	@Column(name = "COGNOME", nullable = false)
+	@Column(name = "COGNOME")
 	private String cognome;
 	
-	@Column(name = "INDIRIZZO", nullable = true)
+	@Column(name = "INDIRIZZO")
 	private String indirizzo;
 	
-	@Column(name = "COMUNE", nullable = true)
+	@Column(name = "COMUNE")
 	private String comune;
 	
-	@Column(name = "CAP", nullable = true)
+	@Column(name = "CAP")
 	private String cap;
 	
-	@Column(name = "PROV", nullable = true)
+	@Column(name = "PROV")
 	private String prov;
 	
-	@Column(name = "TELEFONO", nullable = true)
+	@Column(name = "TELEFONO")
 	private String telefono;
 	
-	@Column(name = "MAIL", nullable = true)
+	@Column(name = "MAIL")
 	private String mail;
 	
-	@Column(name = "STATO", nullable = true)
+	@Column(name = "STATO")
 	private String stato;
 
-	@Column(name = "DATACREAZ", nullable = true)
+	@Temporal(TemporalType.DATE)
+	@Column(name = "DATACREAZ")
 	private Date dataCreaz;
-	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "clienti", cascade = CascadeType.ALL)
-	private Set<Utenti> utenti = new HashSet<>();
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	@PrimaryKeyJoinColumn
 	private Cards card;
+	
+	@OneToOne(mappedBy = "clienti", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Utenti utenti;
 	
 	public Clienti() { }
 
@@ -176,15 +179,17 @@ public class Clienti  implements Serializable
 		this.dataCreaz = dataCreaz;
 	}
 
-	public Set<Utenti> getUtenti()
+	
+	public Utenti getUtenti()
 	{
 		return utenti;
 	}
 
-	public void setUtenti(Set<Utenti> utenti)
+	public void setUtenti(Utenti utenti)
 	{
 		this.utenti = utenti;
 	}
+	
 
 	public Cards getCard()
 	{
@@ -196,5 +201,10 @@ public class Clienti  implements Serializable
 		this.card = card;
 	}
 	
-	
 }
+
+
+/*
+@OneToMany(fetch = FetchType.EAGER, mappedBy = "clienti", cascade = CascadeType.ALL)
+private List<Utenti> utenti;
+*/

@@ -13,4 +13,9 @@ $(document).ready(function() {
 		e.preventDefault()
 		$(this).tab('show')
 	})
+
+	$('#codFidelity').keyup(function(e) {
+		var txtVal = $(this).val();
+		$('#codFidelity_utenti').val(txtVal);
+	});
 });

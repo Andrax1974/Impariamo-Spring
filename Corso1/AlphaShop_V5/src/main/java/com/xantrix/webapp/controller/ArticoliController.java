@@ -119,8 +119,11 @@ public class ArticoliController
 
 		List<Articoli> recordset = articoliService.SelArticoliByFilter(Filter, orderBy, tipo);
 
-		recordset = recordset.stream().filter(u -> IdRep.contains(Integer.toString(u.getIdFamAss())))
-				.filter(u -> u.getQtaMag() > 0).filter(u -> u.getPrezzo() > 0).collect(Collectors.toList());
+		recordset = recordset.stream()
+				.filter(u -> IdRep.contains(Integer.toString(u.getIdFamAss())))
+				.filter(u -> u.getQtaMag() > 0)
+				.filter(u -> u.getPrezzo() > 0)
+				.collect(Collectors.toList());
 
 		if (recordset != null)
 			NumArt = recordset.size();
