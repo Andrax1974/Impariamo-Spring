@@ -21,7 +21,7 @@ public class Articoli implements Serializable
 	
 	private int Riga;
 	
-	@NotEmpty(message = "{NotNull.Articoli.CodArt.validation}")
+	@NotNull(message = "{NotNull.Articoli.CodArt.validation}")
 	@Size(min=4, max=20, message="{Size.Articoli.CodArt.validation}")
 	private String CodArt;
 	

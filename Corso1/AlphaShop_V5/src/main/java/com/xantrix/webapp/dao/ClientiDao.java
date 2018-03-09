@@ -10,7 +10,7 @@ public interface ClientiDao
 
 	List<Clienti> SelTutti();
 	
-	List<Clienti> SelByNome(String Nome, String OrderBy);
+	List<Clienti> SelByNominativo(String Nome);
 
 	void Salva(Clienti cliente);
 

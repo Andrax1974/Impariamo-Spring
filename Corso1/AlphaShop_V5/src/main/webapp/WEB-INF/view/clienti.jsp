@@ -36,11 +36,11 @@
 			<table id="clienti" class="table table-striped table-bordered">
 				<thead>
 		            <tr>
-		            	<th>CodFidelity</th>
+		            	<th>Fidelity</th>
 		                <th>Nominativo</th>
 		                <th>Comune</th>
 		                <th>Bollini</th>
-		                <th>Spesa</th>
+		                <th>Ultima Spesa</th>
 		                <th></th>
 		                <th></th>
 		            </tr>
@@ -57,11 +57,16 @@
 							<fmt:formatNumber value = "${Clienti.card.bollini}"  minFractionDigits = "0" type = "number"/>
 							</td>
 							<td>
-							${Clienti.card.ultimaSpesa}
+							<fmt:formatDate value="${Clienti.card.ultimaSpesa}" pattern="dd-MM-yyyy" /> 
 							</td>
 							<td>
-								<a href="<spring:url value="/articoli/infoart/${Articoli.codArt}" /> " class="btn btn-primary">
+								<a href="<spring:url value="/clienti/modifica/${Clienti.codFidelity}" /> " class="btn btn-primary">
 								<span class="oi oi-plus"/></span> Dettaglio 
+      							</a> 
+      						</td>
+      						<td>
+								<a href="<spring:url value="/clienti/elimina/${Clienti.codFidelity}" /> " class="btn btn-danger">
+								<span class="oi oi-trash"/></span> Elimina 
       							</a> 
       						</td>
 						</tr>

@@ -3,13 +3,11 @@ package com.xantrix.webapp.config;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.format.FormatterRegistry;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -34,8 +32,6 @@ import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 import org.springframework.web.servlet.view.xml.MarshallingView;
 import org.springframework.web.util.UrlPathHelper;
 
-import com.xantrix.webapp.converter.RoleToClientiConverter;
-import com.xantrix.webapp.converter.RoleToUtentiConverter;
 import com.xantrix.webapp.domain.Articoli;
 
 @Configuration
@@ -43,19 +39,6 @@ import com.xantrix.webapp.domain.Articoli;
 @ComponentScan(basePackages = "com.xantrix.webapp")
 public class WebApplicationContextConfig implements WebMvcConfigurer
 {
-	@Autowired
-	RoleToUtentiConverter roleToUtentiConverter;
-	
-	@Autowired
-	RoleToClientiConverter roleToClientiConverter;
-	
-	@Override
-	public void addFormatters(FormatterRegistry registry)
-	{
-		//registry.addConverter(roleToUtentiConverter);
-		//registry.addConverter(roleToClientiConverter);
-	}
-	
 	@Override
 	public void configureViewResolvers(ViewResolverRegistry registry)
 	{

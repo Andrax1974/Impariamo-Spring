@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
@@ -37,19 +39,29 @@ public class ClientiDaoImpl extends AbstractDao<Clienti, Integer>
 	
 	//http://www.objectdb.com/java/jpa/query/jpql/string
 	@Override
-	public List<Clienti> SelByNome(String Nome, String OrderBy)
+	public List<Clienti> SelByNominativo(String Nominativo)
 	{
 		CriteriaBuilder queryBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Clienti> queryDefinition = queryBuilder.createQuery(Clienti.class);
 		
-		String ToSearch = "%" + Nome + "%";
+		String ToSearch = "%" + Nominativo + "%";
 		
 		Root<Clienti> recordset = queryDefinition.from(Clienti.class);
 		
-		queryDefinition.select(recordset).
-						where(queryBuilder.like(recordset.get("descrizione"), ToSearch)).
-						orderBy(queryBuilder.asc(recordset.get(OrderBy)));
+		Expression<String> exp1 = queryBuilder.concat(recordset.<String>get("nome"), " ");
+		exp1 = queryBuilder.concat(exp1, recordset.<String>get("cognome"));
 		
+		Expression<String> exp2 = queryBuilder.concat(recordset.<String>get("cognome"), " ");
+		exp2 = queryBuilder.concat(exp2, recordset.<String>get("nome"));
+		
+		Predicate whereClause = queryBuilder.or(
+				queryBuilder.like(exp1, ToSearch), 
+				queryBuilder.like(exp2, ToSearch));
+		
+		queryDefinition.select(recordset).
+						where(whereClause);
+						//orderBy(queryBuilder.asc(recordset.get(OrderBy)));
+								
 		return entityManager.createQuery(queryDefinition).getResultList();
 	}
 	

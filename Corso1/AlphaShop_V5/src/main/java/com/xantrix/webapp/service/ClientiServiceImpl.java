@@ -43,5 +43,17 @@ public class ClientiServiceImpl implements ClientiService
 		return clientiRepository.SelTutti();
 	}
 
+	@Override
+	public void Elimina(Clienti cliente)
+	{
+		clientiRepository.Elimina(cliente);
+	}
+
+	@Override
+	public List<Clienti> SelByNominativo(String Nominativo)
+	{
+		return clientiRepository.SelByNominativo(Nominativo);
+	}
+
 	
 }

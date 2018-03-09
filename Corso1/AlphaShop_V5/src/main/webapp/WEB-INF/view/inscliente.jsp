@@ -23,13 +23,19 @@
             
             <ul class="nav nav-form" id="account-tabs" role="tablist">
 	            <li class="nav-item">
-	            	<a class="nav-link active" id="dati-tab" data-toggle="tab" href="#dati" role="tab" aria-controls="dati" aria-selected="true">Dati Clienti</a>
+	            	<a class="nav-link active" id="dati-tab" data-toggle="tab" href="#dati" role="tab" aria-controls="dati" aria-selected="true">
+	            		<spring:message code="inscliente.form.tab1.label"/>
+	            	</a>
 	            </li>
 	            <li class="nav-item">
-	            	<a class="nav-link" id="avatar-tab" data-toggle="tab" href="#avatar" role="tab" aria-controls="avatar" aria-selected="false">Modifica Avatar</a>
+	            	<a class="nav-link" id="avatar-tab" data-toggle="tab" href="#avatar" role="tab" aria-controls="avatar" aria-selected="false">
+	            		<spring:message code="inscliente.form.tab2.label"/>
+	            	</a>
 				</li>
  				<li>
-					<a class="nav-link" id="utenti-tab" data-toggle="tab" href="#utenti" role="tab" aria-controls="utenti" aria-selected="false">Gestione Utenti</a>
+					<a class="nav-link" id="utenti-tab" data-toggle="tab" href="#utenti" role="tab" aria-controls="utenti" aria-selected="false">
+						<spring:message code="inscliente.form.tab3.label"/>
+					</a>
 			    </li>
             </ul>
             
@@ -41,6 +47,13 @@
 		</div>
 		<div class="portlet-body form">
 			<div class="tab-content" id="myTabContent">
+			
+				<c:if test="${saved}">
+					<div class="alert alert-success" role="alert">
+	  					<spring:message code="inscliente.form.alert.label"/>
+					</div>
+				</c:if>
+				
 				<div class="tab-pane fade show active" id="dati" role="tabpanel" aria-labelledby="dati-tab">
 					<form:form  method="POST" modelAttribute="Cliente">
 					<form:errors path="*" cssClass="alert alert-danger" element="div"/> 

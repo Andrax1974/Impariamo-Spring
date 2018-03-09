@@ -1,22 +1,32 @@
 package com.xantrix.webapp.controller;
 
- import java.util.Date;
+ import java.util.Comparator;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.MatrixVariable;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.xantrix.webapp.domain.Articoli;
+import com.xantrix.webapp.domain.Iva;
 import com.xantrix.webapp.entities.Clienti;
 import com.xantrix.webapp.entities.Profili;
 import com.xantrix.webapp.entities.Utenti;
@@ -29,6 +39,8 @@ import com.xantrix.webapp.service.UtentiService;
 @RequestMapping("/clienti")
 public class ClientiController
 {
+	private final Logger logger = LogManager.getLogger("Clienti");
+	
 	@Autowired
 	private ClientiService clientiService;
 	
@@ -41,9 +53,106 @@ public class ClientiController
 	private List<Clienti> recordset;
 	
 	private Date date = new Date();
+	
+	private boolean IsSaved = false;
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public String GetClienti(Model model)
+	{
+		
+		 recordset = clientiService.SelTutti()
+				 .stream()
+				 .filter(u -> !u.getCodFidelity().equals("-1"))
+				 .skip(0).limit(10)
+				 .sorted(Comparator.comparing(Clienti::getCodFidelity))
+				 .collect(Collectors.toList());
+
+		
+		 model.addAttribute("NumArt", recordset.size()); 
+		 model.addAttribute("Titolo", "Ricerca Clienti"); 
+		 model.addAttribute("Titolo2","Risultati Ricerca "); 
+		 model.addAttribute("clienti", recordset);
+		 
+
+		return "clienti";
+	}
+	
+	// http://localhost:8080/alphashop/clienti/cerca/parametri;filtro=Luisa,Nominativo;orderby=fidelity,desc;paging=0,10
+	@RequestMapping(value = "/cerca/{parametri}", method = RequestMethod.GET)
+	public String GetClientiByFilterMatrix(@MatrixVariable(pathVar = "parametri") Map<String, List<String>> parametri, Model model)
+	{
+			String filter = "";
+			String type = "";
+			
+			String orderBy = "fidelity";
+			String tipo = "desc";
+			
+			Long SkipValue = (long) 0;
+			Long LimitValue = (long) 10;
+
+			List<String> Filtro = parametri.get("filtro");
+			List<String> OrderBy = parametri.get("orderby");
+			List<String> Paging = parametri.get("paging");
+
+			if (Filtro != null)
+			{
+				filter = Filtro.get(0);
+				type = Filtro.get(1);
+			}
+			
+			if (OrderBy != null)
+			{
+				orderBy = OrderBy.get(0);
+				tipo = OrderBy.get(1);
+			}
+
+			if (Paging != null)
+			{
+				SkipValue = Long.parseLong(Paging.get(0));
+				LimitValue = Long.parseLong(Paging.get(1));
+			}
+
+			List<Clienti> recordset;
+			
+			if (filter.length() > 0)
+				recordset = clientiService.SelByNominativo(filter);
+			else
+				recordset = clientiService.SelTutti();
+			
+			if (recordset != null)
+			{
+				recordset = recordset.stream()
+						.filter(u -> !u.getCodFidelity().equals("-1"))
+						.skip(SkipValue)
+						.limit(LimitValue)
+						.collect(Collectors.toList());
+	
+				
+				if (orderBy.equals("fidelity") && tipo.equals("asc"))
+				{
+					recordset = recordset.stream()
+							 .sorted(Comparator.comparing(Clienti::getCodFidelity))
+							 .collect(Collectors.toList()); 
+				}
+				else if (orderBy.equals("fidelity") && tipo.equals("desc")) 
+				{
+					recordset = recordset.stream()
+							.sorted(Comparator.comparing(Clienti::getCodFidelity).reversed()) 
+							.collect(Collectors.toList());
+				}
+				 
+			}
+
+			model.addAttribute("NumArt", recordset.size()); 
+			model.addAttribute("Titolo", "Ricerca Clienti"); 
+			model.addAttribute("Titolo2","Risultati Ricerca "); 
+			model.addAttribute("clienti", recordset);
+
+			return "clienti";
+		}
 
 	// http://localhost:8080/alphashop/clienti/cerca/
-	@RequestMapping(value = "/cerca/{filter}", method = RequestMethod.GET)
+	@RequestMapping(value = "/cerca2/{filter}", method = RequestMethod.GET)
 	public String GetClientiByFilter(@PathVariable("filter") String Filter, Model model)
 	{
 		Clienti cliente = clientiService.SelCliente(Filter);
@@ -58,18 +167,27 @@ public class ClientiController
 		return "articoli";
 	}
 	
-	@RequestMapping(value = "/cerca", method = RequestMethod.GET)
-	public String GetClienti(Model model)
+	
+	@RequestMapping(value = "/elimina/{idCliente}", method = RequestMethod.GET)
+	public String DelClienti(@PathVariable("idCliente") String IdCliente, Model model)
 	{
-		 recordset = clientiService.SelTutti();
-		
-		 model.addAttribute("NumArt", recordset.size()); 
-		 model.addAttribute("Titolo", "Ricerca Clienti"); 
-		 model.addAttribute("Titolo2","Risultati Ricerca "); 
-		 model.addAttribute("clienti", recordset);
+		try
+		{
+			 logger.info("Eliminazione Cliente con Codice: " + IdCliente);
+			 
+			 if (!IdCliente.equals("-1"))
+			 {
+				 Clienti cliente = clientiService.SelCliente(IdCliente);
+				 clientiService.Elimina(cliente);
+			 }
+		}
+		catch (Exception ex)
+		{
+			 logger.debug("ERRORE: " + ex.getMessage());
+		}
 		 
-
-		return "clienti";
+		 return "redirect:/clienti/modifica/" + IdCliente;
+	 
 	}
 
 	@RequestMapping(value = "/aggiungi", method = RequestMethod.GET)
@@ -77,24 +195,44 @@ public class ClientiController
 	{
 
 		Clienti cliente = new Clienti();
-		Utenti utente = new Utenti();
-		 
+		
 		model.addAttribute("Titolo", "Inserimento Nuovo Cliente");
 		model.addAttribute("Cliente", cliente);
-		model.addAttribute("Utente", utente);
+		model.addAttribute("Utente", getUtente());
+		model.addAttribute("Profilo", getProfilo());
 		model.addAttribute("edit", false);
+		model.addAttribute("saved", false);
 		
 		return "insCliente";
 	}
-
+	
+	@ModelAttribute("Utente")
+	public Utenti getUtente()
+	{
+		return new Utenti();
+	}
+	
+	@ModelAttribute("Profilo")
+	public Profili getProfilo()
+	{
+		return new Profili();
+	}
+	
 	@RequestMapping(value = "/aggiungi", method = RequestMethod.POST)
-	public String GestInsClienti(@ModelAttribute("Cliente") Clienti cliente, 
+	public String GestInsClienti(@Valid @ModelAttribute("Cliente") Clienti cliente, 
 			BindingResult result, Model model,
+			RedirectAttributes redirectAttributes,
 			HttpServletRequest request)
 	{
+		if (result.hasErrors())
+		{	
+			return "insCliente";
+		}
 		
 		cliente.setDataCreaz(date);
 		clientiService.Salva(cliente);
+		
+		redirectAttributes.addFlashAttribute("saved", true);
 		
 		return "redirect:/clienti/modifica/" + cliente.getCodFidelity().trim();
 	}
@@ -108,20 +246,21 @@ public class ClientiController
 		utente.setCodFidelity(IdCliente);
 		utente.setPwd("");
 		
-		Profili profilo = new Profili();
-		
 		model.addAttribute("Titolo", "Modifica Cliente");
 		model.addAttribute("Cliente", cliente);
 		model.addAttribute("Utente", utente);
-		model.addAttribute("Profilo", profilo);
+		model.addAttribute("Profilo", getProfilo());
 		model.addAttribute("edit", true);
-		 
+		model.addAttribute("saved", IsSaved ? true : false );
+		
+		IsSaved = false;
+		
 		return "insCliente";
 	}
 
 	@RequestMapping(value = "/modifica/{idCliente}", method = RequestMethod.POST)
 	public String GestUpdClienti(
-			@ModelAttribute("Cliente") Clienti cliente, 
+			@Valid @ModelAttribute("Cliente") Clienti cliente, 
 			@ModelAttribute("Utente") Utenti utente,
 			@ModelAttribute("Profilo") Profili profilo,
 			@PathVariable("idCliente") String IdCliente,
@@ -132,6 +271,11 @@ public class ClientiController
 		
 		if (cliente.getNome() != null)
 		{
+			if (result.hasErrors())
+			{
+				return "insCliente";
+			}
+			
 			cliente.setDataCreaz(date);
 			clientiService.Aggiorna(cliente);
 		}
@@ -161,6 +305,7 @@ public class ClientiController
 			profiliService.Salva(newProfilo);
 		}
 		
+		IsSaved = true; 
 		
 		return "redirect:/clienti/modifica/" + IdCliente;
 	}

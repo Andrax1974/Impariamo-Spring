@@ -28,6 +28,10 @@
 	width: 6em;
 }
 
+.table td {
+   text-align: center;   
+}
+
 .form-fooder {
 	padding-top: 50px;
 }

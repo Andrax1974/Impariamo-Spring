@@ -76,7 +76,8 @@ public class ArticoliController
 			Model model)
 	{
 
-		List<Articoli> recordset = articoliService.SelArticoliByFilter(Filter).stream()
+		List<Articoli> recordset = articoliService.SelArticoliByFilter(Filter)
+				.stream()
 				.filter(u -> u.getIdFamAss() == IdRep).collect(Collectors.toList());
 
 		if (recordset != null)

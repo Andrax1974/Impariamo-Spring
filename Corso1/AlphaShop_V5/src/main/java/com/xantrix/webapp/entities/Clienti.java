@@ -17,7 +17,10 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
+//https://docs.oracle.com/javaee/7/tutorial/bean-validation001.htm
 
 @Entity
 @Table(name = "CLIENTI")
@@ -27,18 +30,24 @@ public class Clienti  implements Serializable
 
 	@Id
 	@Column(name = "CODFIDELITY")
+	@NotNull(message = "{NotNull.Clienti.codFidelity.validation}")
+	@Size(min=8, max=20, message = "{Size.Clienti.codFidelity.validation}")
 	private String codFidelity;
 	
 	@Column(name = "NOME")
+	@Size(min=2, max=50, message = "{Size.Clienti.nome.validation}")
 	private String nome;
 	
 	@Column(name = "COGNOME")
+	@Size(min=2, max=60, message = "{Size.Clienti.cognome.validation}")
 	private String cognome;
 	
 	@Column(name = "INDIRIZZO")
+	@Size(min=10, max=80, message = "{Size.Clienti.indirizzo.validation}")
 	private String indirizzo;
 	
 	@Column(name = "COMUNE")
+	@Size(min=2, max=50, message = "{Size.Clienti.comune.validation}")
 	private String comune;
 	
 	@Column(name = "CAP")
