@@ -36,11 +36,36 @@
 			<table id="clienti" class="table table-striped table-bordered">
 				<thead>
 		            <tr>
-		            	<th>Fidelity</th>
-		                <th>Nominativo</th>
-		                <th>Comune</th>
-		                <th>Bollini</th>
-		                <th>Ultima Spesa</th>
+		            	<th>
+		            		Fidelity
+		            		<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},Nominativo;orderby=fidelity,desc" /> " class="btn btn-xs">
+		            		<span class="oi oi-elevator"></span>
+		            		</a>
+		            	</th>
+		                <th>
+		                	Nominativo
+		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},Nominativo;orderby=nominativo,desc" /> " class="btn btn-xs">
+		                	<span class="oi oi-elevator"></span>
+		                	</a>
+		                </th>
+		                <th>
+		                	Comune
+		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},Nominativo;orderby=nominativo,desc" /> " class="btn btn-xs">
+		                	<span class="oi oi-elevator"></span>
+		                	</a>
+		                </th>
+		                <th>
+		                	Bollini
+		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},Nominativo;orderby=nominativo,desc" /> " class="btn btn-xs">
+		                	<span class="oi oi-elevator"></span>
+		                	</a>
+		                </th>
+		                <th>
+		                	Ultima Spesa
+		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},Nominativo;orderby=nominativo,desc" /> " class="btn btn-xs">
+		                	<span class="oi oi-elevator"></span>
+		                	</a>
+		                </th>
 		                <th></th>
 		                <th></th>
 		            </tr>

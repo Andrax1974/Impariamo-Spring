@@ -67,10 +67,26 @@
     			</ul>
     			
     			<!-- Search Box -->
-    			<form class="form-inline my-2 my-lg-0" id="search" role="search">
-      				<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Cerca</button>
-    			</form>
+    			<c:choose>
+    				<c:when test = "${IsClienti}">
+		    			<form:form class="form-inline my-2 my-lg-0" id="search" role="search" method="GET" action="/alphashop/clienti/search">
+		      				<input type="text" onClick="this.select();"  class="form-control mr-sm-2" name="filter" value="${filter}" placeholder="Cerca Clienti">
+		      				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Cerca</button>
+		    			</form:form>
+	    			</c:when>
+	    			<c:when test = "${IsArticoli}">
+		    			<form:form class="form-inline my-2 my-lg-0" id="search" role="search" method="GET" action="/alphashop/articoli/search">
+		      				<input type="text" onClick="this.select();"  class="form-control mr-sm-2" name="filter" value="${filter}" placeholder="Cerca Articoli">
+		      				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Cerca</button>
+		    			</form:form>
+	    			</c:when>
+	    			<c:otherwise>
+	    				<form:form class="form-inline my-2 my-lg-0" id="search" role="search" method="GET" action="">
+		      				<input type="text" onClick="this.select();"  class="form-control mr-sm-2" name="filter" value="${filter}" placeholder="">
+		      				<button class="btn btn-outline-success my-2 my-sm-0" type="submit" disabled >Cerca</button>
+		    			</form:form>
+	    			</c:otherwise>
+    			</c:choose>
     			
     			<!-- dropdown menu -->
     			<div class="dropdown">

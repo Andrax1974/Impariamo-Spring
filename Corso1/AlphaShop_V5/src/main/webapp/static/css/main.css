@@ -32,6 +32,13 @@
    text-align: center;   
 }
 
+.table th {
+    display: table-cell;
+    vertical-align: inherit;
+    font-weight: bold;
+    text-align: center;
+}
+
 .form-fooder {
 	padding-top: 50px;
 }

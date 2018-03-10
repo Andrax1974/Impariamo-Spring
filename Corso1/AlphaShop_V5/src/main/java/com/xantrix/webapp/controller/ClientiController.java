@@ -17,12 +17,14 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.MatrixVariable;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.xantrix.webapp.domain.Articoli;
@@ -55,6 +57,7 @@ public class ClientiController
 	private Date date = new Date();
 	
 	private boolean IsSaved = false;
+	private boolean IsClienti = true;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String GetClienti(Model model)
@@ -72,15 +75,39 @@ public class ClientiController
 		 model.addAttribute("Titolo", "Ricerca Clienti"); 
 		 model.addAttribute("Titolo2","Risultati Ricerca "); 
 		 model.addAttribute("clienti", recordset);
-		 
+		 model.addAttribute("IsClienti", IsClienti);
+
+		return "clienti";
+	}
+	
+	@RequestMapping(value="/search", method = RequestMethod.GET)
+	public String SearchArt(@RequestParam("filter") String pSearchTerm, ModelMap model) 
+	{
+		 recordset = clientiService.SelByNominativo(pSearchTerm)
+				 .stream()
+				 .filter(u -> !u.getCodFidelity().equals("-1"))
+				 .skip(0).limit(10)
+				 .sorted(Comparator.comparing(Clienti::getCodFidelity))
+				 .collect(Collectors.toList());
+
+		
+		 model.addAttribute("NumArt", recordset.size()); 
+		 model.addAttribute("Titolo", "Ricerca Clienti"); 
+		 model.addAttribute("Titolo2","Risultati Ricerca "); 
+		 model.addAttribute("clienti", recordset);
+		 model.addAttribute("filter", pSearchTerm);
+		 model.addAttribute("IsClienti", IsClienti);
 
 		return "clienti";
 	}
 	
 	// http://localhost:8080/alphashop/clienti/cerca/parametri;filtro=Luisa,Nominativo;orderby=fidelity,desc;paging=0,10
 	@RequestMapping(value = "/cerca/{parametri}", method = RequestMethod.GET)
-	public String GetClientiByFilterMatrix(@MatrixVariable(pathVar = "parametri") Map<String, List<String>> parametri, Model model)
+	public String GetClientiByFilterMatrix(@MatrixVariable(pathVar = "parametri") Map<String, List<String>> parametri, 
+			Model model)
 	{
+			int ItemNum = 0;
+			
 			String filter = "";
 			String type = "";
 			
@@ -90,6 +117,8 @@ public class ClientiController
 			Long SkipValue = (long) 0;
 			Long LimitValue = (long) 10;
 
+			List<Clienti> recordset;
+			
 			List<String> Filtro = parametri.get("filtro");
 			List<String> OrderBy = parametri.get("orderby");
 			List<String> Paging = parametri.get("paging");
@@ -112,12 +141,13 @@ public class ClientiController
 				LimitValue = Long.parseLong(Paging.get(1));
 			}
 
-			List<Clienti> recordset;
 			
 			if (filter.length() > 0)
 				recordset = clientiService.SelByNominativo(filter);
 			else
 				recordset = clientiService.SelTutti();
+			
+			ItemNum = recordset.size();
 			
 			if (recordset != null)
 			{
@@ -140,10 +170,22 @@ public class ClientiController
 							.sorted(Comparator.comparing(Clienti::getCodFidelity).reversed()) 
 							.collect(Collectors.toList());
 				}
+				else if (orderBy.equals("nominativo") && tipo.equals("asc")) 
+				{
+					recordset = recordset.stream()
+							.sorted(Comparator.comparing(Clienti::getCognome)) 
+							.collect(Collectors.toList());
+				}
+				else if (orderBy.equals("nominativo") && tipo.equals("desc")) 
+				{
+					recordset = recordset.stream()
+							.sorted(Comparator.comparing(Clienti::getCognome).reversed()) 
+							.collect(Collectors.toList());
+				}
 				 
 			}
 
-			model.addAttribute("NumArt", recordset.size()); 
+			model.addAttribute("NumArt", ItemNum); 
 			model.addAttribute("Titolo", "Ricerca Clienti"); 
 			model.addAttribute("Titolo2","Risultati Ricerca "); 
 			model.addAttribute("clienti", recordset);
