@@ -51,30 +51,42 @@ public class ClientiController
 			
 	@Autowired
 	private ProfiliService profiliService;
-
-	private List<Clienti> recordset;
 	
 	private Date date = new Date();
 	
 	private boolean IsSaved = false;
 	private boolean IsClienti = true;
 	
+	private String OrderType = "ASC";
+	
 	@RequestMapping(method = RequestMethod.GET)
 	public String GetClienti(Model model)
 	{
-		
+		 List<Clienti> recordset;
+		 
 		 recordset = clientiService.SelTutti()
 				 .stream()
 				 .filter(u -> !u.getCodFidelity().equals("-1"))
-				 .skip(0).limit(10)
 				 .sorted(Comparator.comparing(Clienti::getCodFidelity))
 				 .collect(Collectors.toList());
+		 
+		int NumRecords =  recordset.size();
+	
+		recordset = recordset
+				.stream()
+				.skip(0)
+				.limit(10)
+				.collect(Collectors.toList());
 
 		
-		 model.addAttribute("NumArt", recordset.size()); 
+		 model.addAttribute("NumArt", NumRecords); 
 		 model.addAttribute("Titolo", "Ricerca Clienti"); 
 		 model.addAttribute("Titolo2","Risultati Ricerca "); 
 		 model.addAttribute("clienti", recordset);
+		 model.addAttribute("filter", "");
+		 model.addAttribute("Order", OrderType);
+		 model.addAttribute("FromPaging", 0);
+		 model.addAttribute("ToPaging", 10);
 		 model.addAttribute("IsClienti", IsClienti);
 
 		return "clienti";
@@ -83,35 +95,48 @@ public class ClientiController
 	@RequestMapping(value="/search", method = RequestMethod.GET)
 	public String SearchArt(@RequestParam("filter") String pSearchTerm, ModelMap model) 
 	{
+		 List<Clienti> recordset;
+		 
+		 int NumItem = 0;
+		 
 		 recordset = clientiService.SelByNominativo(pSearchTerm)
 				 .stream()
 				 .filter(u -> !u.getCodFidelity().equals("-1"))
-				 .skip(0).limit(10)
+				 .filter(u -> !u.getCognome().equals(null))
 				 .sorted(Comparator.comparing(Clienti::getCodFidelity))
+				 .collect(Collectors.toList());
+		 
+		 NumItem = recordset.size();
+		 
+		 recordset = recordset.stream()
+				 .skip(0).limit(10)
 				 .collect(Collectors.toList());
 
 		
-		 model.addAttribute("NumArt", recordset.size()); 
+		 model.addAttribute("NumArt", NumItem); 
 		 model.addAttribute("Titolo", "Ricerca Clienti"); 
 		 model.addAttribute("Titolo2","Risultati Ricerca "); 
 		 model.addAttribute("clienti", recordset);
 		 model.addAttribute("filter", pSearchTerm);
+		 model.addAttribute("Order", OrderType);
+		 model.addAttribute("FromPaging", 0);
+		 model.addAttribute("ToPaging", 10);
 		 model.addAttribute("IsClienti", IsClienti);
 
 		return "clienti";
 	}
 	
-	// http://localhost:8080/alphashop/clienti/cerca/parametri;filtro=Luisa,Nominativo;orderby=fidelity,desc;paging=0,10
+	// http://localhost:8080/alphashop/clienti/cerca/parametri;filtro=Luisa,Nominativo;orderby=0,desc;paging=0,10
 	@RequestMapping(value = "/cerca/{parametri}", method = RequestMethod.GET)
 	public String GetClientiByFilterMatrix(@MatrixVariable(pathVar = "parametri") Map<String, List<String>> parametri, 
 			Model model)
 	{
-			int ItemNum = 0;
+			int NumItem = 0;
 			
 			String filter = "";
 			String type = "";
 			
-			String orderBy = "fidelity";
+			int orderBy = 0;
 			String tipo = "desc";
 			
 			Long SkipValue = (long) 0;
@@ -120,78 +145,120 @@ public class ClientiController
 			List<Clienti> recordset;
 			
 			List<String> Filtro = parametri.get("filtro");
-			List<String> OrderBy = parametri.get("orderby");
-			List<String> Paging = parametri.get("paging");
-
 			if (Filtro != null)
 			{
 				filter = Filtro.get(0);
 				type = Filtro.get(1);
 			}
 			
+			List<String> OrderBy = parametri.get("orderby");
 			if (OrderBy != null)
 			{
-				orderBy = OrderBy.get(0);
-				tipo = OrderBy.get(1);
+				try
+				{
+					orderBy = Integer.parseInt(OrderBy.get(0));
+					tipo = OrderBy.get(1);
+				}
+				catch (NumberFormatException ex)
+				{
+					orderBy = 0;
+				}
 			}
 
+			List<String> Paging = parametri.get("paging");
 			if (Paging != null)
 			{
 				SkipValue = Long.parseLong(Paging.get(0));
 				LimitValue = Long.parseLong(Paging.get(1));
 			}
 
-			
 			if (filter.length() > 0)
 				recordset = clientiService.SelByNominativo(filter);
 			else
 				recordset = clientiService.SelTutti();
 			
-			ItemNum = recordset.size();
-			
 			if (recordset != null)
-			{
-				recordset = recordset.stream()
+			{	
+				recordset =  recordset.stream()
 						.filter(u -> !u.getCodFidelity().equals("-1"))
+						.filter(u -> !u.getCognome().equals(null))
+						.collect(Collectors.toList());		
+				
+				NumItem = recordset.size();
+				
+				recordset = GestOrderRecordset(recordset, orderBy, tipo)
+						.stream()
 						.skip(SkipValue)
 						.limit(LimitValue)
-						.collect(Collectors.toList());
-	
-				
-				if (orderBy.equals("fidelity") && tipo.equals("asc"))
-				{
-					recordset = recordset.stream()
-							 .sorted(Comparator.comparing(Clienti::getCodFidelity))
-							 .collect(Collectors.toList()); 
-				}
-				else if (orderBy.equals("fidelity") && tipo.equals("desc")) 
-				{
-					recordset = recordset.stream()
-							.sorted(Comparator.comparing(Clienti::getCodFidelity).reversed()) 
-							.collect(Collectors.toList());
-				}
-				else if (orderBy.equals("nominativo") && tipo.equals("asc")) 
-				{
-					recordset = recordset.stream()
-							.sorted(Comparator.comparing(Clienti::getCognome)) 
-							.collect(Collectors.toList());
-				}
-				else if (orderBy.equals("nominativo") && tipo.equals("desc")) 
-				{
-					recordset = recordset.stream()
-							.sorted(Comparator.comparing(Clienti::getCognome).reversed()) 
-							.collect(Collectors.toList());
-				}
-				 
+						.collect(Collectors.toList());		 
 			}
 
-			model.addAttribute("NumArt", ItemNum); 
+			model.addAttribute("NumArt", NumItem); 
 			model.addAttribute("Titolo", "Ricerca Clienti"); 
 			model.addAttribute("Titolo2","Risultati Ricerca "); 
 			model.addAttribute("clienti", recordset);
+			model.addAttribute("filter", filter);
+			model.addAttribute("Order", OrderType);
+			model.addAttribute("FromPaging", SkipValue);
+			model.addAttribute("ToPaging", LimitValue);
+			model.addAttribute("IsClienti", IsClienti);
 
 			return "clienti";
+	}
+	
+	private List<Clienti> GestOrderRecordset(List<Clienti> recordset, int OrderBy, String Tipo)
+	{
+		OrderType = (Tipo.toUpperCase().equals("ASC")) ? "DESC" : "ASC";
+		
+		switch (OrderBy) 
+		{
+	        case 0:  
+		        if (Tipo.toUpperCase().equals("ASC"))
+		        {
+		        	recordset = recordset.stream()
+							 .sorted(Comparator.comparing(Clienti::getCodFidelity))
+							 .collect(Collectors.toList()); 
+		        }
+		        else
+		        {
+		        	recordset = recordset.stream()
+							.sorted(Comparator.comparing(Clienti::getCodFidelity).reversed()) 
+							.collect(Collectors.toList());
+		        }
+		    break;
+	        case 1:
+	        	 if (Tipo.toUpperCase().equals("ASC"))
+			        {
+			        	recordset = recordset.stream()
+								 .sorted(Comparator.comparing(Clienti::getCognome))
+								 .collect(Collectors.toList()); 
+			        }
+			        else
+			        {
+			        	recordset = recordset.stream()
+								.sorted(Comparator.comparing(Clienti::getCognome).reversed()) 
+								.collect(Collectors.toList());
+			        }
+	        break;
+	        case 3:
+	        	 if (Tipo.toUpperCase().equals("ASC"))
+			        {
+			        	recordset = recordset.stream()
+								 .sorted(Comparator.comparing(Clienti::getCognome))
+								 .collect(Collectors.toList()); 
+			        }
+			        else
+			        {
+			        	 
+			        	recordset = recordset.stream()
+								.sorted(Comparator.comparingInt(Clienti::getCard().getBollini).reversed()) 
+								.collect(Collectors.toList());
+			        }
+	        break;
 		}
+		
+		return recordset;
+	}
 
 	// http://localhost:8080/alphashop/clienti/cerca/
 	@RequestMapping(value = "/cerca2/{filter}", method = RequestMethod.GET)

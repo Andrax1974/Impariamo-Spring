@@ -58,8 +58,11 @@ public class ClientiDaoImpl extends AbstractDao<Clienti, Integer>
 				queryBuilder.like(exp1, ToSearch), 
 				queryBuilder.like(exp2, ToSearch));
 		
+		//Predicate whereClause2 = queryBuilder.and(queryBuilder.notEqual(recordset.get("cognome"), null));
+		
 		queryDefinition.select(recordset).
 						where(whereClause);
+		
 						//orderBy(queryBuilder.asc(recordset.get(OrderBy)));
 								
 		return entityManager.createQuery(queryDefinition).getResultList();

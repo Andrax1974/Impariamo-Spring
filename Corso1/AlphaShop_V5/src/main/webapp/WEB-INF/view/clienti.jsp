@@ -38,31 +38,31 @@
 		            <tr>
 		            	<th>
 		            		Fidelity
-		            		<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},Nominativo;orderby=fidelity,desc" /> " class="btn btn-xs">
+		            		<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=0,${Order};paging=${FromPaging},${ToPaging}" /> " class="btn btn-xs">
 		            		<span class="oi oi-elevator"></span>
 		            		</a>
 		            	</th>
 		                <th>
 		                	Nominativo
-		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},Nominativo;orderby=nominativo,desc" /> " class="btn btn-xs">
+		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=1,${Order};paging=${FromPaging},${ToPaging}" /> " class="btn btn-xs">
 		                	<span class="oi oi-elevator"></span>
 		                	</a>
 		                </th>
 		                <th>
 		                	Comune
-		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},Nominativo;orderby=nominativo,desc" /> " class="btn btn-xs">
+		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=2,${Order};paging=${FromPaging},${ToPaging}" /> " class="btn btn-xs">
 		                	<span class="oi oi-elevator"></span>
 		                	</a>
 		                </th>
 		                <th>
 		                	Bollini
-		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},Nominativo;orderby=nominativo,desc" /> " class="btn btn-xs">
+		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=3,${Order};paging=${FromPaging},${ToPaging}" /> " class="btn btn-xs">
 		                	<span class="oi oi-elevator"></span>
 		                	</a>
 		                </th>
 		                <th>
 		                	Ultima Spesa
-		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},Nominativo;orderby=nominativo,desc" /> " class="btn btn-xs">
+		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=4,${Order};paging=${FromPaging},${ToPaging}" /> " class="btn btn-xs">
 		                	<span class="oi oi-elevator"></span>
 		                	</a>
 		                </th>
@@ -76,7 +76,7 @@
 	        		<c:forEach items="${clienti}" var="Clienti">
 						<tr>
 							<td>${Clienti.codFidelity}</td>
-							<td>${Clienti.nome} ${Clienti.cognome}</td>
+							<td> ${Clienti.cognome} ${Clienti.nome}</td>
 							<td>${Clienti.comune}</td>
 							<td>
 							<fmt:formatNumber value = "${Clienti.card.bollini}"  minFractionDigits = "0" type = "number"/>
