@@ -38,31 +38,31 @@
 		            <tr>
 		            	<th>
 		            		Fidelity
-		            		<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=0,${Order};paging=${FromPaging},${ToPaging}" /> " class="btn btn-xs">
+		            		<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=0,${OrderType},1;paging=1,${RecPage}" /> " class="btn btn-xs">
 		            		<span class="oi oi-elevator"></span>
 		            		</a>
 		            	</th>
 		                <th>
 		                	Nominativo
-		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=1,${Order};paging=${FromPaging},${ToPaging}" /> " class="btn btn-xs">
+		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=1,${OrderType},1;paging=1,${RecPage}" /> " class="btn btn-xs">
 		                	<span class="oi oi-elevator"></span>
 		                	</a>
 		                </th>
 		                <th>
 		                	Comune
-		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=2,${Order};paging=${FromPaging},${ToPaging}" /> " class="btn btn-xs">
+		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=2,${OrderType},1;paging=1,${RecPage}" /> " class="btn btn-xs">
 		                	<span class="oi oi-elevator"></span>
 		                	</a>
 		                </th>
 		                <th>
 		                	Bollini
-		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=3,${Order};paging=${FromPaging},${ToPaging}" /> " class="btn btn-xs">
+		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=3,${OrderType},1;paging=1,${RecPage}" /> " class="btn btn-xs">
 		                	<span class="oi oi-elevator"></span>
 		                	</a>
 		                </th>
 		                <th>
 		                	Ultima Spesa
-		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=4,${Order};paging=${FromPaging},${ToPaging}" /> " class="btn btn-xs">
+		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=4,${OrderType},1;paging=1,${RecPage}" /> " class="btn btn-xs">
 		                	<span class="oi oi-elevator"></span>
 		                	</a>
 		                </th>
@@ -98,6 +98,28 @@
 					</c:forEach>
 	        	</tbody>
 			</table>
+			<nav aria-label="Page navigation example">
+				 <ul class="pagination">
+				 	<li class="page-item">
+				 		 <a class="page-link" href="#" aria-label="Previous">
+        				 	<span aria-hidden="true">&laquo;</span>
+        				 	<span class="sr-only">Previous</span>
+      					</a>
+				 	</li>
+				 	<li class="page-item"><a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=1,${RecPage}" /> ">1</a></li>
+    				<li class="page-item"><a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=2,${RecPage}" /> ">2</a></li>
+    				<li class="page-item"><a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=3,${RecPage}" /> ">3</a></li>
+    				<li class="page-item"><a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=4,${RecPage}" /> ">4</a></li>
+    				<li class="page-item"><a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=5,${RecPage}" /> ">5</a></li>
+    				<li class="page-item"><a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=6,${RecPage}" /> ">6</a></li>
+    				<li class="page-item">
+    					<a class="page-link" href="#" aria-label="Next">
+        					<span aria-hidden="true">&raquo;</span>
+        					<span class="sr-only">Next</span>
+      					</a>
+    				</li>
+				 </ul>
+			</nav>
 		</div>
 	</section>
 

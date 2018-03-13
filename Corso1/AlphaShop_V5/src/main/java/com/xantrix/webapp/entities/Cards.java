@@ -23,7 +23,7 @@ public class Cards implements Serializable
 	private String codFidelity;
 	
 	@Column(name = "BOLLINI")
-	private int bollini;
+	private Integer bollini;
 	
 	@Column(name = "ULTIMASPESA")
 	private Date ultimaSpesa;
@@ -34,7 +34,15 @@ public class Cards implements Serializable
 	@OneToOne(mappedBy = "card")
 	private Clienti cliente;
 	
-
+	
+	public Cards() {}
+	
+	public Cards(String CodFid, Integer Bollini)
+	{
+		this.codFidelity = CodFid;
+		this.bollini = Bollini;
+	}
+	
 	public String getCodFidelity()
 	{
 		return codFidelity;
@@ -45,12 +53,12 @@ public class Cards implements Serializable
 		this.codFidelity = codFidelity;
 	}
 
-	public int getBollini()
+	public Integer getBollini()
 	{
-		return bollini;
+		return (bollini == null) ? 0 : bollini;
 	}
 
-	public void setBollini(int bollini)
+	public void setBollini(Integer bollini)
 	{
 		this.bollini = bollini;
 	}

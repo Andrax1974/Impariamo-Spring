@@ -202,7 +202,7 @@ public class Clienti  implements Serializable
 
 	public Cards getCard()
 	{
-		return card;
+		return  card;
 	}
 
 	public void setCard(Cards card)

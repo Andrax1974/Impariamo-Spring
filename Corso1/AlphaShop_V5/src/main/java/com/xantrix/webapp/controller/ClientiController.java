@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
@@ -27,8 +26,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.xantrix.webapp.domain.Articoli;
-import com.xantrix.webapp.domain.Iva;
+
+import com.xantrix.webapp.entities.Cards;
 import com.xantrix.webapp.entities.Clienti;
 import com.xantrix.webapp.entities.Profili;
 import com.xantrix.webapp.entities.Utenti;
@@ -52,18 +51,32 @@ public class ClientiController
 	@Autowired
 	private ProfiliService profiliService;
 	
+	List<Clienti> MainRecordset;
+	
 	private Date date = new Date();
 	
 	private boolean IsSaved = false;
 	private boolean IsClienti = true;
 	
 	private String OrderType = "ASC";
+	private int OrderBy = 0;
+	
+	private int PageNum = 1;
+	private int RecForPage = 10;
+	
+	private void GetAllClienti()
+	{
+		MainRecordset = clientiService.SelTutti();
+	}
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String GetClienti(Model model)
 	{
-		 List<Clienti> recordset;
+		if (MainRecordset == null)
+			GetAllClienti();
 		 
+		 List<Clienti> recordset =  MainRecordset;
+		
 		 recordset = clientiService.SelTutti()
 				 .stream()
 				 .filter(u -> !u.getCodFidelity().equals("-1"))
@@ -75,18 +88,19 @@ public class ClientiController
 		recordset = recordset
 				.stream()
 				.skip(0)
-				.limit(10)
+				.limit(RecForPage)
 				.collect(Collectors.toList());
 
 		
-		 model.addAttribute("NumArt", NumRecords); 
 		 model.addAttribute("Titolo", "Ricerca Clienti"); 
 		 model.addAttribute("Titolo2","Risultati Ricerca "); 
+		 model.addAttribute("NumArt", NumRecords); 
 		 model.addAttribute("clienti", recordset);
 		 model.addAttribute("filter", "");
-		 model.addAttribute("Order", OrderType);
-		 model.addAttribute("FromPaging", 0);
-		 model.addAttribute("ToPaging", 10);
+		 model.addAttribute("OrderType", OrderType);
+		 model.addAttribute("OrderBy", OrderBy);
+		 model.addAttribute("PageNum", PageNum);
+		 model.addAttribute("RecPage", RecForPage);
 		 model.addAttribute("IsClienti", IsClienti);
 
 		return "clienti";
@@ -109,7 +123,8 @@ public class ClientiController
 		 NumItem = recordset.size();
 		 
 		 recordset = recordset.stream()
-				 .skip(0).limit(10)
+				 .skip(0)
+				 .limit(RecForPage)
 				 .collect(Collectors.toList());
 
 		
@@ -118,9 +133,10 @@ public class ClientiController
 		 model.addAttribute("Titolo2","Risultati Ricerca "); 
 		 model.addAttribute("clienti", recordset);
 		 model.addAttribute("filter", pSearchTerm);
-		 model.addAttribute("Order", OrderType);
-		 model.addAttribute("FromPaging", 0);
-		 model.addAttribute("ToPaging", 10);
+		 model.addAttribute("OrderType", OrderType);
+		 model.addAttribute("OrderBy", OrderBy);
+		 model.addAttribute("PageNum", PageNum);
+		 model.addAttribute("RecPage", RecForPage);
 		 model.addAttribute("IsClienti", IsClienti);
 
 		return "clienti";
@@ -131,51 +147,63 @@ public class ClientiController
 	public String GetClientiByFilterMatrix(@MatrixVariable(pathVar = "parametri") Map<String, List<String>> parametri, 
 			Model model)
 	{
-			int NumItem = 0;
+			int ItemCount = 0;
+			int SkipValue = 0;
 			
-			String filter = "";
-			String type = "";
+			String Filter = "";
+			String TypeFilter = "";
 			
-			int orderBy = 0;
-			String tipo = "desc";
+			boolean ChangeOrder = false;
 			
-			Long SkipValue = (long) 0;
-			Long LimitValue = (long) 10;
-
 			List<Clienti> recordset;
 			
-			List<String> Filtro = parametri.get("filtro");
-			if (Filtro != null)
+			List<String> ParamFiltro = parametri.get("filtro");
+			if (ParamFiltro != null)
 			{
-				filter = Filtro.get(0);
-				type = Filtro.get(1);
+				Filter = ParamFiltro.get(0);
+				TypeFilter = ParamFiltro.get(1);
 			}
 			
-			List<String> OrderBy = parametri.get("orderby");
-			if (OrderBy != null)
+			List<String> ParamOrderBy = parametri.get("orderby");
+			if (ParamOrderBy != null)
 			{
 				try
 				{
-					orderBy = Integer.parseInt(OrderBy.get(0));
-					tipo = OrderBy.get(1);
+					OrderBy = Integer.parseInt(ParamOrderBy.get(0));
+					OrderType = ParamOrderBy.get(1);
+					ChangeOrder = (ParamOrderBy.get(2).equals("1")) ? true : false;
 				}
 				catch (NumberFormatException ex)
 				{
-					orderBy = 0;
+					OrderBy = 0;
 				}
 			}
 
-			List<String> Paging = parametri.get("paging");
-			if (Paging != null)
+			List<String> ParamPaging = parametri.get("paging");
+			if (ParamPaging != null)
 			{
-				SkipValue = Long.parseLong(Paging.get(0));
-				LimitValue = Long.parseLong(Paging.get(1));
+				try
+				{
+					PageNum = Integer.parseInt(ParamPaging.get(0));
+					RecForPage = Integer.parseInt(ParamPaging.get(1));
+					
+				}
+				catch (NumberFormatException ex)
+				{
+					PageNum = 1;
+					RecForPage = 10;
+				}
 			}
 
-			if (filter.length() > 0)
-				recordset = clientiService.SelByNominativo(filter);
+			if (Filter.length() > 0)
+				recordset = clientiService.SelByNominativo(Filter);
 			else
-				recordset = clientiService.SelTutti();
+			{
+				if (MainRecordset == null)
+					GetAllClienti();
+				
+				recordset = MainRecordset;
+			}
 			
 			if (recordset != null)
 			{	
@@ -184,31 +212,50 @@ public class ClientiController
 						.filter(u -> !u.getCognome().equals(null))
 						.collect(Collectors.toList());		
 				
-				NumItem = recordset.size();
+				ItemCount = recordset.size();
 				
-				recordset = GestOrderRecordset(recordset, orderBy, tipo)
+				SkipValue = GetSkipValue(PageNum, ItemCount, RecForPage);
+				
+				recordset = GestOrderRecordset(recordset, OrderBy, OrderType, ChangeOrder)
 						.stream()
 						.skip(SkipValue)
-						.limit(LimitValue)
+						.limit(RecForPage)
 						.collect(Collectors.toList());		 
 			}
 
-			model.addAttribute("NumArt", NumItem); 
+			model.addAttribute("NumArt", ItemCount); 
 			model.addAttribute("Titolo", "Ricerca Clienti"); 
 			model.addAttribute("Titolo2","Risultati Ricerca "); 
 			model.addAttribute("clienti", recordset);
-			model.addAttribute("filter", filter);
-			model.addAttribute("Order", OrderType);
-			model.addAttribute("FromPaging", SkipValue);
-			model.addAttribute("ToPaging", LimitValue);
+			model.addAttribute("filter", Filter);
+			model.addAttribute("OrderType", OrderType);
+			model.addAttribute("OrderBy", OrderBy);
+			model.addAttribute("PageNum", PageNum);
+			model.addAttribute("RecPage", RecForPage);
 			model.addAttribute("IsClienti", IsClienti);
-
+			
 			return "clienti";
 	}
 	
-	private List<Clienti> GestOrderRecordset(List<Clienti> recordset, int OrderBy, String Tipo)
+	private int GetSkipValue(int PageNum, int ItemCount, int RecForPage)
 	{
-		OrderType = (Tipo.toUpperCase().equals("ASC")) ? "DESC" : "ASC";
+		int retVal = 0;
+		
+		if (ItemCount > RecForPage)
+		{
+			int NumTotPage = Math.round(ItemCount / RecForPage);
+			
+			if (PageNum <= NumTotPage)
+				retVal = (PageNum - 1) * RecForPage;
+		}
+			
+		return retVal;
+	}
+
+	private List<Clienti> GestOrderRecordset(List<Clienti> recordset, int OrderBy, String Tipo, boolean ChangeOrder)
+	{
+		if (ChangeOrder)
+			OrderType = (OrderType.toUpperCase().equals("ASC")) ? "DESC" : "ASC";
 		
 		switch (OrderBy) 
 		{
@@ -241,23 +288,34 @@ public class ClientiController
 			        }
 	        break;
 	        case 3:
+	        	 
+	        	 Comparator<Clienti> byBollini =  (e1, e2) -> (Integer.compare(getBollini(e1.getCard()), getBollini(e2.getCard())));
+	        	 
 	        	 if (Tipo.toUpperCase().equals("ASC"))
 			        {
-			        	recordset = recordset.stream()
-								 .sorted(Comparator.comparing(Clienti::getCognome))
-								 .collect(Collectors.toList()); 
+	        		 	
+	        			
+			        	recordset =  recordset.stream()
+			        			.sorted(byBollini).
+								collect(Collectors.toList());
 			        }
 			        else
 			        {
-			        	 
-			        	recordset = recordset.stream()
-								.sorted(Comparator.comparingInt(Clienti::getCard().getBollini).reversed()) 
-								.collect(Collectors.toList());
+			        	 		
+			        	recordset =  recordset.stream()
+			        			.sorted(byBollini.reversed()).
+								collect(Collectors.toList());
 			        }
 	        break;
 		}
 		
 		return recordset;
+	}
+	
+	private int getBollini(Cards card)
+	{
+		return (card == null) ? 0 : card.getBollini();
+		
 	}
 
 	// http://localhost:8080/alphashop/clienti/cerca/
