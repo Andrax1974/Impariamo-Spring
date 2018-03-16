@@ -11,6 +11,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 
+//JPQL https://docs.oracle.com/javaee/7/tutorial/persistence-querylanguage.htm
+//CRITERIA API https://docs.oracle.com/javaee/7/tutorial/persistence-criteria.htm
+
 public abstract class AbstractDao<I extends Serializable, Id extends Serializable>
 	implements GenericRepository<I, Id>
 {
@@ -36,7 +39,6 @@ public abstract class AbstractDao<I extends Serializable, Id extends Serializabl
         		query.select(query.from(this.entityClass))).getResultList();
 	}
 	
-	//consultare http://docs.oracle.com/javaee/6/tutorial/doc/gjivm.html
 	@Override
 	public I SelById(Id id)
 	{

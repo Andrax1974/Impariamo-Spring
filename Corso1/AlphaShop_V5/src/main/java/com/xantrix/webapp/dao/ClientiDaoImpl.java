@@ -12,13 +12,15 @@ import org.springframework.stereotype.Repository;
 
 import com.xantrix.webapp.entities.Clienti;
 
+//https://docs.oracle.com/javaee/7/tutorial/persistence-querylanguage.htm
+
 @Repository
 public class ClientiDaoImpl extends AbstractDao<Clienti, Integer> 
 	implements ClientiDao
 {
 
 	@Override
-	public Clienti SelById(String id)
+	public Clienti SelByCodFidelity(String CodFidelity)
 	{
 		Clienti retVal;
 		
@@ -28,7 +30,7 @@ public class ClientiDaoImpl extends AbstractDao<Clienti, Integer>
 		Root<Clienti> recordset = queryDefinition.from(Clienti.class);
 		
 		queryDefinition.select(recordset).
-						where(queryBuilder.equal(recordset.get("codFidelity"), id));
+						where(queryBuilder.equal(recordset.get("codFidelity"), CodFidelity));
 		
 		retVal = entityManager.createQuery(queryDefinition).getSingleResult();
 		
@@ -37,7 +39,7 @@ public class ClientiDaoImpl extends AbstractDao<Clienti, Integer>
 		return retVal;
 	}
 	
-	//http://www.objectdb.com/java/jpa/query/jpql/string
+	
 	@Override
 	public List<Clienti> SelByNominativo(String Nominativo)
 	{
@@ -58,14 +60,47 @@ public class ClientiDaoImpl extends AbstractDao<Clienti, Integer>
 				queryBuilder.like(exp1, ToSearch), 
 				queryBuilder.like(exp2, ToSearch));
 		
-		//Predicate whereClause2 = queryBuilder.and(queryBuilder.notEqual(recordset.get("cognome"), null));
-		
 		queryDefinition.select(recordset).
 						where(whereClause);
-		
-						//orderBy(queryBuilder.asc(recordset.get(OrderBy)));
-								
+				
 		return entityManager.createQuery(queryDefinition).getResultList();
+	}
+	
+	//UTILIZZO JPQL
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Clienti> SelByComune(String Comune)
+	{
+		List<Clienti> retVal;
+		
+		String JPQL = "SELECT a FROM Clienti a WHERE a.comune = :comune";
+		
+		retVal = entityManager.createQuery(JPQL)
+				.setParameter("comune", Comune)
+				.getResultList();
+		
+		return retVal;
+	}
+	
+	//UTILIZZO JPQL
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Clienti> SelByBollini(int NumBollini, String Tipo)
+	{
+		List<Clienti> retVal;
+		
+		String JPQL = "";
+		
+		if (Tipo.equals(">"))
+			JPQL = "SELECT a FROM Clienti a JOIN a.card b WHERE b.bollini >= :qtabollini ORDER BY b.bollini DESC";
+		else if (Tipo.equals("<"))
+			JPQL = "SELECT a FROM Clienti a JOIN a.card b WHERE b.bollini <= :qtabollini ORDER BY b.bollini ASC";
+		
+		retVal = entityManager.createQuery(JPQL)
+				.setParameter("qtabollini", NumBollini)
+				.getResultList();
+		
+		return retVal;
 	}
 	
 	@Override
@@ -92,4 +127,16 @@ public class ClientiDaoImpl extends AbstractDao<Clienti, Integer>
 		super.Elimina(cliente);
 	}
 
+
+	@Override
+	public long QtaTotBollini()
+	{
+		long retVal = 0;
+		
+		String JPQL = "SELECT SUM(b.bollini) FROM Clienti a JOIN a.card b ";
+		
+		retVal = (long) entityManager.createQuery(JPQL).getSingleResult();
+		
+		return retVal;
+	}
 }

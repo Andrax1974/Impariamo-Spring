@@ -20,10 +20,24 @@ public class ClientiServiceImpl implements ClientiService
 	@Override
 	public Clienti SelCliente(String CodFidelity)
 	{
-		Clienti cliente = clientiRepository.SelById(CodFidelity);
+		Clienti cliente = clientiRepository.SelByCodFidelity(CodFidelity);
 		
 		return cliente;
 	}
+	
+	@Override
+	public List<Clienti> SelByComune(String Comune)
+	{
+		return clientiRepository.SelByComune(Comune);
+	}
+	
+	@Override
+	public List<Clienti> SelByBollini(int NumBollini, String Tipo)
+	{
+		 
+		return clientiRepository.SelByBollini(NumBollini, Tipo);
+	}
+
 	
 	@Override
 	public void Salva(Clienti cliente)
@@ -54,6 +68,15 @@ public class ClientiServiceImpl implements ClientiService
 	{
 		return clientiRepository.SelByNominativo(Nominativo);
 	}
+
+	@Override
+	public long QtaTotBollini()
+	{
+		return clientiRepository.QtaTotBollini();
+	}
+
+	
+	
 
 	
 }

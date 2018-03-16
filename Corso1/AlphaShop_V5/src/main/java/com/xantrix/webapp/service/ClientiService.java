@@ -10,7 +10,13 @@ public interface ClientiService
 	
 	List<Clienti> SelByNominativo(String Nominativo);
 	
+	List<Clienti> SelByComune(String Comune);
+	
+	List<Clienti> SelByBollini(int NumBollini, String Tipo);
+	
 	Clienti SelCliente(String CodFidelity);
+	
+	long QtaTotBollini();
 	
 	void Salva(Clienti cliente);
 

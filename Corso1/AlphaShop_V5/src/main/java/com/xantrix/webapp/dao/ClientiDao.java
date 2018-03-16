@@ -6,11 +6,17 @@ import com.xantrix.webapp.entities.Clienti;
 
 public interface ClientiDao  
 {
-	Clienti SelById(String id);
+	Clienti SelByCodFidelity(String CodFidelity);
 
 	List<Clienti> SelTutti();
 	
+	List<Clienti> SelByComune(String Comune);
+	
 	List<Clienti> SelByNominativo(String Nome);
+	
+	List<Clienti> SelByBollini(int NumBollini, String Tipo);
+	
+	long QtaTotBollini();
 
 	void Salva(Clienti cliente);
 
