@@ -58,7 +58,7 @@ public class ClientiController
 	private boolean IsSaved = false;
 	private boolean IsClienti = true;
 	
-	private String OrderType = "ASC";
+	private String OrderType = "DESC";
 	private int OrderBy = 0;
 	
 	private int PageNum = 1;
@@ -186,6 +186,10 @@ public class ClientiController
 				{
 					PageNum = Integer.parseInt(ParamPaging.get(0));
 					RecForPage = Integer.parseInt(ParamPaging.get(1));
+					int DiffPage = Integer.parseInt(ParamPaging.get(2));
+					
+					if (PageNum >= 1)
+						PageNum += DiffPage;
 					
 				}
 				catch (NumberFormatException ex)
@@ -216,7 +220,7 @@ public class ClientiController
 				
 				SkipValue = GetSkipValue(PageNum, ItemCount, RecForPage);
 				
-				recordset = GestOrderRecordset(recordset, OrderBy, OrderType, ChangeOrder)
+				recordset = GestOrderRecordset(recordset, OrderBy, ChangeOrder)
 						.stream()
 						.skip(SkipValue)
 						.limit(RecForPage)
@@ -252,7 +256,7 @@ public class ClientiController
 		return retVal;
 	}
 
-	private List<Clienti> GestOrderRecordset(List<Clienti> recordset, int OrderBy, String Tipo, boolean ChangeOrder)
+	private List<Clienti> GestOrderRecordset(List<Clienti> recordset, int OrderBy, boolean ChangeOrder)
 	{
 		if (ChangeOrder)
 			OrderType = (OrderType.toUpperCase().equals("ASC")) ? "DESC" : "ASC";
@@ -260,7 +264,7 @@ public class ClientiController
 		switch (OrderBy) 
 		{
 	        case 0:  
-		        if (Tipo.toUpperCase().equals("ASC"))
+		        if (OrderType.toUpperCase().equals("ASC"))
 		        {
 		        	recordset = recordset.stream()
 							 .sorted(Comparator.comparing(Clienti::getCodFidelity))
@@ -274,7 +278,7 @@ public class ClientiController
 		        }
 		    break;
 	        case 1:
-	        	 if (Tipo.toUpperCase().equals("ASC"))
+	        	 if (OrderType.toUpperCase().equals("ASC"))
 			        {
 			        	recordset = recordset.stream()
 								 .sorted(Comparator.comparing(Clienti::getCognome))
@@ -291,7 +295,7 @@ public class ClientiController
 	        	 
 	        	 Comparator<Clienti> byBollini =  (e1, e2) -> (Integer.compare(getBollini(e1.getCard()), getBollini(e2.getCard())));
 	        	 
-	        	 if (Tipo.toUpperCase().equals("ASC"))
+	        	 if (OrderType.toUpperCase().equals("ASC"))
 			        {
 	        		 	
 	        			

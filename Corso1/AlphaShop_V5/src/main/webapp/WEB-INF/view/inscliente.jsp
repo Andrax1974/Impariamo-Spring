@@ -133,7 +133,10 @@
 						
 						<div class="form-actions">
 							<input type="submit" id="btnAdd" class="btn btn-green form-buttons" value = <spring:message code="insarticolo.form.btnAdd.label"/> />
-							<input type="submit" id="btnAbort" class="btn btn-default form-buttons" value = <spring:message code="insarticolo.form.btnAbort.label"/> />
+							
+							<a href="<spring:url value="/clienti/" /> " id="btnAbort" class="btn btn-default form-buttons" >
+								<spring:message code="insarticolo.form.btnAbort.label"/>
+							</a>
 						</div>
 					</div>
 					
@@ -191,7 +194,9 @@
 							 	</c:otherwise>
 							</c:choose>
 							
-							<input type="submit" id="btnAbort" class="btn btn-default form-buttons" value = <spring:message code="insarticolo.form.btnAbort.label"/> />
+							<a href="<spring:url value="/clienti/" /> " id="btnAbort" class="btn btn-default form-buttons" >
+								<spring:message code="insarticolo.form.btnAbort.label"/>
+							</a>
 							
 						</div>
 					</div>
@@ -231,7 +236,7 @@
 
 				<div class="form-actions">
 					<input type="submit" id="btnAdd" class="btn btn-green form-buttons" value = <spring:message code="insarticolo.form.btnAdd.label"/> />
-					<input type="submit" id="btnAbort" class="btn btn-default form-buttons" value = <spring:message code="insarticolo.form.btnAbort.label"/> />
+					<input type="reset" id="btnAbort" class="btn btn-default form-buttons" value = <spring:message code="insarticolo.form.btnAbort.label"/> />
 				</div>
 				
 				</form:form>

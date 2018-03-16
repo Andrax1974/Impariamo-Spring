@@ -41,25 +41,32 @@
       				</li>
       				<li class="nav-item">
         				<a class="nav-link" href="#">
-        					<span class="oi oi-box" title="box" aria-hidden="true"></span>
+        					<span class="oi oi-box" title="prodotti" aria-hidden="true"></span>
         					Prodotti
         				</a>
       				</li>
       				<li class="nav-item">
         				<a class="nav-link" href="#">
-        					<span class="oi oi-bullhorn" title="bullhorn" aria-hidden="true"></span>
+        					<span class="oi oi-bullhorn" title="promozioni" aria-hidden="true"></span>
         					Promozioni
         				</a>
       				</li>
       				<li class="nav-item">
         				<a class="nav-link" href="#">
-        					<span class="oi oi-credit-card" title="credit-card" aria-hidden="true"></span>
+        					<span class="oi oi-credit-card" title="punti" aria-hidden="true"></span>
         					Punti
         				</a>
       				</li>
       				<li class="nav-item">
+        				<a class="nav-link" href="<spring:url value="/clienti/" /> ">
+        					<span class="oi oi-people" title="clienti" aria-hidden="true"></span>
+        					<span class="badge"></span>
+        					Clienti 
+        				</a>
+      				</li>
+      				<li class="nav-item">
         				<a class="nav-link" href="#">
-        					<span class="oi oi-cart" title="cart" aria-hidden="true"></span>
+        					<span class="oi oi-cart" title="ordini" aria-hidden="true"></span>
         					<span class="badge"></span>
         					Ordini
         				</a>

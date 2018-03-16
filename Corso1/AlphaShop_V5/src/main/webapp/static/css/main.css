@@ -340,6 +340,10 @@ label {
 	margin-bottom: 0.8em;
 }
 
+.table-buttons {
+	min-width: 110px;
+}
+
 .locale-link {
 	padding-right: 10px;
 	padding-top: 5px;

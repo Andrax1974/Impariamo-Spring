@@ -38,31 +38,31 @@
 		            <tr>
 		            	<th>
 		            		Fidelity
-		            		<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=0,${OrderType},1;paging=1,${RecPage}" /> " class="btn btn-xs">
+		            		<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=0,${OrderType},1;paging=1,${RecPage},0" /> " class="btn btn-xs">
 		            		<span class="oi oi-elevator"></span>
 		            		</a>
 		            	</th>
 		                <th>
 		                	Nominativo
-		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=1,${OrderType},1;paging=1,${RecPage}" /> " class="btn btn-xs">
+		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=1,${OrderType},1;paging=1,${RecPage},0" /> " class="btn btn-xs">
 		                	<span class="oi oi-elevator"></span>
 		                	</a>
 		                </th>
 		                <th>
 		                	Comune
-		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=2,${OrderType},1;paging=1,${RecPage}" /> " class="btn btn-xs">
+		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=2,${OrderType},1;paging=1,${RecPage},0" /> " class="btn btn-xs">
 		                	<span class="oi oi-elevator"></span>
 		                	</a>
 		                </th>
 		                <th>
 		                	Bollini
-		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=3,${OrderType},1;paging=1,${RecPage}" /> " class="btn btn-xs">
+		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=3,${OrderType},1;paging=1,${RecPage},0" /> " class="btn btn-xs">
 		                	<span class="oi oi-elevator"></span>
 		                	</a>
 		                </th>
 		                <th>
 		                	Ultima Spesa
-		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=4,${OrderType},1;paging=1,${RecPage}" /> " class="btn btn-xs">
+		                	<a href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=4,${OrderType},1;paging=1,${RecPage},0" /> " class="btn btn-xs">
 		                	<span class="oi oi-elevator"></span>
 		                	</a>
 		                </th>
@@ -85,12 +85,12 @@
 							<fmt:formatDate value="${Clienti.card.ultimaSpesa}" pattern="dd-MM-yyyy" /> 
 							</td>
 							<td>
-								<a href="<spring:url value="/clienti/modifica/${Clienti.codFidelity}" /> " class="btn btn-primary">
-								<span class="oi oi-plus"/></span> Dettaglio 
+								<a href="<spring:url value="/clienti/modifica/${Clienti.codFidelity}" /> " class="btn btn-primary table-buttons">
+								<span class="oi oi-pencil"></span> Modifica 
       							</a> 
       						</td>
       						<td>
-								<a href="<spring:url value="/clienti/elimina/${Clienti.codFidelity}" /> " class="btn btn-danger">
+								<a href="<spring:url value="/clienti/elimina/${Clienti.codFidelity}" /> " class="btn btn-danger table-buttons">
 								<span class="oi oi-trash"/></span> Elimina 
       							</a> 
       						</td>
@@ -101,21 +101,33 @@
 			<nav aria-label="Page navigation example">
 				 <ul class="pagination">
 				 	<li class="page-item">
-				 		 <a class="page-link" href="#" aria-label="Previous">
+				 		 <a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=${PageNum},${RecPage},-1" /> " aria-label="Previous">
         				 	<span aria-hidden="true">&laquo;</span>
-        				 	<span class="sr-only">Previous</span>
+        				 	<span class="sr-only">Precedente</span>
       					</a>
 				 	</li>
-				 	<li class="page-item"><a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=1,${RecPage}" /> ">1</a></li>
-    				<li class="page-item"><a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=2,${RecPage}" /> ">2</a></li>
-    				<li class="page-item"><a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=3,${RecPage}" /> ">3</a></li>
-    				<li class="page-item"><a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=4,${RecPage}" /> ">4</a></li>
-    				<li class="page-item"><a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=5,${RecPage}" /> ">5</a></li>
-    				<li class="page-item"><a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=6,${RecPage}" /> ">6</a></li>
+				 	<li class="page-item active">
+				 		<a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=1,${RecPage},0" /> ">1</a>
+				 	</li>
     				<li class="page-item">
-    					<a class="page-link" href="#" aria-label="Next">
+    					<a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=2,${RecPage},0" /> ">2</a>
+    				</li>
+    				<li class="page-item">
+    					<a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=3,${RecPage},0" /> ">3</a>
+    				</li>
+    				<li class="page-item">
+    					<a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=4,${RecPage},0" /> ">4</a>
+    				</li>
+    				<li class="page-item">
+    					<a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=5,${RecPage},0" /> ">5</a>
+    				</li>
+    				<li class="page-item">
+    					<a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=6,${RecPage},0" /> ">6</a>
+    				</li>
+    				<li class="page-item">
+    					<a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=${PageNum},${RecPage},1" /> " aria-label="Next">
         					<span aria-hidden="true">&raquo;</span>
-        					<span class="sr-only">Next</span>
+        					<span class="sr-only">Successivo</span>
       					</a>
     				</li>
 				 </ul>

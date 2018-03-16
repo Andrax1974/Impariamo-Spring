@@ -15,7 +15,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@EnableTransactionManagement
+//@EnableTransactionManagement
 @ComponentScan({ "com.xantrix.webapp.config" })
 @PropertySource(value = { "classpath:application.properties" })
 public class JdbcConfig
