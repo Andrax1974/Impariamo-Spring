@@ -1,9 +1,11 @@
 package com.xantrix.webapp.controller;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.LongSummaryStatistics;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -58,15 +60,42 @@ public class ClientiController
 
 	private String OrderType = "DESC";
 	private int OrderBy = 0;
-
+	
+	List<PagingData> Pages = new ArrayList<PagingData>();
 	private int PageNum = 1;
 	private int RecForPage = 10;
+	
+	private void setPages(int Page)
+	{
+		int Min = 1;
+		int Max = 5;
+		
+		if (Pages != null)
+			Pages.clear();
+		
+		int Group = (int) Math.ceil((double)Page / 5);
+		
+		Max = Group * 5;
+		Min = (Max - 5 == 0) ? 1 : Max - 5;
+		
+		while (Min <= Max)
+		{
+			Pages.add(new PagingData(Min,false));
+			
+			Min++;
+		}
+		
+		if (Page - Min > 0)
+			Pages.get(Page).setIsSelected(true);
+		else
+			Pages.get(0).setIsSelected(true);
+	}
 
 	private void GetAllClienti()
 	{
 		MainRecordset = clientiService.SelTutti();
 	}
-
+	
 	@RequestMapping(method = RequestMethod.GET)
 	public String GetClienti(Model model)
 	{
@@ -80,19 +109,22 @@ public class ClientiController
 				.filter(u -> !u.getCodFidelity().equals("-1"))
 				.sorted(Comparator.comparing(Clienti::getCodFidelity)).collect(Collectors.toList());
 
-		int NumRecords = recordset.size();
+		long NumRecords = recordset.size();
 
 		recordset = recordset.stream().skip(0).limit(RecForPage).collect(Collectors.toList());
+		
+		setPages(1);
 
 		model.addAttribute("Titolo", "Ricerca Clienti");
 		model.addAttribute("Titolo2", "Risultati Ricerca ");
-		model.addAttribute("NumArt", NumRecords);
+		model.addAttribute("NumRecords", NumRecords);
 		model.addAttribute("clienti", recordset);
 		model.addAttribute("filter", "");
 		model.addAttribute("OrderType", OrderType);
 		model.addAttribute("OrderBy", OrderBy);
 		model.addAttribute("PageNum", PageNum);
 		model.addAttribute("RecPage", RecForPage);
+		model.addAttribute("Pages", Pages);
 		model.addAttribute("IsClienti", IsClienti);
 
 		return "clienti";
@@ -103,27 +135,33 @@ public class ClientiController
 	{
 		List<Clienti> recordset;
 
-		int NumItem = 0;
-
 		recordset = clientiService.SelByNominativo(pSearchTerm)
 				.stream()
 				.filter(u -> !u.getCodFidelity().equals("-1"))
-				.filter(u -> !u.getCognome().equals(null)).sorted(Comparator.comparing(Clienti::getCodFidelity))
+				.filter(u -> u.getCard() != null)
+				.sorted(Comparator.comparing(Clienti::getCodFidelity))
 				.collect(Collectors.toList());
 
-		NumItem = recordset.size();
+		LongSummaryStatistics BolliniStatistics = MainRecordset
+				.stream()
+				.collect(Collectors.summarizingLong(p -> p.getCard().getBollini()));
+		
+		long NumRecords = BolliniStatistics.getCount();
 
 		recordset = recordset.stream().skip(0).limit(RecForPage).collect(Collectors.toList());
-
-		model.addAttribute("NumArt", NumItem);
+		
+		setPages(PageNum);
+		 
 		model.addAttribute("Titolo", "Ricerca Clienti");
 		model.addAttribute("Titolo2", "Risultati Ricerca ");
+		model.addAttribute("NumRecords", NumRecords);
 		model.addAttribute("clienti", recordset);
 		model.addAttribute("filter", pSearchTerm);
 		model.addAttribute("OrderType", OrderType);
 		model.addAttribute("OrderBy", OrderBy);
 		model.addAttribute("PageNum", PageNum);
 		model.addAttribute("RecPage", RecForPage);
+		model.addAttribute("Pages", Pages);
 		model.addAttribute("IsClienti", IsClienti);
 
 		return "clienti";
@@ -134,6 +172,9 @@ public class ClientiController
 	public String GetClientiByFilterMatrix(@MatrixVariable(pathVar = "parametri") Map<String, List<String>> parametri,
 			Model model)
 	{
+		
+		long NumRecords = 0;
+		
 		int ItemCount = 0;
 		int SkipValue = 0;
 
@@ -196,26 +237,38 @@ public class ClientiController
 
 		if (recordset != null)
 		{
-			recordset = recordset.stream().filter(u -> !u.getCodFidelity().equals("-1"))
-					.filter(u -> !u.getCognome().equals(null)).collect(Collectors.toList());
+			recordset = recordset
+					.stream()
+					.filter(u -> !u.getCodFidelity().equals("-1"))
+					.filter(u -> u.getCard() != null)
+					.collect(Collectors.toList());
 
-			ItemCount = recordset.size();
+			LongSummaryStatistics BolliniStatistics = recordset
+					.stream()
+					.collect(Collectors.summarizingLong(p -> p.getCard().getBollini()));
+			
+			NumRecords = BolliniStatistics.getCount();
 
 			SkipValue = GetSkipValue(PageNum, ItemCount, RecForPage);
 
-			recordset = GestOrderRecordset(recordset, OrderBy, ChangeOrder).stream().skip(SkipValue).limit(RecForPage)
+			recordset = GestOrderRecordset(recordset, OrderBy, ChangeOrder)
+					.stream()
+					.skip(SkipValue).limit(RecForPage)
 					.collect(Collectors.toList());
 		}
 
-		model.addAttribute("NumArt", ItemCount);
+		setPages(PageNum);
+		
 		model.addAttribute("Titolo", "Ricerca Clienti");
 		model.addAttribute("Titolo2", "Risultati Ricerca ");
+		model.addAttribute("NumRecords", NumRecords);
 		model.addAttribute("clienti", recordset);
 		model.addAttribute("filter", Filter);
 		model.addAttribute("OrderType", OrderType);
 		model.addAttribute("OrderBy", OrderBy);
 		model.addAttribute("PageNum", PageNum);
 		model.addAttribute("RecPage", RecForPage);
+		model.addAttribute("Pages", Pages);
 		model.addAttribute("IsClienti", IsClienti);
 
 		return "clienti";
@@ -267,8 +320,7 @@ public class ClientiController
 			break;
 		case 3:
 
-			Comparator<Clienti> byBollini = (e1,
-					e2) -> (Integer.compare(getBollini(e1.getCard()), getBollini(e2.getCard())));
+			Comparator<Clienti> byBollini = (e1, e2) -> (Integer.compare(getBollini(e1.getCard()), getBollini(e2.getCard())));
 
 			if (OrderType.toUpperCase().equals("ASC"))
 			{
@@ -288,7 +340,6 @@ public class ClientiController
 	private int getBollini(Cards card)
 	{
 		return (card == null) ? 0 : card.getBollini();
-
 	}
 
 	// http://localhost:8080/alphashop/clienti/cerca/comune?filter=alghero
@@ -300,24 +351,35 @@ public class ClientiController
 		MainRecordset = MainRecordset
 				.stream()
 				.filter(u -> !u.getCodFidelity().equals("-1"))
+				.filter(u -> u.getCard() != null)
 				.sorted(Comparator.comparing(Clienti::getCodFidelity))
 				.collect(Collectors.toList());
 
-		int NumRecords = MainRecordset.size();
-
-		MainRecordset = MainRecordset.stream().skip(0).limit(RecForPage).collect(Collectors.toList());
+		LongSummaryStatistics BolliniStatistics = MainRecordset
+				.stream()
+				.collect(Collectors.summarizingLong(p -> p.getCard().getBollini()));
+		
+		long BolliniByFilter = BolliniStatistics.getSum();
+		long NumRecords = BolliniStatistics.getCount();
 		
 		long TotBollini = clientiService.QtaTotBollini();
-
+		
+		MainRecordset = MainRecordset.stream()
+				.skip(0).limit(RecForPage)
+				.collect(Collectors.toList());
+		
+		setPages(PageNum);
+		
 		model.addAttribute("Titolo", "Ricerca Clienti per Comune");
 		model.addAttribute("Titolo2", "Risultati Ricerca ");
-		model.addAttribute("NumArt", NumRecords);
+		model.addAttribute("NumRecords", NumRecords);
 		model.addAttribute("clienti", MainRecordset);
 		model.addAttribute("filter", "");
 		model.addAttribute("OrderType", OrderType);
 		model.addAttribute("OrderBy", OrderBy);
 		model.addAttribute("PageNum", PageNum);
 		model.addAttribute("RecPage", RecForPage);
+		model.addAttribute("Pages", Pages);
 		model.addAttribute("IsClienti", IsClienti);
 
 		return "clienti"; 
@@ -333,22 +395,31 @@ public class ClientiController
 		MainRecordset = MainRecordset
 				.stream()
 				.filter(u -> !u.getCodFidelity().equals("-1"))
+				.filter(u -> u.getCard() != null)
 				//.sorted(Comparator.comparing(Clienti::getCodFidelity))
 				.collect(Collectors.toList());
 
-		int NumRecords = MainRecordset.size();
+		LongSummaryStatistics BolliniStatistics = MainRecordset
+				.stream()
+				.collect(Collectors.summarizingLong(p -> p.getCard().getBollini()));
+		
+		long BolliniByFilter = BolliniStatistics.getSum();
+		long NumRecords = BolliniStatistics.getCount();
 
 		MainRecordset = MainRecordset.stream().skip(0).limit(RecForPage).collect(Collectors.toList());
+		
+		setPages(PageNum);
 
 		model.addAttribute("Titolo", "Ricerca Clienti per limite Bollini");
 		model.addAttribute("Titolo2", "Risultati Ricerca ");
-		model.addAttribute("NumArt", NumRecords);
+		model.addAttribute("NumRecords", NumRecords);
 		model.addAttribute("clienti", MainRecordset);
 		model.addAttribute("filter", "");
 		model.addAttribute("OrderType", OrderType);
 		model.addAttribute("OrderBy", OrderBy);
 		model.addAttribute("PageNum", PageNum);
 		model.addAttribute("RecPage", RecForPage);
+		model.addAttribute("Pages", Pages);
 		model.addAttribute("IsClienti", IsClienti);
 
 		return "clienti"; 

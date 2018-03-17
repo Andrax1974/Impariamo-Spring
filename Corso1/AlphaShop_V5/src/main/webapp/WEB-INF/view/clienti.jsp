@@ -18,7 +18,7 @@
     <section class="container">
 		<div class="row">
 		<div class = "col-md-6 col-sm-6">
-			<h3 class="page-title">Risultati Ricerca: <small>Trovati ${NumArt} Clienti</small></h3>
+			<h3 class="page-title">Risultati Ricerca: <small>Trovati ${NumRecords} Clienti</small></h3>
 		</div>
 		<div class="col-md-6 col-sm-6">
 			<div id="rep" class="datafilter">
@@ -106,24 +106,23 @@
         				 	<span class="sr-only">Precedente</span>
       					</a>
 				 	</li>
-				 	<li class="page-item active">
-				 		<a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=1,${RecPage},0" /> ">1</a>
-				 	</li>
-    				<li class="page-item">
-    					<a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=2,${RecPage},0" /> ">2</a>
-    				</li>
-    				<li class="page-item">
-    					<a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=3,${RecPage},0" /> ">3</a>
-    				</li>
-    				<li class="page-item">
-    					<a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=4,${RecPage},0" /> ">4</a>
-    				</li>
-    				<li class="page-item">
-    					<a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=5,${RecPage},0" /> ">5</a>
-    				</li>
-    				<li class="page-item">
-    					<a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=6,${RecPage},0" /> ">6</a>
-    				</li>
+				 	
+				 	<c:forEach items="${Pages}" var="Pagine">
+				 		 <c:choose>
+					 		<c:when test="${Pagine.isSelected}">
+							 	<li class="page-item active">
+							 		<a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=${Pagine.pageNum},${RecPage},0" /> ">${Pagine.pageNum}</a>
+							 	</li>
+						 	</c:when>
+						 	<c:otherwise>
+						 		<li class="page-item">
+							 		<a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=${Pagine.pageNum},${RecPage},0" /> ">${Pagine.pageNum}</a>
+							 	</li>
+						 	</c:otherwise>
+					 	</c:choose>
+				 	</c:forEach>
+    				
+ 
     				<li class="page-item">
     					<a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=${PageNum},${RecPage},1" /> " aria-label="Next">
         					<span aria-hidden="true">&raquo;</span>
@@ -132,6 +131,7 @@
     				</li>
 				 </ul>
 			</nav>
+			<p class="text-right">Bollini Totali:</p>
 		</div>
 	</section>
 
