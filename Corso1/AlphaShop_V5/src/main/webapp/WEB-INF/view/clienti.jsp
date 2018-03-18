@@ -100,12 +100,22 @@
 			</table>
 			<nav aria-label="Page navigation example">
 				 <ul class="pagination">
-				 	<li class="page-item">
-				 		 <a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=${PageNum},${RecPage},-1" /> " aria-label="Previous">
-        				 	<span aria-hidden="true">&laquo;</span>
-        				 	<span class="sr-only">Precedente</span>
-      					</a>
-				 	</li>
+				 	<c:if test="${PageNum == 1}">
+					 	<li class="page-item disabled">
+					 		 <a class="page-link" href="#" aria-label="Previous">
+	        				 	<span aria-hidden="true">&laquo;</span>
+	        				 	<span class="sr-only">Precedente</span>
+	      					</a>
+					 	</li>
+				 	</c:if>
+				 	<c:if test="${PageNum > 1}">
+					 	<li class="page-item">
+					 		 <a class="page-link" href="<spring:url value="/clienti/cerca/parametri;filtro=${filter},0;orderby=${OrderBy},${OrderType},0;paging=${PageNum},${RecPage},-1" /> " aria-label="Previous">
+	        				 	<span aria-hidden="true">&laquo;</span>
+	        				 	<span class="sr-only">Precedente</span>
+	      					</a>
+					 	</li>
+				 	</c:if>
 				 	
 				 	<c:forEach items="${Pages}" var="Pagine">
 				 		 <c:choose>

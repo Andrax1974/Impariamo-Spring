@@ -24,13 +24,13 @@ public class ClientiDaoImpl extends AbstractDao<Clienti, Integer>
 	{
 		Clienti retVal;
 		
-		CriteriaBuilder queryBuilder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Clienti> queryDefinition = queryBuilder.createQuery(Clienti.class);
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Clienti> queryDefinition = cb.createQuery(Clienti.class);
 		
 		Root<Clienti> recordset = queryDefinition.from(Clienti.class);
 		
 		queryDefinition.select(recordset).
-						where(queryBuilder.equal(recordset.get("codFidelity"), CodFidelity));
+						where(cb.equal(recordset.get("codFidelity"), CodFidelity));
 		
 		retVal = entityManager.createQuery(queryDefinition).getSingleResult();
 		

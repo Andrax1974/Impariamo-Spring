@@ -68,6 +68,7 @@ public class ClientiController
 	private void setPages(int Page)
 	{
 		int Min = 1;
+		int ValMin = 1;
 		int Max = 5;
 		
 		if (Pages != null)
@@ -76,7 +77,9 @@ public class ClientiController
 		int Group = (int) Math.ceil((double)Page / 5);
 		
 		Max = Group * 5;
-		Min = (Max - 5 == 0) ? 1 : Max - 5;
+		Min = (Max - 5 == 0) ? 1 : Max - 4;
+		
+		ValMin = Min;
 		
 		while (Min <= Max)
 		{
@@ -85,8 +88,8 @@ public class ClientiController
 			Min++;
 		}
 		
-		if (Page - Min > 0)
-			Pages.get(Page).setIsSelected(true);
+		if (Page - ValMin > 0)
+			Pages.get(Page - ValMin).setIsSelected(true);
 		else
 			Pages.get(0).setIsSelected(true);
 	}
@@ -174,9 +177,7 @@ public class ClientiController
 	{
 		
 		long NumRecords = 0;
-		
-		int ItemCount = 0;
-		int SkipValue = 0;
+		long SkipValue = 0;
 
 		String Filter = "";
 		String TypeFilter = "";
@@ -217,8 +218,11 @@ public class ClientiController
 
 				if (PageNum >= 1)
 					PageNum += DiffPage;
+				else
+					PageNum = 1;
 
-			} catch (NumberFormatException ex)
+			} 
+			catch (NumberFormatException ex)
 			{
 				PageNum = 1;
 				RecForPage = 10;
@@ -249,7 +253,7 @@ public class ClientiController
 			
 			NumRecords = BolliniStatistics.getCount();
 
-			SkipValue = GetSkipValue(PageNum, ItemCount, RecForPage);
+			SkipValue = GetSkipValue(PageNum, NumRecords, RecForPage);
 
 			recordset = GestOrderRecordset(recordset, OrderBy, ChangeOrder)
 					.stream()
@@ -274,13 +278,13 @@ public class ClientiController
 		return "clienti";
 	}
 
-	private int GetSkipValue(int PageNum, int ItemCount, int RecForPage)
+	private int GetSkipValue(int PageNum, long numRecords, int RecForPage)
 	{
 		int retVal = 0;
 
-		if (ItemCount > RecForPage)
+		if (numRecords > RecForPage)
 		{
-			int NumTotPage = Math.round(ItemCount / RecForPage);
+			int NumTotPage = Math.round(numRecords / RecForPage);
 
 			if (PageNum <= NumTotPage)
 				retVal = (PageNum - 1) * RecForPage;
