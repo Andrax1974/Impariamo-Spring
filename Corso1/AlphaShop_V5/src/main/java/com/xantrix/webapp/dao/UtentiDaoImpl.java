@@ -14,24 +14,6 @@ public class UtentiDaoImpl  extends AbstractDao<Utenti, Integer>
 	implements UtentiDao
 {
 	@Override
-	public void Salva(Utenti utente)
-	{
-		super.Inserisci(utente);
-	}
-	
-	@Override
-	public void Aggiorna(Utenti utente)
-	{
-		super.Aggiorna(utente);
-	}
-	
-	@Override
-	public void Elimina(Utenti utente)
-	{
-		super.Elimina(utente);
-	}
-
-	@Override
 	public Utenti SelByIdFidelity(String idFidelity)
 	{
 		Utenti retVal = new Utenti();
@@ -55,5 +37,25 @@ public class UtentiDaoImpl  extends AbstractDao<Utenti, Integer>
 			return retVal;
 		}
 	}
+	
+	@Override
+	public void Salva(Utenti utente)
+	{
+		super.Inserisci(utente);
+	}
+	
+	@Override
+	public void Aggiorna(Utenti utente)
+	{
+		super.Aggiorna(utente);
+	}
+	
+	@Override
+	public void Elimina(Utenti utente)
+	{
+		super.Elimina(utente);
+	}
+
+	
 
 }

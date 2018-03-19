@@ -65,52 +65,26 @@ public class ClientiController
 	private int PageNum = 1;
 	private int RecForPage = 10;
 	
-	private void setPages(int Page)
-	{
-		int Min = 1;
-		int ValMin = 1;
-		int Max = 5;
-		
-		if (Pages != null)
-			Pages.clear();
-		
-		int Group = (int) Math.ceil((double)Page / 5);
-		
-		Max = Group * 5;
-		Min = (Max - 5 == 0) ? 1 : Max - 4;
-		
-		ValMin = Min;
-		
-		while (Min <= Max)
-		{
-			Pages.add(new PagingData(Min,false));
-			
-			Min++;
-		}
-		
-		if (Page - ValMin > 0)
-			Pages.get(Page - ValMin).setIsSelected(true);
-		else
-			Pages.get(0).setIsSelected(true);
-	}
-
+	
 	private void GetAllClienti()
 	{
 		MainRecordset = clientiService.SelTutti();
 	}
 	
+	
 	@RequestMapping(method = RequestMethod.GET)
 	public String GetClienti(Model model)
 	{
+		logger.info("Otteniamo tutti i clienti");
+		
 		if (MainRecordset == null)
 			GetAllClienti();
 
-		List<Clienti> recordset = MainRecordset;
-
-		recordset = clientiService.SelTutti()
-				.stream()
-				.filter(u -> !u.getCodFidelity().equals("-1"))
-				.sorted(Comparator.comparing(Clienti::getCodFidelity)).collect(Collectors.toList());
+		List<Clienti> recordset = MainRecordset
+					.stream()
+					.filter(u -> !u.getCodFidelity().equals("-1"))
+					.sorted(Comparator.comparing(Clienti::getCodFidelity))
+					.collect(Collectors.toList());
 
 		long NumRecords = recordset.size();
 
@@ -277,22 +251,7 @@ public class ClientiController
 
 		return "clienti";
 	}
-
-	private int GetSkipValue(int PageNum, long numRecords, int RecForPage)
-	{
-		int retVal = 0;
-
-		if (numRecords > RecForPage)
-		{
-			int NumTotPage = Math.round(numRecords / RecForPage);
-
-			if (PageNum <= NumTotPage)
-				retVal = (PageNum - 1) * RecForPage;
-		}
-
-		return retVal;
-	}
-
+	
 	private List<Clienti> GestOrderRecordset(List<Clienti> recordset, int OrderBy, boolean ChangeOrder)
 	{
 		if (ChangeOrder)
@@ -575,6 +534,50 @@ public class ClientiController
 		profiliService.Elimina(Profilo);
 
 		return "redirect:/clienti/modifica/" + IdCliente;
+	}
+	
+	private void setPages(int Page)
+	{
+		int Min = 1;
+		int ValMin = 1;
+		int Max = 5;
+		
+		if (Pages != null)
+			Pages.clear();
+		
+		int Group = (int) Math.ceil((double)Page / 5);
+		
+		Max = Group * 5;
+		Min = (Max - 5 == 0) ? 1 : Max - 4;
+		
+		ValMin = Min;
+		
+		while (Min <= Max)
+		{
+			Pages.add(new PagingData(Min,false));
+			
+			Min++;
+		}
+		
+		if (Page - ValMin > 0)
+			Pages.get(Page - ValMin).setIsSelected(true);
+		else
+			Pages.get(0).setIsSelected(true);
+	}
+
+	private int GetSkipValue(int PageNum, long numRecords, int RecForPage)
+	{
+		int retVal = 0;
+
+		if (numRecords > RecForPage)
+		{
+			int NumTotPage = Math.round(numRecords / RecForPage);
+
+			if (PageNum <= NumTotPage)
+				retVal = (PageNum - 1) * RecForPage;
+		}
+
+		return retVal;
 	}
 }
 

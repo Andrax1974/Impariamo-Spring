@@ -13,22 +13,13 @@ import com.xantrix.webapp.entities.Profili;
 public class ProfiliDaoImpl extends AbstractDao<Profili, Integer> 
 implements ProfiliDao
 {
-
 	@Override
-	public void Salva(Profili profilo)
+	public Profili SelById(int id)
 	{
-		 super.Inserisci(profilo);
+		return super.SelById(id);
 	}
+
 	
-	@Override
-	public void Elimina(Profili profilo)
-	{
-		//UTILIZZIAMO IL JPQL
-		entityManager.createQuery("delete from Profili where id = :id")
-		  .setParameter("id", profilo.getId())
-		  .executeUpdate();
-	}
-
 	@Override
 	public List<Profili> SelByIdFidelity(String IdFidelity)
 	{
@@ -40,6 +31,12 @@ implements ProfiliDao
 		
 		return recordset;
 	}
+	
+	@Override
+	public void Salva(Profili profilo)
+	{
+		 super.Inserisci(profilo);
+	}
 
 	@Override
 	public void Aggiorna(Profili profilo)
@@ -47,11 +44,15 @@ implements ProfiliDao
 		super.Aggiorna(profilo);
 		
 	}
-
+	
 	@Override
-	public Profili SelById(int id)
+	public void Elimina(Profili profilo)
 	{
-		return super.SelById(id);
+		//UTILIZZIAMO IL JPQL
+		entityManager.createQuery("delete from Profili where id = :id")
+		  .setParameter("id", profilo.getId())
+		  .executeUpdate();
 	}
+	
 
 }
