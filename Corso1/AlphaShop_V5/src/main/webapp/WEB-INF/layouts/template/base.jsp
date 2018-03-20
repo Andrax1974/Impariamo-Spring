@@ -30,10 +30,10 @@
   		</button>
   		<div class="collapse navbar-collapse" id="navbarTogglerDemo01">
   		
-  			 <a class="navbar-brand" href="<spring:url value="/webstore/lastart"/>">Alpha Shop</a>
+  			 <a class="navbar-brand" href="<spring:url value="/"/>">Alpha Shop</a>
   			     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
       				<li class="nav-item active">
-        				<a class="nav-link" href="#">
+        				<a class="nav-link" href="<spring:url value="/"/>">
         					<span class="oi oi-home" title="home" aria-hidden="true"></span>
         					Home 
         					<span class="sr-only">(current)</span>
@@ -89,7 +89,7 @@
 	    			</c:when>
 	    			<c:otherwise>
 	    				<form:form class="form-inline my-2 my-lg-0" id="search" role="search" method="GET" action="">
-		      				<input type="text" onClick="this.select();"  class="form-control mr-sm-2" name="filter" value="${filter}" placeholder="">
+		      				<input type="text" onClick="this.select();"  class="form-control mr-sm-2" name="filter" value="${filter}" placeholder="" disabled>
 		      				<button class="btn btn-outline-success my-2 my-sm-0" type="submit" disabled >Cerca</button>
 		    			</form:form>
 	    			</c:otherwise>

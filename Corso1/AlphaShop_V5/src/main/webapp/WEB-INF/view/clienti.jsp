@@ -77,7 +77,7 @@
 						<tr>
 							<td>${Clienti.codFidelity}</td>
 							<td> ${Clienti.cognome} ${Clienti.nome}</td>
-							<td>${Clienti.comune}</td>
+							<td><a href="<spring:url value="/clienti/cerca/comune?filter=${Clienti.comune}" /> ">${Clienti.comune}</a></td>
 							<td>
 							<fmt:formatNumber value = "${Clienti.card.bollini}"  minFractionDigits = "0" type = "number"/>
 							</td>
@@ -141,7 +141,12 @@
     				</li>
 				 </ul>
 			</nav>
-			<p class="text-right">Bollini Totali:</p>
+			<div class="number-bollini">
+				<h3 class="font-blue"><small>Totale: </small><fmt:formatNumber value = "${BolTot}"  minFractionDigits = "0" type = "number"/></h3>
+			</div>
+			<div class="number-bollini">
+				<h3 class="font-green"><small>Filtrato: </small><fmt:formatNumber value = "${BolFil}"  minFractionDigits = "0" type = "number"/></h3>
+			</div>
 		</div>
 	</section>
 

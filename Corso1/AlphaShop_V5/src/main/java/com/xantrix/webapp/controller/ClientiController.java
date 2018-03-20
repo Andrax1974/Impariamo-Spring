@@ -40,7 +40,7 @@ import com.xantrix.webapp.service.UtentiService;
 @RequestMapping("/clienti")
 public class ClientiController
 {
-	private final Logger logger = LogManager.getLogger("Clienti");
+	private static final Logger logger = LogManager.getLogger("Clienti");
 
 	@Autowired
 	private ClientiService clientiService;
@@ -64,8 +64,7 @@ public class ClientiController
 	List<PagingData> Pages = new ArrayList<PagingData>();
 	private int PageNum = 1;
 	private int RecForPage = 10;
-	
-	
+
 	private void GetAllClienti()
 	{
 		MainRecordset = clientiService.SelTutti();
@@ -77,8 +76,7 @@ public class ClientiController
 	{
 		logger.info("Otteniamo tutti i clienti");
 		
-		if (MainRecordset == null)
-			GetAllClienti();
+		GetAllClienti();
 
 		List<Clienti> recordset = MainRecordset
 					.stream()
@@ -88,9 +86,14 @@ public class ClientiController
 
 		long NumRecords = recordset.size();
 
-		recordset = recordset.stream().skip(0).limit(RecForPage).collect(Collectors.toList());
+		recordset = recordset.stream()
+				.skip(0)
+				.limit(RecForPage)
+				.collect(Collectors.toList());
 		
-		setPages(1);
+		logger.info("Numero di record per pagina: " + RecForPage);
+		
+		setPages(PageNum);
 
 		model.addAttribute("Titolo", "Ricerca Clienti");
 		model.addAttribute("Titolo2", "Risultati Ricerca ");
@@ -108,9 +111,12 @@ public class ClientiController
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
-	public String SearchArt(@RequestParam("filter") String pSearchTerm, ModelMap model)
+	public String SearchItem(@RequestParam("filter") String pSearchTerm, ModelMap model)
 	{
 		List<Clienti> recordset;
+		
+		long BolliniByFilter = 0;
+		long BolliniTot = 0;
 
 		recordset = clientiService.SelByNominativo(pSearchTerm)
 				.stream()
@@ -119,13 +125,19 @@ public class ClientiController
 				.sorted(Comparator.comparing(Clienti::getCodFidelity))
 				.collect(Collectors.toList());
 
-		LongSummaryStatistics BolliniStatistics = MainRecordset
+		LongSummaryStatistics BolliniStatistics = recordset
 				.stream()
 				.collect(Collectors.summarizingLong(p -> p.getCard().getBollini()));
 		
 		long NumRecords = BolliniStatistics.getCount();
+		
+		BolliniByFilter = BolliniStatistics.getSum();
+		BolliniTot = clientiService.QtaTotBollini();
 
-		recordset = recordset.stream().skip(0).limit(RecForPage).collect(Collectors.toList());
+		recordset = recordset.stream()
+				.skip(0)
+				.limit(RecForPage)
+				.collect(Collectors.toList());
 		
 		setPages(PageNum);
 		 
@@ -140,6 +152,8 @@ public class ClientiController
 		model.addAttribute("RecPage", RecForPage);
 		model.addAttribute("Pages", Pages);
 		model.addAttribute("IsClienti", IsClienti);
+		model.addAttribute("BolFil", BolliniByFilter);
+		model.addAttribute("BolTot", BolliniTot);
 
 		return "clienti";
 	}
@@ -152,6 +166,8 @@ public class ClientiController
 		
 		long NumRecords = 0;
 		long SkipValue = 0;
+		long BolliniByFilter = 0;
+		long BolliniTot = 0;
 
 		String Filter = "";
 		String TypeFilter = "";
@@ -160,6 +176,7 @@ public class ClientiController
 
 		List<Clienti> recordset;
 
+		//PARAMETRI FILTRO
 		List<String> ParamFiltro = parametri.get("filtro");
 		if (ParamFiltro != null)
 		{
@@ -167,6 +184,7 @@ public class ClientiController
 			TypeFilter = ParamFiltro.get(1);
 		}
 
+		//PARAMETRI ORDINAMENTO
 		List<String> ParamOrderBy = parametri.get("orderby");
 		if (ParamOrderBy != null)
 		{
@@ -181,6 +199,7 @@ public class ClientiController
 			}
 		}
 
+		//PARAMETRI PAGING
 		List<String> ParamPaging = parametri.get("paging");
 		if (ParamPaging != null)
 		{
@@ -226,6 +245,9 @@ public class ClientiController
 					.collect(Collectors.summarizingLong(p -> p.getCard().getBollini()));
 			
 			NumRecords = BolliniStatistics.getCount();
+			
+			BolliniByFilter = BolliniStatistics.getSum();
+			BolliniTot = clientiService.QtaTotBollini();
 
 			SkipValue = GetSkipValue(PageNum, NumRecords, RecForPage);
 
@@ -248,7 +270,9 @@ public class ClientiController
 		model.addAttribute("RecPage", RecForPage);
 		model.addAttribute("Pages", Pages);
 		model.addAttribute("IsClienti", IsClienti);
-
+		model.addAttribute("BolTot", BolliniTot);
+		model.addAttribute("BolFil", BolliniByFilter);
+		
 		return "clienti";
 	}
 	
@@ -325,7 +349,7 @@ public class ClientiController
 		long BolliniByFilter = BolliniStatistics.getSum();
 		long NumRecords = BolliniStatistics.getCount();
 		
-		long TotBollini = clientiService.QtaTotBollini();
+		long BolliniTot = clientiService.QtaTotBollini();
 		
 		MainRecordset = MainRecordset.stream()
 				.skip(0).limit(RecForPage)
@@ -344,6 +368,8 @@ public class ClientiController
 		model.addAttribute("RecPage", RecForPage);
 		model.addAttribute("Pages", Pages);
 		model.addAttribute("IsClienti", IsClienti);
+		model.addAttribute("BolTot", BolliniTot);
+		model.addAttribute("BolFil", BolliniByFilter);
 
 		return "clienti"; 
 
@@ -354,29 +380,35 @@ public class ClientiController
 	public String GetClientiByBollini(@RequestParam("filter") int Bollini, @RequestParam("type") String Tipo, Model model)
 	{
 		MainRecordset = clientiService.SelByBollini(Bollini, Tipo);
+		
+		List<Clienti> recordset = MainRecordset;
 
-		MainRecordset = MainRecordset
+		recordset = recordset
 				.stream()
 				.filter(u -> !u.getCodFidelity().equals("-1"))
 				.filter(u -> u.getCard() != null)
 				//.sorted(Comparator.comparing(Clienti::getCodFidelity))
 				.collect(Collectors.toList());
 
-		LongSummaryStatistics BolliniStatistics = MainRecordset
+		LongSummaryStatistics BolliniStatistics = recordset
 				.stream()
 				.collect(Collectors.summarizingLong(p -> p.getCard().getBollini()));
 		
 		long BolliniByFilter = BolliniStatistics.getSum();
 		long NumRecords = BolliniStatistics.getCount();
+		
+		long BolliniTot = clientiService.QtaTotBollini();
 
-		MainRecordset = MainRecordset.stream().skip(0).limit(RecForPage).collect(Collectors.toList());
+		recordset = recordset.stream()
+				.skip(0).limit(RecForPage)
+				.collect(Collectors.toList());
 		
 		setPages(PageNum);
 
 		model.addAttribute("Titolo", "Ricerca Clienti per limite Bollini");
 		model.addAttribute("Titolo2", "Risultati Ricerca ");
 		model.addAttribute("NumRecords", NumRecords);
-		model.addAttribute("clienti", MainRecordset);
+		model.addAttribute("clienti", recordset);
 		model.addAttribute("filter", "");
 		model.addAttribute("OrderType", OrderType);
 		model.addAttribute("OrderBy", OrderBy);
@@ -384,6 +416,8 @@ public class ClientiController
 		model.addAttribute("RecPage", RecForPage);
 		model.addAttribute("Pages", Pages);
 		model.addAttribute("IsClienti", IsClienti);
+		model.addAttribute("BolTot", BolliniTot);
+		model.addAttribute("BolFil", BolliniByFilter);
 
 		return "clienti"; 
 

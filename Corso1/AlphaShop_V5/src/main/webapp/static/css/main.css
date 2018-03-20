@@ -446,6 +446,24 @@ label {
 	display: block;
 }
 
+.number-bollini {
+	float: left;
+    display: inline-block;
+    padding-left: 40px;
+    padding-bottom: 6px;
+    font-size: 26px;
+    font-weight: 400;
+    font-family: "Open Sans",sans-serif;
+}
+
+.font-blue {
+	color: #5C9BD1!important;
+}
+
+.font-green {
+	color: #2ab4c0!important;
+}
+
 @media screen and (max-width: 768px) {
 	.jumbotron {
 		padding-top: 20px;
