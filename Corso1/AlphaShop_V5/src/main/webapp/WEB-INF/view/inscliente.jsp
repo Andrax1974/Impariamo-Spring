@@ -48,12 +48,14 @@
 		<div class="portlet-body form">
 			<div class="tab-content" id="myTabContent">
 			
+				<!-- Visualizza l'allert -->
 				<c:if test="${saved}">
 					<div class="alert alert-success" role="alert">
 	  					<spring:message code="inscliente.form.alert.label"/>
 					</div>
 				</c:if>
 				
+				<!-- Form Dati Cliente -->
 				<div class="tab-pane fade show active" id="dati" role="tabpanel" aria-labelledby="dati-tab">
 					<form:form  method="POST" modelAttribute="Cliente">
 					<form:errors path="*" cssClass="alert alert-danger" element="div"/> 
@@ -142,6 +144,7 @@
 					
 					</form:form>
 				</div>
+				<!-- Form Dati Utente -->
 				<div class="tab-pane fade" id="avatar" role="tabpanel" aria-labelledby="avatar-tab"> 
 				
 					<form:form  method="POST" modelAttribute="Utente">
@@ -203,6 +206,7 @@
 					
 					</form:form>
 				</div>
+				<!-- Form Dati Profilo -->
 				<div class="tab-pane fade" id="utenti" role="tabpanel" aria-labelledby="utenti-tab">
 				<form:form  method="POST" modelAttribute="Profilo">
 				
@@ -233,10 +237,18 @@
 				       </c:forEach>
 			       </tbody>
 				</table>
-
+				
 				<div class="form-actions">
-					<input type="submit" id="btnAdd" class="btn btn-green form-buttons" value = <spring:message code="insarticolo.form.btnAdd.label"/> />
-					<input type="reset" id="btnAbort" class="btn btn-default form-buttons" value = <spring:message code="insarticolo.form.btnAbort.label"/> />
+					<c:choose>
+						<c:when test="${edit}">
+							<input type="submit" id="btnAdd" class="btn btn-green form-buttons" value = <spring:message code="insarticolo.form.btnAdd.label"/> />
+						</c:when>
+						<c:otherwise>
+							<input type="submit" id="btnAdd" class="btn btn-green form-buttons" value = <spring:message code="insarticolo.form.btnAdd.label"/> disabled />
+						</c:otherwise>
+					</c:choose>
+					<a href="<spring:url value="/clienti/" /> " id="btnAbort" class="btn btn-default form-buttons" > <spring:message code="insarticolo.form.btnAbort.label"/>
+					</a>
 				</div>
 				
 				</form:form>

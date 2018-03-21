@@ -38,6 +38,11 @@ public class ClientiServiceImpl implements ClientiService
 		return clientiRepository.SelByBollini(NumBollini, Tipo);
 	}
 
+	@Override
+	public String SelLastCodFid()
+	{
+		return clientiRepository.SelLastCodFid();
+	}
 	
 	@Override
 	public void Salva(Clienti cliente)
@@ -76,7 +81,5 @@ public class ClientiServiceImpl implements ClientiService
 	}
 
 	
-	
 
-	
 }

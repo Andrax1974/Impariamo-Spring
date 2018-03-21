@@ -81,7 +81,7 @@ public class ClientiController
 		List<Clienti> recordset = MainRecordset
 					.stream()
 					.filter(u -> !u.getCodFidelity().equals("-1"))
-					.sorted(Comparator.comparing(Clienti::getCodFidelity))
+					.sorted(Comparator.comparing(Clienti::getCodFidelity).reversed())
 					.collect(Collectors.toList());
 
 		long NumRecords = recordset.size();
@@ -423,32 +423,15 @@ public class ClientiController
 
 	}
 
-	@RequestMapping(value = "/elimina/{idCliente}", method = RequestMethod.GET)
-	public String DelClienti(@PathVariable("idCliente") String IdCliente, Model model)
-	{
-		try
-		{
-			logger.info("Eliminazione Cliente con Codice: " + IdCliente);
-
-			if (!IdCliente.equals("-1"))
-			{
-				Clienti cliente = clientiService.SelCliente(IdCliente);
-				clientiService.Elimina(cliente);
-			}
-		} catch (Exception ex)
-		{
-			logger.debug("ERRORE: " + ex.getMessage());
-		}
-
-		return "redirect:/clienti/modifica/" + IdCliente;
-
-	}
-
 	@RequestMapping(value = "/aggiungi", method = RequestMethod.GET)
-	public String InsArticoli(Model model)
+	public String InsCliente(Model model)
 	{
 
 		Clienti cliente = new Clienti();
+		
+		int LastCodFid = Integer.parseInt(clientiService.SelLastCodFid()); 
+		
+		cliente.setCodFidelity(Integer.toString(LastCodFid + 1));
 
 		model.addAttribute("Titolo", "Inserimento Nuovo Cliente");
 		model.addAttribute("Cliente", cliente);
@@ -456,7 +439,7 @@ public class ClientiController
 		model.addAttribute("Profilo", getProfilo());
 		model.addAttribute("edit", false);
 		model.addAttribute("saved", false);
-
+		 
 		return "insCliente";
 	}
 
@@ -473,7 +456,7 @@ public class ClientiController
 	}
 
 	@RequestMapping(value = "/aggiungi", method = RequestMethod.POST)
-	public String GestInsClienti(@Valid @ModelAttribute("Cliente") Clienti cliente, BindingResult result, Model model,
+	public String GestInsCliente(@Valid @ModelAttribute("Cliente") Clienti cliente, BindingResult result, Model model,
 			RedirectAttributes redirectAttributes, HttpServletRequest request)
 	{
 		if (result.hasErrors())
@@ -482,6 +465,7 @@ public class ClientiController
 		}
 
 		cliente.setDataCreaz(date);
+		
 		clientiService.Salva(cliente);
 
 		redirectAttributes.addFlashAttribute("saved", true);
@@ -511,20 +495,25 @@ public class ClientiController
 	}
 
 	@RequestMapping(value = "/modifica/{idCliente}", method = RequestMethod.POST)
-	public String GestUpdClienti(@Valid @ModelAttribute("Cliente") Clienti cliente,
-			@ModelAttribute("Utente") Utenti utente, @ModelAttribute("Profilo") Profili profilo,
-			@PathVariable("idCliente") String IdCliente, BindingResult result, Model model, HttpServletRequest request)
+	public String GestUpdClienti(
+			@Valid @ModelAttribute("Cliente") Clienti cliente,
+			BindingResult result,
+			@ModelAttribute("Utente") Utenti utente, 
+			@ModelAttribute("Profilo") Profili profilo,
+			@PathVariable("idCliente") String IdCliente, 
+			 Model model, HttpServletRequest request)
 	{
 		Set<Profili> profili = new HashSet<>();
-
+		
 		if (cliente.getNome() != null)
 		{
 			if (result.hasErrors())
 			{
 				return "insCliente";
 			}
-
+			
 			cliente.setDataCreaz(date);
+			
 			clientiService.Aggiorna(cliente);
 		}
 
@@ -556,6 +545,27 @@ public class ClientiController
 		IsSaved = true;
 
 		return "redirect:/clienti/modifica/" + IdCliente;
+	}
+	
+	@RequestMapping(value = "/elimina/{idCliente}", method = RequestMethod.GET)
+	public String DelClienti(@PathVariable("idCliente") String IdCliente, Model model)
+	{
+		try
+		{
+			logger.info("Eliminazione Cliente con Codice: " + IdCliente);
+
+			if (!IdCliente.equals("-1"))
+			{
+				Clienti cliente = clientiService.SelCliente(IdCliente);
+				clientiService.Elimina(cliente);
+			}
+		} catch (Exception ex)
+		{
+			logger.debug("ERRORE: " + ex.getMessage());
+		}
+
+		return "redirect:/clienti/";
+
 	}
 
 	// http://localhost:8080/alphashop/clienti/modifica/delprofilo/67100950/14

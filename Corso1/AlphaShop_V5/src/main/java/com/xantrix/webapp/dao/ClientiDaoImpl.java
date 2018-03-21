@@ -104,6 +104,26 @@ public class ClientiDaoImpl extends AbstractDao<Clienti, Integer>
 	}
 	
 	@Override
+	public String SelLastCodFid()
+	{
+		String retVal = "0";
+		
+		try
+		{
+			String JPQL = "SELECT a.codFidelity FROM Clienti a ORDER BY a.codFidelity DESC";
+			
+			retVal = (String) entityManager
+					.createQuery(JPQL)
+					.setMaxResults(1)
+					.getSingleResult();
+		}
+		catch (Exception ex)
+		{ }
+		
+		return retVal;
+	}
+	
+	@Override
 	public List<Clienti> SelTutti()
 	{
 		return super.SelTutti();

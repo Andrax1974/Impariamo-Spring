@@ -14,6 +14,8 @@ public interface ClientiService
 	
 	List<Clienti> SelByBollini(int NumBollini, String Tipo);
 	
+	String SelLastCodFid();
+	
 	Clienti SelCliente(String CodFidelity);
 	
 	long QtaTotBollini();

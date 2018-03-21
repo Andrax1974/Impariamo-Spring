@@ -21,6 +21,7 @@
 			<h3 class="page-title">Risultati Ricerca: <small>Trovati ${NumRecords} Clienti</small></h3>
 		</div>
 		<div class="col-md-6 col-sm-6">
+			<a href="<spring:url value="/clienti/aggiungi" /> "  style="margin-left: 20px;" class="btn btn-success float-right">Nuovo Cliente</a>
 			<div id="rep" class="datafilter">
 				<label>
 					Pagine: 
@@ -148,5 +149,6 @@
 				<h3 class="font-green"><small>Filtrato: </small><fmt:formatNumber value = "${BolFil}"  minFractionDigits = "0" type = "number"/></h3>
 			</div>
 		</div>
+		
 	</section>
 
