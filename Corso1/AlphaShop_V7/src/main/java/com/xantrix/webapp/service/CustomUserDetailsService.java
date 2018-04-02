@@ -25,6 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService
 	public UserDetails loadUserByUsername(String UserId) 
 			throws UsernameNotFoundException
 	{
+		
 		 String[] usernameAndDomain = StringUtils.split(UserId, "@");
 		 
 		 if (usernameAndDomain == null || usernameAndDomain.length != 2) 
@@ -37,6 +38,9 @@ public class CustomUserDetailsService implements UserDetailsService
 		 
 		 Utenti utente = utenteService.SelByUserIdCodFid(userId, codFid);
 		 
+		 
+		 //Utenti utente = utenteService.SelByUserId(UserId);
+		
 		 if (utente == null)
 		 {
 			 throw new UsernameNotFoundException("Utente non Trovato!!");

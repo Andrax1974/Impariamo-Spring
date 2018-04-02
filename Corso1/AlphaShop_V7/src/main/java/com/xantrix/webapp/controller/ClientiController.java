@@ -112,7 +112,7 @@ public class ClientiController
 		model.addAttribute("RecPage", RecForPage);
 		model.addAttribute("Pages", Pages);
 		model.addAttribute("IsClienti", IsClienti);
-		model.addAttribute("IsLogged", true);
+		model.addAttribute("User",  userContext.getCurrentClient());
 
 		return "clienti";
 	}
