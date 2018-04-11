@@ -1,10 +1,15 @@
 package com.xantrix.webapp.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -14,17 +19,23 @@ public class Promo implements Serializable
 	private static final long serialVersionUID = -5905631309290304849L;
 	
 	@Id
-	@Column(name = "Id")
+	@Column(name = "ID")
 	private String id;
 	
-	@Column(name = "Anno")
+	@Column(name = "ANNO")
 	private int anno;
 	
-	@Column(name = "Codice")
+	@Column(name = "CODICE")
 	private String codice;
 	
-	@Column(name = "Descrizione")
+	@Column(name = "DESCRIZIONE")
 	private String descrizione;
+	
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,  mappedBy = "promo", orphanRemoval = true)
+	private Set<DettPromo> dettPromo = new HashSet<>();
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "promo", orphanRemoval = true)
+	private Set<DepRifPromo> depRifPromo = new HashSet<>();
 	
 	public Promo()
 	{
@@ -68,6 +79,26 @@ public class Promo implements Serializable
 	public void setDescrizione(String descrizione)
 	{
 		this.descrizione = descrizione;
+	}
+
+	public Set<DettPromo> getDettPromo()
+	{
+		return dettPromo;
+	}
+
+	public void setDettPromo(Set<DettPromo> dettPromo)
+	{
+		this.dettPromo = dettPromo;
+	}
+
+	public Set<DepRifPromo> getDepRifPromo()
+	{
+		return depRifPromo;
+	}
+
+	public void setDepRifPromo(Set<DepRifPromo> depRifPromo)
+	{
+		this.depRifPromo = depRifPromo;
 	}
 	
 	
