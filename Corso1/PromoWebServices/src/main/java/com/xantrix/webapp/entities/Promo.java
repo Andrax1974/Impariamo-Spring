@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "PROMO")
 public class Promo implements Serializable
@@ -19,8 +21,8 @@ public class Promo implements Serializable
 	private static final long serialVersionUID = -5905631309290304849L;
 	
 	@Id
-	@Column(name = "ID")
-	private String id;
+	@Column(name = "IDPROMO")
+	private String idPromo;
 	
 	@Column(name = "ANNO")
 	private int anno;
@@ -32,23 +34,25 @@ public class Promo implements Serializable
 	private String descrizione;
 	
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,  mappedBy = "promo", orphanRemoval = true)
+	@JsonManagedReference
 	private Set<DettPromo> dettPromo = new HashSet<>();
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "promo", orphanRemoval = true)
+	@JsonManagedReference
 	private Set<DepRifPromo> depRifPromo = new HashSet<>();
 	
 	public Promo()
 	{
 	}
 
-	public String getId()
+	public String getIdPromo()
 	{
-		return id;
+		return idPromo;
 	}
 
-	public void setId(String id)
+	public void setIdPromo(String idPromo)
 	{
-		this.id = id;
+		this.idPromo = idPromo;
 	}
 
 	public int getAnno()

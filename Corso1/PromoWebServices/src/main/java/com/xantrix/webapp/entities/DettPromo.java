@@ -14,6 +14,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "DETTPROMO")
 public class DettPromo implements Serializable
@@ -42,16 +44,18 @@ public class DettPromo implements Serializable
 	@Temporal(TemporalType.DATE)
 	private Date fine;
 	
-	@Column(name = "IDTIPOPROMO")
-	private int idTipoPromo;
-	
-	
 	@Column(name = "OGGETTO")
 	private String oggetto;
 	
 	@ManyToOne
-	@JoinColumn(name = "IDPROMO", referencedColumnName = "id")
+	@JoinColumn(name = "IDPROMO", referencedColumnName = "idPromo")
+	@JsonBackReference
 	private Promo promo;
+	
+	@ManyToOne
+	@JoinColumn(name = "IDTIPOPROMO", referencedColumnName = "id")
+	@JsonBackReference
+	private TipoPromo tipoPromo;
 	
 	public DettPromo() {}
 
@@ -135,16 +139,15 @@ public class DettPromo implements Serializable
 		this.promo = promo;
 	}
 
-	public int getIdTipoPromo()
+	public TipoPromo getTipoPromo()
 	{
-		return idTipoPromo;
+		return tipoPromo;
 	}
 
-	public void setIdTipoPromo(int idTipoPromo)
+	public void setTipoPromo(TipoPromo tipoPromo)
 	{
-		this.idTipoPromo = idTipoPromo;
+		this.tipoPromo = tipoPromo;
 	}
-	
 	
 	
 }
