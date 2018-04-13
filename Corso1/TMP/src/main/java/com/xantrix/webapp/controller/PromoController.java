@@ -1,9 +1,5 @@
 package com.xantrix.webapp.controller;
 
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.xantrix.webapp.entities.Promo;
 import com.xantrix.webapp.service.PromoService;
+
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 public class PromoController
@@ -36,6 +37,5 @@ public class PromoController
 
 		return new ResponseEntity<List<Promo>>(promo, HttpStatus.OK);
 	}
-	
-	
+
 }

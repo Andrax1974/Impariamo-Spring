@@ -13,10 +13,10 @@ import com.xantrix.webapp.repository.PromoRepository;
 @Transactional
 public class PromoServiceImpl implements PromoService
 {
-
 	@Autowired
 	private PromoRepository promoRepository;
 	
+
 	@Override
 	public List<Promo> SelTutti()
 	{

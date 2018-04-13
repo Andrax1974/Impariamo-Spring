@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Table(name = "DEPRIFPROMO")
 public class DepRifPromo  implements Serializable
 {
-private static final long serialVersionUID = 1436206967746080890L;
+	private static final long serialVersionUID = 1436206967746080890L;
 	
 	@Id
 	@Column(name = "ID")
@@ -63,4 +63,7 @@ private static final long serialVersionUID = 1436206967746080890L;
 	{
 		this.promo = promo;
 	}
+	
+	
+
 }

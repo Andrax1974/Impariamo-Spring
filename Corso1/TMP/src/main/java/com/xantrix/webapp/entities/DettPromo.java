@@ -47,9 +47,6 @@ public class DettPromo implements Serializable
 	@Column(name = "OGGETTO")
 	private String oggetto;
 	
-	@Column(name = "ISFID")
-	private String isfid;
-	
 	@ManyToOne
 	@JoinColumn(name = "IDPROMO", referencedColumnName = "idPromo")
 	@JsonBackReference
@@ -131,16 +128,6 @@ public class DettPromo implements Serializable
 	{
 		this.oggetto = oggetto;
 	}
-	
-	public String getIsfid()
-	{
-		return isfid;
-	}
-
-	public void setIsfid(String isfid)
-	{
-		this.isfid = isfid;
-	}
 
 	public Promo getPromo()
 	{
@@ -161,5 +148,6 @@ public class DettPromo implements Serializable
 	{
 		this.tipoPromo = tipoPromo;
 	}
-
+	
+	
 }

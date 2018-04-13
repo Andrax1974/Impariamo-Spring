@@ -63,4 +63,8 @@ public class TipoPromo implements Serializable
 	{
 		this.dettPromo = dettPromo;
 	}
+	
+	
+	
+
 }

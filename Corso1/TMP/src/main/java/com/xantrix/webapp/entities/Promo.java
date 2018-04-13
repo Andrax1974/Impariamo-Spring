@@ -41,7 +41,9 @@ public class Promo implements Serializable
 	@JsonManagedReference
 	private Set<DepRifPromo> depRifPromo = new HashSet<>();
 	
-	public Promo() {}
+	public Promo()
+	{
+	}
 
 	public String getIdPromo()
 	{
@@ -102,8 +104,6 @@ public class Promo implements Serializable
 	{
 		this.depRifPromo = depRifPromo;
 	}
-	
-	
 	
 	
 
