@@ -12,9 +12,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "DEPRIFPROMO")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "idPromo")
 public class DepRifPromo  implements Serializable
 {
 private static final long serialVersionUID = 1436206967746080890L;
@@ -29,7 +33,8 @@ private static final long serialVersionUID = 1436206967746080890L;
 	
 	@ManyToOne
 	@JoinColumn(name = "IDPROMO", referencedColumnName = "idPromo")
-	@JsonBackReference
+	@JsonBackReference 
+	//@JsonIgnore
 	private Promo promo;
 	
 	public DepRifPromo() {}

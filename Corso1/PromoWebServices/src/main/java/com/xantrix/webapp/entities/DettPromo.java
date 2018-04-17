@@ -15,9 +15,14 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "DETTPROMO")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "idPromo")
 public class DettPromo implements Serializable
 {
 	private static final long serialVersionUID = 7444232363326102441L;
@@ -52,16 +57,17 @@ public class DettPromo implements Serializable
 	
 	@ManyToOne
 	@JoinColumn(name = "IDPROMO", referencedColumnName = "idPromo")
-	@JsonBackReference
+	@JsonBackReference 
+	//@JsonIgnore
 	private Promo promo;
 	
 	@ManyToOne
-	@JoinColumn(name = "IDTIPOPROMO", referencedColumnName = "id")
-	@JsonBackReference
+	@JoinColumn(name = "IDTIPOPROMO", referencedColumnName = "idTipoPromo")
+	//@JsonManagedReference
 	private TipoPromo tipoPromo;
 	
 	public DettPromo() {}
-
+	
 	public int getId()
 	{
 		return id;

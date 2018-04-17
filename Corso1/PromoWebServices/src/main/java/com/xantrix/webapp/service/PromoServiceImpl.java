@@ -1,5 +1,6 @@
 package com.xantrix.webapp.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,7 @@ import com.xantrix.webapp.entities.Promo;
 import com.xantrix.webapp.repository.PromoRepository;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class PromoServiceImpl implements PromoService
 {
 
@@ -23,4 +24,40 @@ public class PromoServiceImpl implements PromoService
 		return promoRepository.findAll();
 	}
 
+	@Override
+	public Promo SelByIdPromo(String IdPromo)
+	{
+		 return promoRepository.findByIdPromo(IdPromo);
+	}
+
+	@Override
+	public List<Promo> SelActivePromo()
+	{
+		Date today = new Date();
+		return promoRepository.findActivePromo(today);
+	}
+	
+	@Override
+	public Promo SelByCodice(String Anno, String Codice)
+	{
+		return promoRepository.findByAnnoAndCodice(Anno, Codice);
+	}
+	
+	@Override
+	@Transactional
+	public void InsPromo(Promo promo)
+	{
+		promoRepository.saveAndFlush(promo);
+	}
+
+	@Override
+	@Transactional
+	public void DelPromo(Promo promo)
+	{
+		promoRepository.delete(promo);
+	}
+
+	
+	
+	
 }

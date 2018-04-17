@@ -11,23 +11,28 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "TIPOPROMO")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class , property = "id")
 public class TipoPromo implements Serializable
 {
 	private static final long serialVersionUID = 8452515756703751450L;
 	
 	@Id
-	@Column(name = "ID")
-	private String id;
+	@Column(name = "IDTIPOPROMO")
+	private String idTipoPromo;
 	
 	@Column(name = "DESCRIZIONE")
 	private String descrizione;
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "tipoPromo")
-	@JsonManagedReference
+	@JsonBackReference
+	//@JsonIgnore
 	private Set<DettPromo> dettPromo = new HashSet<>();
 	
 	public TipoPromo()
@@ -36,12 +41,12 @@ public class TipoPromo implements Serializable
 
 	public String getId()
 	{
-		return id;
+		return idTipoPromo;
 	}
 
-	public void setId(String id)
+	public void setId(String idTipoPromo)
 	{
-		this.id = id;
+		this.idTipoPromo = idTipoPromo;
 	}
 
 	public String getDescrizione()
