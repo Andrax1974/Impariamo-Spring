@@ -10,7 +10,7 @@ public interface PromoService
 	
 	public Promo SelByIdPromo(String IdPromo);
 	
-	public Promo SelByCodice(String Anno, String Codice);
+	public Promo SelByCodice(int Anno, String Codice);
 	
 	public List<Promo> SelActivePromo();
 	

@@ -1,6 +1,7 @@
 package com.xantrix.webapp.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,15 +19,31 @@ public class DettPromoServiceImpl implements DettPromoService
 	private DettPromoRepository dettPromoRepository;
 	
 	@Override
+	public Optional<DettPromo> SelDettPromo(long Id)
+	{
+		return dettPromoRepository.findById(Id);
+	}
+	
+	@Override
 	public List<DettPromo> SelDettPromoByCodFid(String CodFid)
 	{
 		return dettPromoRepository.findDettPromoByCodFid(CodFid);
 	}
 
 	@Override
+	@Transactional
 	public void InsDettPromo(DettPromo dettPromo)
 	{
 		dettPromoRepository.saveAndFlush(dettPromo);
 	}
+
+	@Override
+	@Transactional
+	public void UpdDettPromo(Long Id, String Oggetto)
+	{
+		 dettPromoRepository.UpdOggettoPromo(Oggetto, Id);
+	}
+
+	
 
 }

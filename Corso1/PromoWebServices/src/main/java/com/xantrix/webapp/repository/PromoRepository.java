@@ -14,7 +14,7 @@ public interface PromoRepository extends JpaRepository<Promo, Long>
 {
 	Promo findByIdPromo(String IdPromo);
 	
-	Promo findByAnnoAndCodice(String Anno, String Codice);
+	Promo findByAnnoAndCodice(int Anno, String Codice);
 	
 	@Query("select a from Promo a join a.dettPromo b where ?1 between b.inizio and b.fine")
 	List<Promo> findActivePromo(Date Data);

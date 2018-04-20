@@ -63,7 +63,6 @@ public class DettPromo implements Serializable
 	
 	@ManyToOne
 	@JoinColumn(name = "IDTIPOPROMO", referencedColumnName = "idTipoPromo")
-	//@JsonManagedReference
 	private TipoPromo tipoPromo;
 	
 	public DettPromo() {}

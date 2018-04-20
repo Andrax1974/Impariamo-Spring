@@ -1,8 +1,7 @@
 package com.xantrix.webapp.controller;
 
 import java.util.List;
-
-import javax.validation.Valid;
+ 
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +10,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,20 +61,21 @@ public class PromoController
 
 		if (promo == null)
 		{
-			throw new PromoException("Promozione Assente");
-			// return new ResponseEntity<Promo>(HttpStatus.NO_CONTENT);
+			//throw new PromoException("Promozione Assente");
+			 return new ResponseEntity<Promo>(HttpStatus.NO_CONTENT);
 		}
 
 		return new ResponseEntity<Promo>(promo, HttpStatus.OK);
 	}
 
+	//http://localhost:8091/promo/codice?anno=2018&codice=PP08
 	@RequestMapping(value = "/promo/codice", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<Promo> listPromoByCodice(@RequestParam("anno") String Anno,
 			@RequestParam("codice") String Codice) throws PromoException
 	{
 		logger.info("****** Otteniamo la promozione con Codice: " + Codice + "*******");
 
-		Promo promo = promoService.SelByCodice(Anno, Codice);
+		Promo promo = promoService.SelByCodice(Integer.valueOf(Anno), Codice);
 
 		if (promo == null)
 		{
@@ -111,7 +110,7 @@ public class PromoController
 
 		List<DettPromo> dettPromo = dettPromoService.SelDettPromoByCodFid(IdFidelity);
 
-		logger.info("Num Record: " + dettPromo.size());
+		logger.info("Numero Record: " + dettPromo.size());
 
 		if (dettPromo.size() == 0)
 		{
@@ -135,21 +134,7 @@ public class PromoController
 		return new ResponseEntity<Promo>(headers, HttpStatus.CREATED);
 	}
 
-	// ------------------- INSERT PROMO ------------------------------------
-	@RequestMapping(value = "/dettpromo/inserisci", method = RequestMethod.POST)
-	public ResponseEntity<DettPromo> createUser(@RequestBody DettPromo dettpromo, UriComponentsBuilder ucBuilder)
-	{
-		logger.info("Aggiungiamo un nuova riga promo ");
-
-		dettPromoService.InsDettPromo(dettpromo);
-
-		HttpHeaders headers = new HttpHeaders();
-		headers.setLocation(ucBuilder.path("/promo/id/{idPromo}").buildAndExpand(dettpromo.getId()).toUri());
-
-		return new ResponseEntity<DettPromo>(headers, HttpStatus.CREATED);
-	}
-
-	// ------------------- Delete Promozione ----------------------------------
+	// ------------------- DELETE PROMO ----------------------------------
 	@RequestMapping(value = "/promo/{idPromo}", method = RequestMethod.DELETE)
 	public ResponseEntity deletePromo(@PathVariable("idPromo") String IdPromo) throws PromoException
 	{
@@ -178,4 +163,16 @@ public class PromoController
 
 		return new ResponseEntity<>(responseNode, headers, HttpStatus.OK);
 	}
+	
+	// ------------------- UPDATE DETTPROMO ------------------------------------
+	@RequestMapping(value = "/dettpromo/modifica", method = RequestMethod.PUT)
+	public ResponseEntity<DettPromo> updateDettPromo(@RequestParam("id") Long Id, @RequestParam("oggetto") String Oggetto)
+	{
+		logger.info("Modifichiamo il dettaglio promo " + Id);
+
+		dettPromoService.UpdDettPromo(Id, Oggetto);
+		
+		return new ResponseEntity<DettPromo>(HttpStatus.CREATED);
+	}
+
 }

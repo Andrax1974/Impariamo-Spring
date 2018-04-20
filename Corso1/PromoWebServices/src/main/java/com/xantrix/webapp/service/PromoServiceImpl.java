@@ -38,7 +38,7 @@ public class PromoServiceImpl implements PromoService
 	}
 	
 	@Override
-	public Promo SelByCodice(String Anno, String Codice)
+	public Promo SelByCodice(int Anno, String Codice)
 	{
 		return promoRepository.findByAnnoAndCodice(Anno, Codice);
 	}
