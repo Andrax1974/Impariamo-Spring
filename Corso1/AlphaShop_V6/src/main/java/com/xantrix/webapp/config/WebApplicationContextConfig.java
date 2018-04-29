@@ -34,6 +34,9 @@ import org.springframework.web.servlet.view.xml.MarshallingView;
 import org.springframework.web.util.UrlPathHelper;
 
 import com.xantrix.webapp.domain.Articoli;
+import com.xantrix.webapp.views.CsvView;
+import com.xantrix.webapp.views.ExcelView;
+import com.xantrix.webapp.views.PdfView;
 
 @Configuration
 @EnableWebMvc
@@ -82,6 +85,7 @@ public class WebApplicationContextConfig implements WebMvcConfigurer
 	public void addResourceHandlers(ResourceHandlerRegistry registry)
 	{
 		registry.addResourceHandler("/img/**").addResourceLocations("/static/images/");
+		registry.addResourceHandler("/static/**").addResourceLocations("/static/");
 	}
 
 	@Bean
@@ -151,17 +155,38 @@ public class WebApplicationContextConfig implements WebMvcConfigurer
 	}
 
 	@Bean
+	public PdfView pdfView()
+	{
+		return new PdfView();
+	}
+	
+	@Bean
+	public ExcelView xlsxView()
+	{
+		return new ExcelView();
+	}
+	
+	@Bean
+	public CsvView csvView()
+	{
+		return new CsvView();
+	}
+
+	@Bean
 	public ViewResolver contentNegotiatingViewResolver(ContentNegotiationManager manager)
 	{
 		ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
 		resolver.setContentNegotiationManager(manager);
-
+		
 		ArrayList<View> views = new ArrayList<>();
 		views.add(jsonView()); // Formato JSON
 		views.add(xmlView()); // Formato XML
-
+		views.add(pdfView()); // Formato PDF
+		views.add(xlsxView()); // Formato XLSX
+		views.add(csvView()); // Formato CSV
+		
 		resolver.setDefaultViews(views);
-
+		
 		return resolver;
 	}
 }

@@ -69,6 +69,15 @@ public class ArticoliController
 
 		return "articoli";
 	}
+	
+	@RequestMapping(value = "/cerca/{filter}/download", method = RequestMethod.GET)
+	public String GetArticoliByFilterDwld(@PathVariable("filter") String Filter, Model model)
+	{
+		recordset = articoliService.SelArticoliByFilter(Filter);
+		model.addAttribute("Articoli", recordset);
+
+		return "";
+	}
 
 	// http://localhost:8080/alphashop/articoli/cerca?filter=barilla&rep=1
 	@RequestMapping(value = "/cerca", method = RequestMethod.GET)

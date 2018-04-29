@@ -135,6 +135,33 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>2.9.3</version>
 		</dependency>
+		
+		<!-- Estrazione Formato Excel -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.17</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.17</version>
+		</dependency>
+		
+		<!-- Estrazione Formato PDF -->
+		<dependency>
+			<groupId>com.github.librepdf</groupId>
+			<artifactId>openpdf</artifactId>
+			<version>1.0.5</version>
+		</dependency>
+		
+		<!-- Estrazione Formato CSV -->
+		<dependency>
+			<groupId>net.sf.supercsv</groupId>
+			<artifactId>super-csv</artifactId>
+			<version>2.4.0</version>
+		</dependency>
 
 		<!-- Logging -->
 		<dependency>

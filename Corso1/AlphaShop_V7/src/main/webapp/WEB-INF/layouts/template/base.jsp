@@ -108,7 +108,7 @@
     				</button>
     				<div class="dropdown-menu" aria-labelledby="dropdownMenu1">
     					<c:choose>
-	    					<c:when test = "${IsLogged}">
+	    					<c:when test = "${User != null}">
 	    						<a class="dropdown-item disabled" href="#">Accedi</a>
 	    					</c:when>
 	    					<c:otherwise>

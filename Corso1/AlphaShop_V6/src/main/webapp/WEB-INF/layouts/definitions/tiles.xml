@@ -46,12 +46,12 @@
 		<put-attribute name="content" value="/WEB-INF/view/inscliente.jsp" />  
 	</definition>
 	
-	<definition name="baseLayout2" template="/WEB-INF/layouts/template/test.jsp">
+	<definition name="baseLogIn" template="/WEB-INF/layouts/template/baseLogin.jsp">
 		<put-attribute name="titolo" value="" />
 		<put-attribute name="content" value="" />
 	</definition>
 	
-	<definition name="login" extends="baseLayout2">
+	<definition name="login" extends="baseLogIn">
 		<put-attribute name="titolo"  value="Accesso al Sito" />
 		<put-attribute name="content" value="/WEB-INF/view/login.jsp" />  
 	</definition>

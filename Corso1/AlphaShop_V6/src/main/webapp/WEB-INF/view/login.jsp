@@ -15,6 +15,12 @@
                                 </div>
                             </c:if>
                             
+                            <c:if test="${param.forbidden != null}">
+                                <div class="alert alert-danger">
+                                    <p>Accesso Negato! Autenticarsi con un utente diverso</p>
+                                </div>
+                            </c:if>
+                            
                             <c:if test="${param.logout != null}">
                                 <div class="alert alert-success">
                                     <p>Disconessione eseguita con successo!</p>
@@ -31,7 +37,9 @@
                             </div>
                             <div class="input-group input-sm">
                               <div class="checkbox">
-                                <label><input type="checkbox" id="rememberme" name="remember-me"> Ricordami</label>  
+                                <label class="mt-checkbox mt-checkbox-outline">
+                                	<input type="checkbox" id="rememberme" name="remember-me">Ricordami
+                                </label>  
                               </div>
                             </div>
                             <input type="hidden" name="${_csrf.parameterName}"

@@ -16,6 +16,7 @@ import javax.validation.Valid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -51,6 +52,9 @@ public class ClientiController
 
 	@Autowired
 	private ProfiliService profiliService;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 	
 	private SpringSecurityUserContext userContext;
 	
@@ -161,6 +165,7 @@ public class ClientiController
 		model.addAttribute("IsClienti", IsClienti);
 		model.addAttribute("BolFil", BolliniByFilter);
 		model.addAttribute("BolTot", BolliniTot);
+		model.addAttribute("User",  userContext.getCurrentClient());
 
 		return "clienti";
 	}
@@ -279,6 +284,7 @@ public class ClientiController
 		model.addAttribute("IsClienti", IsClienti);
 		model.addAttribute("BolTot", BolliniTot);
 		model.addAttribute("BolFil", BolliniByFilter);
+		model.addAttribute("User",  userContext.getCurrentClient());
 		
 		return "clienti";
 	}
@@ -377,6 +383,7 @@ public class ClientiController
 		model.addAttribute("IsClienti", IsClienti);
 		model.addAttribute("BolTot", BolliniTot);
 		model.addAttribute("BolFil", BolliniByFilter);
+		model.addAttribute("User",  userContext.getCurrentClient());
 
 		return "clienti"; 
 
@@ -425,6 +432,7 @@ public class ClientiController
 		model.addAttribute("IsClienti", IsClienti);
 		model.addAttribute("BolTot", BolliniTot);
 		model.addAttribute("BolFil", BolliniByFilter);
+		model.addAttribute("User",  userContext.getCurrentClient());
 
 		return "clienti"; 
 
@@ -508,7 +516,7 @@ public class ClientiController
 			@ModelAttribute("Utente") Utenti utente, 
 			@ModelAttribute("Profilo") Profili profilo,
 			@PathVariable("idCliente") String IdCliente, 
-			 Model model, HttpServletRequest request)
+			Model model, HttpServletRequest request)
 	{
 		Set<Profili> profili = new HashSet<>();
 		
@@ -531,6 +539,10 @@ public class ClientiController
 			profili.add(new Profili("USER", utente));
 
 			utente.setProfili(profili);
+			
+			//CRITTIAMO LA PASSWORD
+			String encodedPassword = passwordEncoder.encode(utente.getPwd());
+			utente.setPwd(encodedPassword); 
 
 			if (test.getUserId() != null)
 				utentiService.Aggiorna(utente);

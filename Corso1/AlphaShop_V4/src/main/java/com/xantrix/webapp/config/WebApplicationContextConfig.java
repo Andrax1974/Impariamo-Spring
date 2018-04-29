@@ -1,6 +1,7 @@
 package com.xantrix.webapp.config;
 
 import java.util.ArrayList;
+
 import java.util.Locale;
 
 import org.springframework.context.MessageSource;
@@ -33,6 +34,10 @@ import org.springframework.web.servlet.view.xml.MarshallingView;
 import org.springframework.web.util.UrlPathHelper;
 
 import com.xantrix.webapp.domain.Articoli;
+import com.xantrix.webapp.views.PdfView;
+import com.xantrix.webapp.views.CsvView;
+import com.xantrix.webapp.views.ExcelView;
+
 
 @Configuration
 @EnableWebMvc
@@ -47,7 +52,7 @@ public class WebApplicationContextConfig implements WebMvcConfigurer
 
 		resolver.setPrefix("/WEB-INF/view/");
 		resolver.setSuffix(".jsp");
-
+		 
 		return resolver;
 	}
 
@@ -102,7 +107,26 @@ public class WebApplicationContextConfig implements WebMvcConfigurer
 		marshaller.setClassesToBeBound(Articoli.class);
 
 		MarshallingView xmlView = new MarshallingView(marshaller);
+
 		return xmlView;
+	}
+
+	@Bean
+	public PdfView pdfView()
+	{
+		return new PdfView();
+	}
+	
+	@Bean
+	public ExcelView xlsxView()
+	{
+		return new ExcelView();
+	}
+	
+	@Bean
+	public CsvView csvView()
+	{
+		return new CsvView();
 	}
 
 	@Bean
@@ -110,16 +134,19 @@ public class WebApplicationContextConfig implements WebMvcConfigurer
 	{
 		ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
 		resolver.setContentNegotiationManager(manager);
-
+		
 		ArrayList<View> views = new ArrayList<>();
-		views.add(jsonView()); //Formato JSON
-		views.add(xmlView()); //Formato XML
-
+		views.add(jsonView()); // Formato JSON
+		views.add(xmlView()); // Formato XML
+		views.add(pdfView()); // Formato PDF
+		views.add(xlsxView()); // Formato XLSX
+		views.add(csvView()); // Formato CSV
+		
 		resolver.setDefaultViews(views);
-
+		
 		return resolver;
 	}
-
+	
 	@Override
 	public void configureViewResolvers(ViewResolverRegistry registry)
 	{

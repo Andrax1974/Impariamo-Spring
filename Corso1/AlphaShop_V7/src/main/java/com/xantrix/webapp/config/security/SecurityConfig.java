@@ -127,7 +127,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 						.logoutUrl("/login/form?logout")
 						.invalidateHttpSession(true)
 						.logoutSuccessHandler(customLogoutSuccessHandler)
-						.invalidateHttpSession(true)
                         .clearAuthentication(true);
 					//.and()
 					//.cors().disable()
