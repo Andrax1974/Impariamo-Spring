@@ -52,6 +52,15 @@ public class ArticoliController
 
 	private int NumArt = 0;
 	private List<Articoli> recordset;
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public String GetArticoli(Model model)
+	{
+		model.addAttribute("Titolo", "Ricerca Articoli");
+		model.addAttribute("Titolo2", "Ricerca gli articoli");
+		
+		return "articoli";
+	}
 
 	// http://localhost:8080/alphashop/articoli/cerca/barilla
 	@RequestMapping(value = "/cerca/{filter}", method = RequestMethod.GET)

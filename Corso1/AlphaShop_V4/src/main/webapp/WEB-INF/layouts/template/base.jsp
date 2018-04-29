@@ -40,7 +40,7 @@
         				</a>
       				</li>
       				<li class="nav-item">
-        				<a class="nav-link" href="#">
+        				<a class="nav-link" href="<spring:url value="/articoli/" /> ">
         					<span class="oi oi-box" title="box" aria-hidden="true"></span>
         					Prodotti
         				</a>
