@@ -15,6 +15,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -52,6 +53,17 @@ public class ArticoliController
 
 	private int NumArt = 0;
 	private List<Articoli> recordset;
+	 
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public String GetArticoli(Model model)
+	{
+		model.addAttribute("Titolo", "Ricerca Articoli");
+		model.addAttribute("Titolo2", "Ricerca gli articoli");
+		model.addAttribute("IsArticoli", true);
+		
+		return "articoli";
+	}
 
 	// http://localhost:8080/alphashop/articoli/cerca/barilla
 	@RequestMapping(value = "/cerca/{filter}", method = RequestMethod.GET)
@@ -66,8 +78,35 @@ public class ArticoliController
 		model.addAttribute("Titolo", "Ricerca Articoli");
 		model.addAttribute("Titolo2", "Risultati Ricerca " + Filter);
 		model.addAttribute("Articoli", recordset);
+		model.addAttribute("IsArticoli", true);
 
 		return "articoli";
+	}
+	
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	public String SearchItem(@RequestParam("filter") String pSearchTerm, ModelMap model)
+	{
+		recordset = articoliService.SelArticoliByFilter(pSearchTerm);
+
+		if (recordset != null)
+			NumArt = recordset.size();
+
+		model.addAttribute("NumArt", NumArt);
+		model.addAttribute("Titolo", "Ricerca Articoli");
+		model.addAttribute("Titolo2", "Risultati Ricerca " + pSearchTerm);
+		model.addAttribute("Articoli", recordset);
+		model.addAttribute("IsArticoli", true);
+
+		return "articoli";
+	}
+	
+	@RequestMapping(value = "/cerca/{filter}/download", method = RequestMethod.GET)
+	public String GetArticoliByFilterDwld(@PathVariable("filter") String Filter, Model model)
+	{
+		recordset = articoliService.SelArticoliByFilter(Filter);
+		model.addAttribute("Articoli", recordset);
+
+		return "";
 	}
 
 	// http://localhost:8080/alphashop/articoli/cerca?filter=barilla&rep=1
@@ -87,6 +126,7 @@ public class ArticoliController
 		model.addAttribute("Titolo", "Ricerca Articoli");
 		model.addAttribute("Titolo2", "Risultati Ricerca " + Filter);
 		model.addAttribute("Articoli", recordset);
+		model.addAttribute("IsArticoli", true);
 
 		return "articoli";
 	}
@@ -143,6 +183,7 @@ public class ArticoliController
 		model.addAttribute("Articoli", recordset);
 		model.addAttribute("NumArt", NumArt);
 		model.addAttribute("Titolo", "Ricerca Articoli");
+		model.addAttribute("IsArticoli", true);
 
 		return "articoli";
 	}
@@ -165,6 +206,7 @@ public class ArticoliController
 		model.addAttribute("Titolo", "Ricerca Articoli");
 		model.addAttribute("Titolo2", "Risultati Ricerca " + Filter);
 		model.addAttribute("Articoli", recordset);
+		model.addAttribute("IsArticoli", true);
 
 		return "articoli";
 	}
@@ -184,6 +226,7 @@ public class ArticoliController
 		model.addAttribute("Titolo", "Dettaglio Articolo");
 		model.addAttribute("Titolo2", "Dati Articolo " + CodArt);
 		model.addAttribute("articolo", articolo);
+		model.addAttribute("IsArticoli", true);
 
 		return "infoArticolo";
 	}
@@ -219,6 +262,7 @@ public class ArticoliController
 		model.addAttribute("Titolo", "Ricerca Articoli");
 		model.addAttribute("Titolo2", "Ultimi " + NumArt + " Articoli Creati");
 		model.addAttribute("Articoli", recordset);
+		model.addAttribute("IsArticoli", true);
 
 		return "articoli";
 	}
