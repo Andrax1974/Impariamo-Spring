@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,7 @@ import com.xantrix.webapp.service.DettPromoService;
 import com.xantrix.webapp.service.PromoService;
 
 @RestController
+//@CrossOrigin(origins = "http://localhost:8090")
 public class PromoController
 {
 	private static final Logger logger = LoggerFactory.getLogger(PromoController.class);
@@ -49,6 +51,8 @@ public class PromoController
 			return new ResponseEntity<List<Promo>>(HttpStatus.NO_CONTENT);
 		}
 
+		logger.info("Numero dei record: " + promo.size());
+		
 		return new ResponseEntity<List<Promo>>(promo, HttpStatus.OK);
 	}
 
@@ -61,8 +65,8 @@ public class PromoController
 
 		if (promo == null)
 		{
-			//throw new PromoException("Promozione Assente");
-			 return new ResponseEntity<Promo>(HttpStatus.NO_CONTENT);
+			throw new PromoException("Promozione Assente");
+			 //return new ResponseEntity<Promo>(HttpStatus.NO_CONTENT);
 		}
 
 		return new ResponseEntity<Promo>(promo, HttpStatus.OK);
@@ -122,7 +126,7 @@ public class PromoController
 
 	// ------------------- INSERT PROMO ------------------------------------
 	@RequestMapping(value = "/promo/inserisci", method = RequestMethod.POST)
-	public ResponseEntity<Promo> createUser(@RequestBody Promo promo, UriComponentsBuilder ucBuilder)
+	public ResponseEntity<Promo> createPromo(@RequestBody Promo promo, UriComponentsBuilder ucBuilder)
 	{
 		logger.info("Creiamo una Promo con id " + promo.getIdPromo());
 
