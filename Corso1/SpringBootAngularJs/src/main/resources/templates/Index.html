@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" ng-app="app">
+<head>
+	<meta charset="utf-8"></meta>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+	<meta name="viewport" content="width=device-width, initialscale=1"></meta>
+	
+	<link rel="stylesheet" th:href="@{/static/css/bootstrap.min.css}" ></link>
+	<link rel="stylesheet" th:href="@{/static/css/app.css}" ></link>
+	
+	<title></title> 
+	
+</head>
+<body ng-controller="MyController">
+ 	
+ 	<h3 ng-bind="titolo"></h3>
+ 	
+ 	<!--  
+ 	<label>Nome: </label><input ng-model="nome" type="text" />
+	<p>Ciao {{nome}}, stai usando il tuo primo test di AngularJs</p>
+	
+	<br>
+	-->
+	<form>
+		<div class="form-group">
+			<label for="codice">Codice Articolo</label>
+			<input type="text" class="form-control" ng-model="NewArticolo.codice" placeholder="Codice"/>
+		</div>
+		
+		<div class="form-group">
+			<label for="descrizione">Descrizione Articolo</label>
+			<input type="text" class="form-control" ng-model="NewArticolo.descrizione" placeholder="Descrizione"/>
+		</div>
+		
+		<div class="form-group">
+			<label for="prezzo">Descrizione Articolo</label>
+			<input type="text" class="form-control" ng-model="NewArticolo.prezzo" placeholder="Prezzo"/>
+		</div>
+		
+		<div class="form-group">
+			<label for="categoria">Categoria Articolo</label>
+			<select class="form-control" ng-model="NewArticolo.categoria" ng-options="categoria for categoria in categorie">
+			</select>
+		</div>
+		
+		<button class="btn btn-primary" ng-click="inserisci(NewArticolo)">Inserisci</button>
+	</form>
+	
+	<div ng-show = "articoli.length > 0">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Codice</th>
+					<th scope="col">Descrizione</th>
+					<th scope="col">Categoria</th>
+					<th scope="col">Prezzo</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="articolo in articoli">
+					<td>{{numart}}</td>
+					<td><span ng-bind="articolo.codice"></span></td>
+					<td><span ng-bind="articolo.descrizione"></span></td>
+					<td><span ng-bind="articolo.categoria"></span></td>
+					<td><span ng-bind="articolo.prezzo"></span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div ng-hide="articoli.length > 0">
+		<h4>Nessun Articolo Inserito</h4>
+	</div>
+ 	
+	<script type="text/javascript" th:src="@{/static/js/jquery-3.2.1.min.js}"></script>
+	<script type="text/javascript" th:src="@{/static/js/bootstrap.min.js}"></script>
+	<script type="text/javascript" th:src="@{/static/js/angular.min.js}"></script>
+	<script type="text/javascript" th:src="@{/static/js/app.js}"></script>
+	<script type="text/javascript" th:src="@{/static/js/ngtest/controller.js}"></script>
+</body>
+</html>

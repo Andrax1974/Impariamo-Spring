@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" ng-app="app">
+<head>
+	<meta charset="utf-8"></meta>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+	<meta name="viewport" content="width=device-width, initialscale=1"></meta>
+	
+	<link rel="stylesheet" th:href="@{/static/css/bootstrap.min.css}" ></link>
+	<link rel="stylesheet" th:href="@{/static/css/app.css}" ></link>
+	
+	<title th:text="${Titolo}"></title> 
+	
+</head>
+<body ng-controller="GestPromoController">
+ 	
+ 	<div class="jumbotron jumbotron-fluid">
+ 	  <div class="container">
+		  <h2 class="display-8" th:text="${Titolo}" ></h2>
+		  <hr class="my-8">
+		  <p>Gestione Dati Promozione</p>
+		  <!--  
+		  <p class="lead">
+		    <a class="btn btn-primary" href="#" role="button">Disabilita</a>
+		  </p>
+		  -->
+	  </div>
+	</div>
+ 	
+ 	<section class="container">
+			<form name="frmPromo">
+				<div class="form-group">
+					<label for="codice">Id Promo</label>
+					<input type="text" class="form-control" ng-model="promozioni.idPromo"  placeholder="IdPromo"/>
+				</div>
+				
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="codice">Codice</label>
+						<input type="text" class="form-control" ng-model="promozioni.codice" placeholder="Codice"/>
+					</div>
+					<div class="form-group col-md-6">
+						<label for="descrizione">Descrizione</label>
+						<input type="text" class="form-control" ng-model="promozioni.descrizione" placeholder="Descrizione"/>
+					</div>
+				</div>
+				
+				<div class="form-row">
+					<div class="form-group col-md-3">
+						<label for="codice">Codice Articolo</label>
+						<input type="text" class="form-control" ng-model="dettPromo.codart" />
+					</div>
+					<div class="form-group col-md-3">
+						<label for="codice">Oggetto</label>
+						<input type="text" class="form-control" ng-model="dettPromo.oggetto" />
+					</div>
+					<div class="form-group col-md-6">
+						<label for="codFid">Codice Fidelity</label>
+						<input type="text" class="form-control" ng-model="dettPromo.codfid" />
+					</div>
+				</div>
+				
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="inizio">Inizio</label>
+						<input type="text" class="form-control" ng-model="dettPromo.inizio" />
+					</div>
+					<div class="form-group col-md-6">
+						<label for="inizio">Fine</label>
+						<input type="text" class="form-control" ng-model="dettPromo.fine" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="categoria">Tipo Promozione</label>
+					<select class="form-control" ng-model="dettPromo.tipoPromo.id"> 
+						<option value="">Seleziona il Tipo Promozione</option>
+						<option ng-repeat="option in tipopromo.availableOptions" ng-value="option.value">{{option.name}}</option> 
+		
+					</select>
+					 
+				</div>
+				
+				<button class="btn btn-primary" ng-click="salva()">Inserisci</button>
+			</form>
+			<br>
+			<div ng-show = "promozioni.dettPromo.length > 0">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th scope="col">#</th>
+							<th scope="col">Codice</th>
+							<th scope="col">Inizio</th>
+							<th scope="col">Fine</th>
+							<th scope="col">Oggetto</th>
+							<th scope="col">Fidelity</th>
+							<th scope="col">Azioni</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="dettpromo in promozioni.dettPromo">
+							<td><span ng-bind="dettpromo.id"></span></td>
+							<td><span ng-bind="dettpromo.codart"></span></td>
+							<td><span ng-bind="dettpromo.inizio"></span></td>
+							<td><span ng-bind="dettpromo.fine"></span></td>
+							<td><span ng-bind="dettpromo.oggetto"></span></td>
+							<td><span ng-bind="dettpromo.codfid"></span></td>
+							<td><button type="button" ng-click="deleteRiga(dettpromo.id)" class="btn btn-danger btn-sm">Elimina</button></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div ng-hide="promozioni.dettPromo.length > 0">
+				<h4>Nessuna Riga Promozione</h4>
+			</div>
+	</section>
+ 	
+	<script type="text/javascript" th:src="@{/static/js/jquery-3.2.1.min.js}"></script>
+	<script type="text/javascript" th:src="@{/static/js/bootstrap.min.js}"></script>
+	<script type="text/javascript" th:src="@{/static/js/angular.min.js}"></script>
+	<script type="text/javascript" th:src="@{/static/js/app.js}"></script>
+	<script type="text/javascript" th:src="@{/static/js/dettpromo/controller.js}"></script>
+	<script type="text/javascript" th:src="@{/static/js/promo/service.js}"></script>
+</body>
+</html>

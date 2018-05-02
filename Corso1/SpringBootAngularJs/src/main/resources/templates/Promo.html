@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" ng-app="app">
+<head>
+	<meta charset="utf-8"></meta>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+	<meta name="viewport" content="width=device-width, initialscale=1"></meta>
+	
+	<link rel="stylesheet" th:href="@{/static/css/bootstrap.min.css}" ></link>
+	<link rel="stylesheet" th:href="@{/static/css/app.css}" ></link>
+	
+	<title>{{titolo}}</title> 
+	
+</head>
+<body ng-controller="PromoController">
+
+	<div class="jumbotron jumbotron-fluid">
+ 	  <div class="container">
+		  <h2 class="display-8" ng-bind="titolo" ></h2>
+		  <hr class="my-8">
+		  <p>Elenco Promozioni Disponibili</p>
+	  </div>
+	</div>
+	
+	<section class="container">
+		<div ng-show = "promozioni.length > 0">
+			<table id="promozioni" class="table table-striped table-bordered">
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">Id</th>
+						<th scope="col">Anno</th>
+						<th scope="col">Codice</th>
+						<th scope="col">Descrizione</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="promo in promozioni">
+						<td>#{{$index + 1}}</td>
+						<td><a ng-bind="promo.idPromo" th:href="@{/promo/{{promo.idPromo}}}"></a></td>
+						<td><span ng-bind="promo.anno"></span></td>
+						<td><span ng-bind="promo.codice"></span></td>
+						<td><span ng-bind="promo.descrizione"></span></td>
+						<td><a ng-click="elimina(promo.idPromo)" class="btn btn-danger table-buttons">Elimina</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div ng-hide="promozioni.length > 0">
+			<h4>Nessuna Promo Inserita</h4>
+		</div>
+	</section>
+ 	
+	<script type="text/javascript" th:src="@{/static/js/jquery-3.2.1.min.js}"></script>
+	<script type="text/javascript" th:src="@{/static/js/bootstrap.min.js}"></script>
+	<script type="text/javascript" th:src="@{/static/js/angular.min.js}"></script>
+	<script type="text/javascript" th:src="@{/static/js/app.js}"></script>
+	<script type="text/javascript" th:src="@{/static/js/promo/controller.js}"></script>
+	<script type="text/javascript" th:src="@{/static/js/promo/service.js}"></script>
+</body>
+</html>

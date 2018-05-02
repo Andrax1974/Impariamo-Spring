@@ -1,0 +1,16 @@
+body {
+	 
+	background-color: rgb(245, 245, 245);
+}
+
+.jumbotron h2 {
+	margin-top: 0;
+}
+
+.jumbotron {
+	position: relative;
+	padding-top: 50px;
+	padding-bottom: 50px;
+	min-height: 150px;
+}
+	
