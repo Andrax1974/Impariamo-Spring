@@ -18,5 +18,8 @@ public interface DettPromoRepository extends JpaRepository<DettPromo, Long>
 	@Modifying
 	@Query(value = "UPDATE DETTPROMO SET OGGETTO = :oggetto WHERE ID = :id", nativeQuery = true)
 	void UpdOggettoPromo(@Param("oggetto") String Oggetto, @Param("id") Long Id);
-
+	
+	@Modifying
+	@Query(value = "DELETE FROM DETTPROMO WHERE ID = :id", nativeQuery = true)
+	void DelRowPromo(@Param("id") Long Id);
 }

@@ -30,7 +30,7 @@ public class DettPromo implements Serializable
 	@Id
 	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private long id;
 	
 	@Column(name = "RIGA")
 	private int riga;
@@ -67,12 +67,12 @@ public class DettPromo implements Serializable
 	
 	public DettPromo() {}
 	
-	public int getId()
+	public long getId()
 	{
 		return id;
 	}
 
-	public void setId(int id)
+	public void setId(long id)
 	{
 		this.id = id;
 	}

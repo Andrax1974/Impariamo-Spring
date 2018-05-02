@@ -20,5 +20,7 @@ public interface PromoRepository extends JpaRepository<Promo, Long>
 	List<Promo> findActivePromo(Date Data);
 	
 	
+	
+	
 	 
 }

@@ -15,4 +15,6 @@ public interface DettPromoService
 	void InsDettPromo(DettPromo dettPromo);
 	
 	void UpdDettPromo(Long Id, String Oggetto);
+	
+	void DelRowPromo(Long Id);
 }

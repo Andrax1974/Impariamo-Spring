@@ -1,7 +1,10 @@
 package com.xantrix.webapp.controller;
 
-import java.util.List;
  
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,16 +65,16 @@ public class PromoController
 		logger.info("****** Otteniamo la promozione con Id: " + IdPromo + "*******");
 
 		Promo promo = promoService.SelByIdPromo(IdPromo);
-
+		
 		if (promo == null)
 		{
 			throw new PromoException("Promozione Assente");
 			 //return new ResponseEntity<Promo>(HttpStatus.NO_CONTENT);
 		}
-
+		
 		return new ResponseEntity<Promo>(promo, HttpStatus.OK);
 	}
-
+	
 	//http://localhost:8091/promo/codice?anno=2018&codice=PP08
 	@RequestMapping(value = "/promo/codice", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<Promo> listPromoByCodice(@RequestParam("anno") String Anno,
@@ -178,5 +181,28 @@ public class PromoController
 		
 		return new ResponseEntity<DettPromo>(HttpStatus.CREATED);
 	}
+	
+	// ------------------- DELETE DETTPROMO ------------------------------------
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/dettpromo/elimina/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity deleteDettPromo(@PathVariable("id") Long Id)
+	{
+		logger.info("*******ELIMINAZIONE RIGA PROMO " + Id + "*******");
+		
+		HttpHeaders headers = new HttpHeaders();
+		ObjectMapper mapper = new ObjectMapper();
+
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		ObjectNode responseNode = mapper.createObjectNode();
+
+		dettPromoService.DelRowPromo(Id);
+		
+		responseNode.put("code", HttpStatus.OK.toString());
+		responseNode.put("message", "Eliminazione Eseguita Con Successo");
+		
+		return new ResponseEntity<>(responseNode, headers, HttpStatus.OK);
+	}
+	
 
 }

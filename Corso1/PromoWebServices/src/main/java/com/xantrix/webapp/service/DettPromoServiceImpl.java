@@ -44,6 +44,11 @@ public class DettPromoServiceImpl implements DettPromoService
 		 dettPromoRepository.UpdOggettoPromo(Oggetto, Id);
 	}
 
-	
+	@Override
+	@Transactional
+	public void DelRowPromo(Long Id)
+	{
+		dettPromoRepository.DelRowPromo(Id);
+	}
 
 }

@@ -29,6 +29,8 @@ public class PromoServiceImpl implements PromoService
 	{
 		 return promoRepository.findByIdPromo(IdPromo);
 	}
+	
+	
 
 	@Override
 	public List<Promo> SelActivePromo()
@@ -57,7 +59,4 @@ public class PromoServiceImpl implements PromoService
 		promoRepository.delete(promo);
 	}
 
-	
-	
-	
 }
