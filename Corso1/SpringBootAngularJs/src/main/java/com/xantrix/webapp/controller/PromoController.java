@@ -17,10 +17,18 @@ public class PromoController
 	}
 	
 	@RequestMapping(value = "/{filter}", method = RequestMethod.GET)
-	public String getDettPromo(@PathVariable("filter") String Filter, Model model)
+	public String GestDettPromo(@PathVariable("filter") String Filter, Model model)
 	{
 		model.addAttribute("Titolo", "Gestione Promozione");
 		model.addAttribute("IdPromo", Filter);
+		return "GestPromo";
+	}
+	
+	@RequestMapping(value = "/new", method = RequestMethod.GET)
+	public String GestNewPromo(Model model)
+	{
+		model.addAttribute("Titolo", "Creazione Nuova Promozione");
+		model.addAttribute("IdPromo", "");
 		return "GestPromo";
 	}
 }
