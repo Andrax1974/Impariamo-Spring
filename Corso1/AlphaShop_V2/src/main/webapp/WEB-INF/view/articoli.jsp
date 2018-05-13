@@ -61,9 +61,10 @@
 							<fmt:formatNumber value = "${Articoli.prezzo}"  minFractionDigits = "2" type = "number"/>
 							</td>
 							<td>${Articoli.desFamAss}</td>
-							<td><a href=" <spring:url value="/articoli/infoart/${Articoli.codArt}" /> " class="btn btn-primary">
-							<span class="oi oi-plus"/></span> Dettaglio 
-      						</a> 
+							<td>
+								<a href=" <spring:url value="/articoli/infoart/${Articoli.codArt}" /> " class="btn btn-primary">
+									<span class="oi oi-plus"/></span> Dettaglio 
+	      						</a> 
       						</td>
 						</tr>
 					</c:forEach>

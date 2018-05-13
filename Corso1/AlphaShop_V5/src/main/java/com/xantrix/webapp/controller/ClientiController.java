@@ -313,7 +313,8 @@ public class ClientiController
 			{
 
 				recordset = recordset.stream().sorted(byBollini).collect(Collectors.toList());
-			} else
+			} 
+			else
 			{
 
 				recordset = recordset.stream().sorted(byBollini.reversed()).collect(Collectors.toList());

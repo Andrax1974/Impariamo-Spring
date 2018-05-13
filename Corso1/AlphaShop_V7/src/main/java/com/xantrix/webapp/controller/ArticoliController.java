@@ -54,6 +54,8 @@ public class ArticoliController
 	private int NumArt = 0;
 	private List<Articoli> recordset;
 	
+	private final String PathImages = "static\\images\\articoli\\";
+	
 	@RequestMapping(method = RequestMethod.GET)
 	public String GetArticoli(Model model)
 	{
@@ -83,7 +85,7 @@ public class ArticoliController
 	}
 	
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
-	public String SearchItem(@RequestParam("filter") String pSearchTerm, ModelMap model)
+	public String SearchItem(@RequestParam("filter") String pSearchTerm, Model model)
 	{
 		recordset = articoliService.SelArticoliByFilter(pSearchTerm);
 
@@ -98,6 +100,15 @@ public class ArticoliController
 
 		return "articoli";
 	}
+	
+	@RequestMapping(value = "/cerca/{filter}/download", method = RequestMethod.GET)
+	public String GetArticoliByFilterDwld(@PathVariable("filter") String Filter, Model model)
+	{
+		recordset = articoliService.SelArticoliByFilter(Filter);
+		model.addAttribute("Articoli", recordset);
+
+		return "";
+	}
 
 	// http://localhost:8080/alphashop/articoli/cerca?filter=barilla&rep=1
 	@RequestMapping(value = "/cerca", method = RequestMethod.GET)
@@ -105,8 +116,7 @@ public class ArticoliController
 			Model model)
 	{
 
-		List<Articoli> recordset = articoliService.SelArticoliByFilter(Filter)
-				.stream()
+		List<Articoli> recordset = articoliService.SelArticoliByFilter(Filter).stream()
 				.filter(u -> u.getIdFamAss() == IdRep).collect(Collectors.toList());
 
 		if (recordset != null)
@@ -150,11 +160,8 @@ public class ArticoliController
 
 		List<Articoli> recordset = articoliService.SelArticoliByFilter(Filter, orderBy, tipo);
 
-		recordset = recordset.stream()
-				.filter(u -> IdRep.contains(Integer.toString(u.getIdFamAss())))
-				.filter(u -> u.getQtaMag() > 0)
-				.filter(u -> u.getPrezzo() > 0)
-				.collect(Collectors.toList());
+		recordset = recordset.stream().filter(u -> IdRep.contains(Integer.toString(u.getIdFamAss())))
+				.filter(u -> u.getQtaMag() > 0).filter(u -> u.getPrezzo() > 0).collect(Collectors.toList());
 
 		if (recordset != null)
 			NumArt = recordset.size();
@@ -216,8 +223,7 @@ public class ArticoliController
 		model.addAttribute("Titolo", "Dettaglio Articolo");
 		model.addAttribute("Titolo2", "Dati Articolo " + CodArt);
 		model.addAttribute("articolo", articolo);
-		model.addAttribute("IsArticoli", true);
-
+		
 		return "infoArticolo";
 	}
 	
@@ -307,7 +313,7 @@ public class ArticoliController
 			try
 			{
 				String rootDirectory = request.getSession().getServletContext().getRealPath("/");
-				String PathName = rootDirectory + "static\\images\\articoli\\" + articolo.getCodArt().trim() + ".png";
+				String PathName = rootDirectory + PathImages + articolo.getCodArt().trim() + ".png";
 
 				productImage.transferTo(new File(PathName));
 				
@@ -329,11 +335,70 @@ public class ArticoliController
 
 		return "redirect:/articoli/infoart/" + articolo.getCodArt().trim();
 	}
+	
+	@RequestMapping(value = "/modifica/{CodArt}", method = RequestMethod.GET)
+	public String UpdArticoli(Model model, @PathVariable("CodArt") String CodArt)
+	{
+		recordset = articoliService.SelArticoliByFilter(CodArt);
+		
+		Articoli articolo;
+				
+		if (recordset == null || recordset.isEmpty())
+			throw new NoInfoArtFoundException(CodArt); 
+		else
+			articolo = recordset.get(0);
+
+		model.addAttribute("Titolo", "Modifica Articolo");
+		model.addAttribute("newArticolo", articolo);
+		model.addAttribute("famAssort", getFamAssort());
+		model.addAttribute("Iva", getIva());
+
+		return "insArticolo";
+	}
+	
+	@RequestMapping(value = "/modifica/{CodArt}", method = RequestMethod.POST)
+	public String GestUpdArticoli(@Valid @ModelAttribute("newArticolo") Articoli articolo, BindingResult result,
+			@PathVariable("CodArt") String CodArt, Model model, HttpServletRequest request)
+	{
+
+		if (result.hasErrors())
+		{
+			return "insArticolo";
+		}
+
+		MultipartFile productImage = articolo.getImmagine();
+
+		if (productImage != null && !productImage.isEmpty())
+		{
+			try
+			{
+				String rootDirectory = request.getSession().getServletContext().getRealPath("/");
+				String PathName = rootDirectory + PathImages + articolo.getCodArt().trim() + ".png";
+
+				productImage.transferTo(new File(PathName));
+				
+			} 
+			catch (Exception ex)
+			{
+				throw new RuntimeException("Errore trasferimento file", ex);
+			}
+		}
+
+		if (result.getSuppressedFields().length > 0)
+			throw new RuntimeException("ERRORE: Tentativo di eseguire il binding dei seguenti campi NON consentiti: "
+					+ StringUtils.arrayToCommaDelimitedString(result.getSuppressedFields()));
+		else
+		{
+			articoliService.InsArticolo(articolo);
+		}
+
+		return "redirect:/articoli/infoart/" + CodArt.trim();
+	}
 
 	@InitBinder
 	public void initialiseBinder(WebDataBinder binder)
 	{
-		binder.setAllowedFields("codArt", "descrizione", "um", "pzCart", "pesoNetto", "idIva", "idStatoArt", "idFamAss",
+		binder.setAllowedFields("CodArt", "codArt", "descrizione", "um", "pzCart", "pesoNetto", "idIva", "idStatoArt", "idFamAss",
 				"dataCreaz", "language", "immagine");
 
 		binder.setDisallowedFields("prezzo");
@@ -349,5 +414,28 @@ public class ArticoliController
 		binder.addCustomFormatter(numberFormatter, "pzCart");
 
 	}
+	
+	@RequestMapping(value = "/elimina/{CodArt}", method = RequestMethod.GET)
+	public String DelArticolo(@PathVariable("CodArt") String codArt, Model model)
+	{
+		try
+		{
+			if (codArt.length() > 0)
+			{
+				articoliService.DelArticolo(codArt);
+			}
+		} 
+		catch (Exception ex)
+		{
+			throw new RuntimeException("Errore eliminazione articolo", ex);
+		}
+
+		return "redirect:/articoli/";
+
+	}
 
 }
+
+
+
+

@@ -97,6 +97,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 			"/clienti/elimina/**"
 	};
 	
+	private static final String[] ARTICOLI_MATCHER =
+	{ 
+			"/articoli/aggiungi/**", 
+			"/articoli/modifica/**", 
+			"/articoli/elimina/**" 
+	}; 
+	
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception
 	{
@@ -105,10 +112,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 				.antMatchers("/resources/**").permitAll()
 				.antMatchers("/login/**").permitAll()
 				.antMatchers("/").hasAnyRole("ANONYMOUS", "USER")
+				.antMatchers(ARTICOLI_MATCHER).access("hasRole('ADMIN')")
 				.antMatchers(CLIENTI_MATCHER).access("hasRole('ADMIN')")
-				//.antMatchers("/clienti/aggiungi/**").access("hasRole('ADMIN')")
-				//.antMatchers("/clienti/modifica/**").access("hasRole('ADMIN')")
-				//.antMatchers("/clienti/elimina/**").access("hasRole('ADMIN')")
+				.antMatchers("/articoli/**").hasRole("USER") 
 				.antMatchers("/clienti/**").hasRole("USER")
 				.and()
 				.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)

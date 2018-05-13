@@ -98,10 +98,12 @@
 						</form:select>
 					</div>
 					
+					<!-- 
 					<div class="form-group">
 						<label for="immagine"><spring:message code="insarticolo.form.immagine.label"/></label>
 						<form:input id="immagine" path="immagine" type="file" class="form:input-large" />  
 					</div>
+					 -->
 					
 				</div>
 				

@@ -17,7 +17,7 @@
 	<div class="portlet light bordered">
 		 <div class="portlet-title">
 		 	 <div class="caption font-red-sunglo">
-            	<i class="icon-settings oi oi-pencil"></i>
+            	<i class="oi oi-pencil"></i>
              	<span class="caption-subject bold uppercase"><spring:message code="insarticolo.form.titolo.label"/></span>
             </div>
              <section class = "locale-link"> 
@@ -54,12 +54,12 @@
 					<div class="form-row">
 						<div class="form-group col-md-4" >
 							<label for="pzCart"><spring:message code="insarticolo.form.pzCart.label"/></label>
-							<form:input id="pzCart" path="pzCart" type="text" value="0" class="form-control"/>  
+							<form:input id="pzCart" path="pzCart" type="text" class="form-control"/>  
 						</div>
 				
 						<div class="form-group col-md-4">
 							<label for="pesoNetto"><spring:message code="insarticolo.form.pesoNetto.label"/></label>
-							<form:input id="pesoNetto" path="pesoNetto" type="text" value="0" class="form-control"/>  
+							<form:input id="pesoNetto" path="pesoNetto" type="text" class="form-control"/>  
 						</div>
 						
 						<div class="form-group col-md-4">
@@ -109,7 +109,9 @@
 				
 				<div class="form-actions">
 					<input type="submit" id="btnAdd" class="btn btn-primary form-buttons" value = <spring:message code="insarticolo.form.btnAdd.label"/> />
-					<input type="submit" id="btnAbort" class="btn btn-default form-buttons" value = <spring:message code="insarticolo.form.btnAbort.label"/> />
+					<a href="<spring:url value="/articoli/" /> " id="btnAbort" class="btn btn-default form-buttons" >
+						<spring:message code="insarticolo.form.btnAbort.label"/>
+					</a>
 				</div>
 			
 				</form:form>
