@@ -40,7 +40,7 @@
         				</a>
       				</li>
       				<li class="nav-item">
-        				<a class="nav-link" href="#">
+        				<a class="nav-link" href="<spring:url value="/articoli/" /> ">
         					<span class="oi oi-box" title="prodotti" aria-hidden="true"></span>
         					Prodotti
         				</a>
@@ -107,31 +107,10 @@
     					<span class="caret"></span>
     				</button>
     				<div class="dropdown-menu" aria-labelledby="dropdownMenu1">
-    					<c:choose>
-	    					<c:when test = "${User != null}">
-	    						<a class="dropdown-item disabled" href="#">Accedi</a>
-	    					</c:when>
-	    					<c:otherwise>
-	    						<a class="dropdown-item" href="<spring:url value="/login/form" /> ">Accedi</a>
-	    					</c:otherwise>
-    					</c:choose>
+    					<a class="dropdown-item" href="#">Accedi</a>
     					<a class="dropdown-item" href="#">Registrati</a>
     					<div class="dropdown-divider"></div>
-    					<c:choose>
-    						<c:when test = "${User != null}">
-    							<!--   <a class="dropdown-item" href="<spring:url value="/login/form?logout"/>"  title="Logout">Logout</a> -->
-    							
-    							<form id="myHiddenFormId" action="/alphashop/login/form?logout " method="post" style="display: none">
-  								<input type="hidden" name="logout" value="${User}">
-  								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-								</form>
-								<a class="dropdown-item" href="" onclick="$('#myHiddenFormId').submit(); return false;" title="Logout">Logout ${User}</a>
-								
-    						</c:when>
-    						<c:otherwise>
-    							<a class="dropdown-item disabled" href="#">Log out</a>
-    						</c:otherwise>
-    					</c:choose>
+    					<a class="dropdown-item disabled" href="#">Log out</a>
     				</div>
     			</div>
   		</div>

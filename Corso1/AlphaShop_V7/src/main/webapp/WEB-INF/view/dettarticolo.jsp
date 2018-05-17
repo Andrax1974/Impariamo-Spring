@@ -18,10 +18,7 @@
 	<div class="row">
 		
 		<div class="card">
-			<a href="<spring:url value="/immagini/" /> " id="btnAbort">
-				<img class="card-img-top card-image" 
-					src="<c:url value="/img/articoli/${articolo.codArt}.png"></c:url>" alt="Immagine Prodotto" />
-			</a>
+			<img class="card-img-top card-image" src="<c:url value="/img/articoli/${articolo.codArt}.png"></c:url>" alt="Immagine Prodotto">
 			<div class="card-body">
     			<h3 class="card-title price-art">
     				Euro <fmt:formatNumber value = "${articolo.prezzo}"  minFractionDigits = "2" type = "number"/> 
