@@ -108,7 +108,7 @@
     					<span class="caret"></span>
     				</button>
     				<div class="dropdown-menu" aria-labelledby="dropdownMenu1">
-    					<a class="dropdown-item" href="#">Accedi</a>
+    					<a class="dropdown-item"  href="<spring:url value="/login/form" /> ">Accedi</a>
     					<a class="dropdown-item" href="#">Registrati</a>
     					<div class="dropdown-divider"></div>
     					<a class="dropdown-item disabled" href="#">Log out</a>

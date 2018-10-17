@@ -8,9 +8,9 @@
 	<packaging>war</packaging>
 
 	<properties>
-		<springframework.version>5.0.4.RELEASE</springframework.version>
-		<springsecurity.version>5.0.2.RELEASE</springsecurity.version>
-		<hibernate.version>5.2.13.Final</hibernate.version>
+		<springframework.version>5.1.1.RELEASE</springframework.version>
+		<springsecurity.version>5.0.9.RELEASE</springsecurity.version>
+		<hibernate.version>5.3.6.Final</hibernate.version>
 	</properties>
 
 	<dependencies>
@@ -109,7 +109,7 @@
 		<!-- Hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
+			<artifactId>hibernate-core</artifactId>
 			<version>${hibernate.version}</version>
 		</dependency>
 		<dependency>
@@ -147,7 +147,7 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.9.3</version>
+			<version>2.9.7</version>
 		</dependency>
 		
 		<!-- Estrazione Formato Excel -->

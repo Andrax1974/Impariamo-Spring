@@ -1,3 +1,4 @@
+
 package com.xantrix.webapp.controller;
 
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,9 @@ public class IndexController
 		userContext = new SpringSecurityUserContext();
 		
 		String CurrentUser = (userContext != null) ?  userContext.getCurrentClient() : null;
+		
+		if (CurrentUser != null && CurrentUser.equals("anonymousUser"))
+			CurrentUser = null;
 		
 		model.addAttribute("intestazione", "Benvenuti nel sito Alpha Shop");
 		model.addAttribute("saluti", "Accedi o registrati per acquistare i tuoi prodotti");

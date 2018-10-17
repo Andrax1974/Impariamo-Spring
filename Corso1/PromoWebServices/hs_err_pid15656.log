@@ -1,0 +1,372 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  EXCEPTION_IN_PAGE_ERROR (0xc0000006) at pc=0x6a0a14a7, pid=15656, tid=0x00003d34
+#
+# JRE version: Java(TM) SE Runtime Environment (8.0_161-b12) (build 1.8.0_161-b12)
+# Java VM: Java HotSpot(TM) Client VM (25.161-b12 mixed mode, sharing windows-x86 )
+# Problematic frame:
+# V  [jvm.dll+0x414a7]
+#
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.java.com/bugreport/crash.jsp
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0109e800):  JavaThread "main" [_thread_in_vm, id=15668, stack(0x00db0000,0x00e00000)]
+
+siginfo: ExceptionCode=0xc0000006
+
+Error accessing class data sharing archive. Mapped file inaccessible during execution,  possible disk/network problem.
+
+Registers:
+EAX=0x180b6520, EBX=0x16c06eb0, ECX=0x16c06eb0, EDX=0x71a29452
+ESP=0x00dfe3bc, EBP=0x00dfe3c0, ESI=0x1776f380, EDI=0x16c06eb0
+EIP=0x6a0a14a7, EFLAGS=0x00010246
+
+Top of Stack: (sp=0x00dfe3bc)
+0x00dfe3bc:   71a29452 00dfe3dc 6a0afa33 000003b0
+0x00dfe3cc:   71a29452 16c06eb0 0109e800 0109e800
+0x00dfe3dc:   00dfe470 6a0b0aad 00dfe468 16c06eb0
+0x00dfe3ec:   00000000 0109e800 16c06eb0 0109e800
+0x00dfe3fc:   00eb3e08 6a3ebab8 00000ec0 00ec5970
+0x00dfe40c:   00dfe430 6a0cd998 0000000c 6a3ebab8
+0x00dfe41c:   00dfe438 6a0a9395 71a29452 6a0a939e
+0x00dfe42c:   00000ec0 00dfe448 6a0a92af 00000000 
+
+Instructions: (pc=0x6a0a14a7)
+0x6a0a1487:   4d 08 8d 04 88 8b 00 56 85 c0 74 27 8b 4d 10 8b
+0x6a0a1497:   55 0c 8d a4 24 00 00 00 00 39 10 75 0e 8b 70 08
+0x6a0a14a7:   39 4e 0c 75 06 83 78 10 00 74 0f 8b 40 04 83 e0
+0x6a0a14b7:   fe 75 e6 33 c0 5e 5d c2 0c 00 8b c6 5e 5d c2 0c 
+
+
+Register to memory mapping:
+
+EAX=0x180b6520 is pointing into metadata
+EBX=0x16c06eb0 is pointing into metadata
+ECX=0x16c06eb0 is pointing into metadata
+EDX=0x71a29452 is an unknown value
+ESP=0x00dfe3bc is pointing into the stack for thread: 0x0109e800
+EBP=0x00dfe3c0 is pointing into the stack for thread: 0x0109e800
+ESI=0x1776f380 is pointing into metadata
+EDI=0x16c06eb0 is pointing into metadata
+
+
+Stack: [0x00db0000,0x00e00000],  sp=0x00dfe3bc,  free space=312k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x414a7]
+V  [jvm.dll+0x4fa33]
+V  [jvm.dll+0x50aad]
+V  [jvm.dll+0x511ea]
+V  [jvm.dll+0x52430]
+V  [jvm.dll+0x52456]
+V  [jvm.dll+0x107e0e]
+C  [java.dll+0x1ed6]
+j  java.lang.ClassLoader.findBootstrapClass(Ljava/lang/String;)Ljava/lang/Class;+0
+j  java.lang.ClassLoader.findBootstrapClassOrNull(Ljava/lang/String;)Ljava/lang/Class;+12
+j  java.lang.ClassLoader.loadClass(Ljava/lang/String;Z)Ljava/lang/Class;+48
+j  java.lang.ClassLoader.loadClass(Ljava/lang/String;)Ljava/lang/Class;+3
+j  java.util.ResourceBundle$RBClassLoader.loadClass(Ljava/lang/String;)Ljava/lang/Class;+10
+j  java.util.ResourceBundle$Control.newBundle(Ljava/lang/String;Ljava/util/Locale;Ljava/lang/String;Ljava/lang/ClassLoader;Z)Ljava/util/ResourceBundle;+24
+j  java.util.ResourceBundle.loadBundle(Ljava/util/ResourceBundle$CacheKey;Ljava/util/List;Ljava/util/ResourceBundle$Control;Z)Ljava/util/ResourceBundle;+54
+j  java.util.ResourceBundle.findBundle(Ljava/util/ResourceBundle$CacheKey;Ljava/util/List;Ljava/util/List;ILjava/util/ResourceBundle$Control;Ljava/util/ResourceBundle;)Ljava/util/ResourceBundle;+213
+j  java.util.ResourceBundle.findBundle(Ljava/util/ResourceBundle$CacheKey;Ljava/util/List;Ljava/util/List;ILjava/util/ResourceBundle$Control;Ljava/util/ResourceBundle;)Ljava/util/ResourceBundle;+37
+j  java.util.ResourceBundle.findBundle(Ljava/util/ResourceBundle$CacheKey;Ljava/util/List;Ljava/util/List;ILjava/util/ResourceBundle$Control;Ljava/util/ResourceBundle;)Ljava/util/ResourceBundle;+37
+j  java.util.ResourceBundle.getBundleImpl(Ljava/lang/String;Ljava/util/Locale;Ljava/lang/ClassLoader;Ljava/util/ResourceBundle$Control;)Ljava/util/ResourceBundle;+187
+j  java.util.ResourceBundle.getBundle(Ljava/lang/String;Ljava/util/Locale;Ljava/util/ResourceBundle$Control;)Ljava/util/ResourceBundle;+9
+j  sun.util.resources.LocaleData$1.run()Ljava/util/ResourceBundle;+11
+j  sun.util.resources.LocaleData$1.run()Ljava/lang/Object;+1
+v  ~StubRoutines::call_stub
+V  [jvm.dll+0x15b6d5]
+V  [jvm.dll+0x22229e]
+V  [jvm.dll+0x15b76e]
+V  [jvm.dll+0x10b83f]
+C  [java.dll+0x1015]
+j  sun.util.resources.LocaleData.getBundle(Ljava/lang/String;Ljava/util/Locale;)Ljava/util/ResourceBundle;+9
+j  sun.util.resources.LocaleData.getCurrencyNames(Ljava/util/Locale;)Lsun/util/resources/OpenListResourceBundle;+26
+j  sun.util.locale.provider.LocaleResources.getCurrencyName(Ljava/lang/String;)Ljava/lang/String;+81
+j  sun.util.locale.provider.CurrencyNameProviderImpl.getString(Ljava/lang/String;Ljava/util/Locale;)Ljava/lang/String;+24
+j  sun.util.locale.provider.CurrencyNameProviderImpl.getSymbol(Ljava/lang/String;Ljava/util/Locale;)Ljava/lang/String;+9
+j  java.util.Currency$CurrencyNameGetter.getObject(Ljava/util/spi/CurrencyNameProvider;Ljava/util/Locale;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;+63
+j  java.util.Currency$CurrencyNameGetter.getObject(Ljava/util/spi/LocaleServiceProvider;Ljava/util/Locale;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/Object;+9
+j  sun.util.locale.provider.LocaleServiceProviderPool.getLocalizedObjectImpl(Lsun/util/locale/provider/LocaleServiceProviderPool$LocalizedObjectGetter;Ljava/util/Locale;ZLjava/lang/String;[Ljava/lang/Object;)Ljava/lang/Object;+40
+j  sun.util.locale.provider.LocaleServiceProviderPool.getLocalizedObject(Lsun/util/locale/provider/LocaleServiceProviderPool$LocalizedObjectGetter;Ljava/util/Locale;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/Object;+7
+j  java.util.Currency.getSymbol(Ljava/util/Locale;)Ljava/lang/String;+26
+j  java.text.DecimalFormatSymbols.initialize(Ljava/util/Locale;)V+257
+j  java.text.DecimalFormatSymbols.<init>(Ljava/util/Locale;)V+11
+j  sun.util.locale.provider.DecimalFormatSymbolsProviderImpl.getInstance(Ljava/util/Locale;)Ljava/text/DecimalFormatSymbols;+17
+j  java.text.DecimalFormatSymbols.getInstance(Ljava/util/Locale;)Ljava/text/DecimalFormatSymbols;+14
+j  sun.util.locale.provider.NumberFormatProviderImpl.getInstance(Ljava/util/Locale;I)Ljava/text/NumberFormat;+31
+j  sun.util.locale.provider.NumberFormatProviderImpl.getIntegerInstance(Ljava/util/Locale;)Ljava/text/NumberFormat;+3
+j  java.text.NumberFormat.getInstance(Lsun/util/locale/provider/LocaleProviderAdapter;Ljava/util/Locale;I)Ljava/text/NumberFormat;+76
+j  java.text.NumberFormat.getInstance(Ljava/util/Locale;I)Ljava/text/NumberFormat;+10
+j  java.text.NumberFormat.getIntegerInstance(Ljava/util/Locale;)Ljava/text/NumberFormat;+2
+j  java.text.SimpleDateFormat.initialize(Ljava/util/Locale;)V+37
+j  java.text.SimpleDateFormat.<init>(Ljava/lang/String;Ljava/util/Locale;)V+66
+j  java.text.SimpleDateFormat.<init>(Ljava/lang/String;)V+8
+j  org.apache.maven.cli.CLIReportingUtils.formatTimestamp(J)Ljava/lang/String;+6
+j  org.apache.maven.cli.CLIReportingUtils.createMavenVersionString(Ljava/util/Properties;)Ljava/lang/String;+167
+j  org.apache.maven.cli.MavenCli.populateProperties(Lorg/apache/commons/cli/CommandLine;Ljava/util/Properties;Ljava/util/Properties;)V+89
+j  org.apache.maven.cli.MavenCli.properties(Lorg/apache/maven/cli/CliRequest;)V+12
+j  org.apache.maven.cli.MavenCli.doMain(Lorg/apache/maven/cli/CliRequest;)I+14
+j  org.apache.maven.cli.MavenCli.main([Ljava/lang/String;Lorg/codehaus/plexus/classworlds/ClassWorld;)I+24
+v  ~StubRoutines::call_stub
+V  [jvm.dll+0x15b6d5]
+V  [jvm.dll+0x22229e]
+V  [jvm.dll+0x15b76e]
+V  [jvm.dll+0x168078]
+V  [jvm.dll+0x1682e3]
+V  [jvm.dll+0x1045e3]
+C  [java.dll+0x3be3]
+j  sun.reflect.NativeMethodAccessorImpl.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+100
+j  sun.reflect.DelegatingMethodAccessorImpl.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+6
+j  java.lang.reflect.Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+56
+j  org.codehaus.plexus.classworlds.launcher.Launcher.launchEnhanced([Ljava/lang/String;)V+45
+j  org.codehaus.plexus.classworlds.launcher.Launcher.launch([Ljava/lang/String;)V+2
+j  org.codehaus.plexus.classworlds.launcher.Launcher.mainWithExitCode([Ljava/lang/String;)I+101
+j  org.codehaus.plexus.classworlds.launcher.Launcher.main([Ljava/lang/String;)V+1
+v  ~StubRoutines::call_stub
+V  [jvm.dll+0x15b6d5]
+V  [jvm.dll+0x22229e]
+V  [jvm.dll+0x15b76e]
+V  [jvm.dll+0xdd0c7]
+V  [jvm.dll+0xe565f]
+C  [java.exe+0x229e]
+C  [java.exe+0xaf6f]
+C  [java.exe+0xaff9]
+C  [KERNEL32.DLL+0x18654]
+C  [ntdll.dll+0x64b17]
+C  [ntdll.dll+0x64ae7]
+C  0x00000000
+
+Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
+j  java.lang.ClassLoader.findBootstrapClass(Ljava/lang/String;)Ljava/lang/Class;+0
+j  java.lang.ClassLoader.findBootstrapClassOrNull(Ljava/lang/String;)Ljava/lang/Class;+12
+j  java.lang.ClassLoader.loadClass(Ljava/lang/String;Z)Ljava/lang/Class;+48
+j  java.lang.ClassLoader.loadClass(Ljava/lang/String;)Ljava/lang/Class;+3
+j  java.util.ResourceBundle$RBClassLoader.loadClass(Ljava/lang/String;)Ljava/lang/Class;+10
+j  java.util.ResourceBundle$Control.newBundle(Ljava/lang/String;Ljava/util/Locale;Ljava/lang/String;Ljava/lang/ClassLoader;Z)Ljava/util/ResourceBundle;+24
+j  java.util.ResourceBundle.loadBundle(Ljava/util/ResourceBundle$CacheKey;Ljava/util/List;Ljava/util/ResourceBundle$Control;Z)Ljava/util/ResourceBundle;+54
+j  java.util.ResourceBundle.findBundle(Ljava/util/ResourceBundle$CacheKey;Ljava/util/List;Ljava/util/List;ILjava/util/ResourceBundle$Control;Ljava/util/ResourceBundle;)Ljava/util/ResourceBundle;+213
+j  java.util.ResourceBundle.findBundle(Ljava/util/ResourceBundle$CacheKey;Ljava/util/List;Ljava/util/List;ILjava/util/ResourceBundle$Control;Ljava/util/ResourceBundle;)Ljava/util/ResourceBundle;+37
+j  java.util.ResourceBundle.findBundle(Ljava/util/ResourceBundle$CacheKey;Ljava/util/List;Ljava/util/List;ILjava/util/ResourceBundle$Control;Ljava/util/ResourceBundle;)Ljava/util/ResourceBundle;+37
+j  java.util.ResourceBundle.getBundleImpl(Ljava/lang/String;Ljava/util/Locale;Ljava/lang/ClassLoader;Ljava/util/ResourceBundle$Control;)Ljava/util/ResourceBundle;+187
+j  java.util.ResourceBundle.getBundle(Ljava/lang/String;Ljava/util/Locale;Ljava/util/ResourceBundle$Control;)Ljava/util/ResourceBundle;+9
+j  sun.util.resources.LocaleData$1.run()Ljava/util/ResourceBundle;+11
+j  sun.util.resources.LocaleData$1.run()Ljava/lang/Object;+1
+v  ~StubRoutines::call_stub
+j  java.security.AccessController.doPrivileged(Ljava/security/PrivilegedAction;)Ljava/lang/Object;+0
+j  sun.util.resources.LocaleData.getBundle(Ljava/lang/String;Ljava/util/Locale;)Ljava/util/ResourceBundle;+9
+j  sun.util.resources.LocaleData.getCurrencyNames(Ljava/util/Locale;)Lsun/util/resources/OpenListResourceBundle;+26
+j  sun.util.locale.provider.LocaleResources.getCurrencyName(Ljava/lang/String;)Ljava/lang/String;+81
+j  sun.util.locale.provider.CurrencyNameProviderImpl.getString(Ljava/lang/String;Ljava/util/Locale;)Ljava/lang/String;+24
+j  sun.util.locale.provider.CurrencyNameProviderImpl.getSymbol(Ljava/lang/String;Ljava/util/Locale;)Ljava/lang/String;+9
+j  java.util.Currency$CurrencyNameGetter.getObject(Ljava/util/spi/CurrencyNameProvider;Ljava/util/Locale;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;+63
+j  java.util.Currency$CurrencyNameGetter.getObject(Ljava/util/spi/LocaleServiceProvider;Ljava/util/Locale;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/Object;+9
+j  sun.util.locale.provider.LocaleServiceProviderPool.getLocalizedObjectImpl(Lsun/util/locale/provider/LocaleServiceProviderPool$LocalizedObjectGetter;Ljava/util/Locale;ZLjava/lang/String;[Ljava/lang/Object;)Ljava/lang/Object;+40
+j  sun.util.locale.provider.LocaleServiceProviderPool.getLocalizedObject(Lsun/util/locale/provider/LocaleServiceProviderPool$LocalizedObjectGetter;Ljava/util/Locale;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/Object;+7
+j  java.util.Currency.getSymbol(Ljava/util/Locale;)Ljava/lang/String;+26
+j  java.text.DecimalFormatSymbols.initialize(Ljava/util/Locale;)V+257
+j  java.text.DecimalFormatSymbols.<init>(Ljava/util/Locale;)V+11
+j  sun.util.locale.provider.DecimalFormatSymbolsProviderImpl.getInstance(Ljava/util/Locale;)Ljava/text/DecimalFormatSymbols;+17
+j  java.text.DecimalFormatSymbols.getInstance(Ljava/util/Locale;)Ljava/text/DecimalFormatSymbols;+14
+j  sun.util.locale.provider.NumberFormatProviderImpl.getInstance(Ljava/util/Locale;I)Ljava/text/NumberFormat;+31
+j  sun.util.locale.provider.NumberFormatProviderImpl.getIntegerInstance(Ljava/util/Locale;)Ljava/text/NumberFormat;+3
+j  java.text.NumberFormat.getInstance(Lsun/util/locale/provider/LocaleProviderAdapter;Ljava/util/Locale;I)Ljava/text/NumberFormat;+76
+j  java.text.NumberFormat.getInstance(Ljava/util/Locale;I)Ljava/text/NumberFormat;+10
+j  java.text.NumberFormat.getIntegerInstance(Ljava/util/Locale;)Ljava/text/NumberFormat;+2
+j  java.text.SimpleDateFormat.initialize(Ljava/util/Locale;)V+37
+j  java.text.SimpleDateFormat.<init>(Ljava/lang/String;Ljava/util/Locale;)V+66
+j  java.text.SimpleDateFormat.<init>(Ljava/lang/String;)V+8
+j  org.apache.maven.cli.CLIReportingUtils.formatTimestamp(J)Ljava/lang/String;+6
+j  org.apache.maven.cli.CLIReportingUtils.createMavenVersionString(Ljava/util/Properties;)Ljava/lang/String;+167
+j  org.apache.maven.cli.MavenCli.populateProperties(Lorg/apache/commons/cli/CommandLine;Ljava/util/Properties;Ljava/util/Properties;)V+89
+j  org.apache.maven.cli.MavenCli.properties(Lorg/apache/maven/cli/CliRequest;)V+12
+j  org.apache.maven.cli.MavenCli.doMain(Lorg/apache/maven/cli/CliRequest;)I+14
+j  org.apache.maven.cli.MavenCli.main([Ljava/lang/String;Lorg/codehaus/plexus/classworlds/ClassWorld;)I+24
+v  ~StubRoutines::call_stub
+j  sun.reflect.NativeMethodAccessorImpl.invoke0(Ljava/lang/reflect/Method;Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+0
+j  sun.reflect.NativeMethodAccessorImpl.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+100
+j  sun.reflect.DelegatingMethodAccessorImpl.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+6
+j  java.lang.reflect.Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+56
+j  org.codehaus.plexus.classworlds.launcher.Launcher.launchEnhanced([Ljava/lang/String;)V+45
+j  org.codehaus.plexus.classworlds.launcher.Launcher.launch([Ljava/lang/String;)V+2
+j  org.codehaus.plexus.classworlds.launcher.Launcher.mainWithExitCode([Ljava/lang/String;)I+101
+j  org.codehaus.plexus.classworlds.launcher.Launcher.main([Ljava/lang/String;)V+1
+v  ~StubRoutines::call_stub
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x00f69c00 JavaThread "Service Thread" daemon [_thread_blocked, id=15696, stack(0x17a00000,0x17a50000)]
+  0x00f44000 JavaThread "C1 CompilerThread0" daemon [_thread_blocked, id=15692, stack(0x17970000,0x179c0000)]
+  0x00f42c00 JavaThread "Attach Listener" daemon [_thread_blocked, id=15688, stack(0x17340000,0x17390000)]
+  0x00f40c00 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=15684, stack(0x172b0000,0x17300000)]
+  0x00f36400 JavaThread "Finalizer" daemon [_thread_blocked, id=15680, stack(0x06670000,0x066c0000)]
+  0x00ed8400 JavaThread "Reference Handler" daemon [_thread_blocked, id=15676, stack(0x01190000,0x011e0000)]
+=>0x0109e800 JavaThread "main" [_thread_in_vm, id=15668, stack(0x00db0000,0x00e00000)]
+
+Other Threads:
+  0x00ed5000 VMThread [stack: 0x01100000,0x01150000] [id=15672]
+  0x00f7f400 WatcherThread [stack: 0x17a90000,0x17ae0000] [id=15700]
+
+VM state:synchronizing (normal execution)
+
+VM Mutex/Monitor currently owned by a thread:  ([mutex/lock_event])
+[0x0109d518] Threads_lock - owner thread: 0x00ed5000
+
+Heap:
+ def new generation   total 4928K, used 602K [0x06800000, 0x06d50000, 0x0bd50000)
+  eden space 4416K,   2% used [0x06800000, 0x06816ad0, 0x06c50000)
+  from space 512K, 100% used [0x06cd0000, 0x06d50000, 0x06d50000)
+  to   space 512K,   0% used [0x06c50000, 0x06c50000, 0x06cd0000)
+ tenured generation   total 10944K, used 839K [0x0bd50000, 0x0c800000, 0x16800000)
+   the space 10944K,   7% used [0x0bd50000, 0x0be21df8, 0x0be21e00, 0x0c800000)
+ Metaspace       used 605K, capacity 2674K, committed 2752K, reserved 4480K
+
+Card table byte_map: [0x00fb0000,0x01040000] byte_map_base: 0x00f7c000
+
+Polling page: 0x006b0000
+
+CodeCache: size=32768Kb used=871Kb max_used=871Kb free=31896Kb
+ bounds [0x04630000, 0x04710000, 0x06630000]
+ total_blobs=237 nmethods=92 adapters=76
+ compilation: enabled
+
+Compilation events (10 events):
+Event: 0.299 Thread 0x00f44000   88             java.lang.AbstractStringBuilder::newCapacity (39 bytes)
+Event: 0.299 Thread 0x00f44000 nmethod 88 0x04707f08 code [0x04708010, 0x0470814c]
+Event: 0.301 Thread 0x00f44000   89             java.util.Arrays::copyOf (19 bytes)
+Event: 0.301 Thread 0x00f44000 nmethod 89 0x04708208 code [0x04708310, 0x0470847c]
+Event: 0.302 Thread 0x00f44000   90             java.util.HashMap::putVal (300 bytes)
+Event: 0.303 Thread 0x00f44000 nmethod 90 0x04708548 code [0x047086f0, 0x04708b88]
+Event: 0.309 Thread 0x00f44000   91             java.util.StringTokenizer::scanToken (179 bytes)
+Event: 0.310 Thread 0x00f44000 nmethod 91 0x04709148 code [0x047092c0, 0x047096a8]
+Event: 0.310 Thread 0x00f44000   92             java.util.HashMap::put (13 bytes)
+Event: 0.310 Thread 0x00f44000 nmethod 92 0x04709b88 code [0x04709c90, 0x04709d88]
+
+GC Heap History (2 events):
+Event: 0.303 GC heap before
+{Heap before GC invocations=0 (full 0):
+ def new generation   total 4928K, used 4416K [0x06800000, 0x06d50000, 0x0bd50000)
+  eden space 4416K, 100% used [0x06800000, 0x06c50000, 0x06c50000)
+  from space 512K,   0% used [0x06c50000, 0x06c50000, 0x06cd0000)
+  to   space 512K,   0% used [0x06cd0000, 0x06cd0000, 0x06d50000)
+ tenured generation   total 10944K, used 0K [0x0bd50000, 0x0c800000, 0x16800000)
+   the space 10944K,   0% used [0x0bd50000, 0x0bd50000, 0x0bd50200, 0x0c800000)
+ Metaspace       used 598K, capacity 2668K, committed 2752K, reserved 4480K
+Event: 0.307 GC heap after
+Heap after GC invocations=1 (full 0):
+ def new generation   total 4928K, used 512K [0x06800000, 0x06d50000, 0x0bd50000)
+  eden space 4416K,   0% used [0x06800000, 0x06800000, 0x06c50000)
+  from space 512K, 100% used [0x06cd0000, 0x06d50000, 0x06d50000)
+  to   space 512K,   0% used [0x06c50000, 0x06c50000, 0x06cd0000)
+ tenured generation   total 10944K, used 839K [0x0bd50000, 0x0c800000, 0x16800000)
+   the space 10944K,   7% used [0x0bd50000, 0x0be21df8, 0x0be21e00, 0x0c800000)
+ Metaspace       used 598K, capacity 2668K, committed 2752K, reserved 4480K
+}
+
+Deoptimization events (0 events):
+No events
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (6 events):
+Event: 0.066 Thread 0x0109e800 Exception <a 'java/lang/NoSuchMethodError': Method sun.misc.Unsafe.defineClass(Ljava/lang/String;[BII)Ljava/lang/Class; name or signature does not match> (0x068079b8) thrown at [C:\re\workspace\8-2-build-windows-i586-cygwin\jdk8u161\10277\hotspot\src\shar
+Event: 0.066 Thread 0x0109e800 Exception <a 'java/lang/NoSuchMethodError': Method sun.misc.Unsafe.prefetchRead(Ljava/lang/Object;J)V name or signature does not match> (0x06807c88) thrown at [C:\re\workspace\8-2-build-windows-i586-cygwin\jdk8u161\10277\hotspot\src\share\vm\prims\jni.cpp
+Event: 0.279 Thread 0x0109e800 Exception <a 'java/security/PrivilegedActionException'> (0x06bc72d8) thrown at [C:\re\workspace\8-2-build-windows-i586-cygwin\jdk8u161\10277\hotspot\src\share\vm\prims\jvm.cpp, line 1390]
+Event: 0.279 Thread 0x0109e800 Exception <a 'java/security/PrivilegedActionException'> (0x06bc74d8) thrown at [C:\re\workspace\8-2-build-windows-i586-cygwin\jdk8u161\10277\hotspot\src\share\vm\prims\jvm.cpp, line 1390]
+Event: 0.279 Thread 0x0109e800 Exception <a 'java/security/PrivilegedActionException'> (0x06bca980) thrown at [C:\re\workspace\8-2-build-windows-i586-cygwin\jdk8u161\10277\hotspot\src\share\vm\prims\jvm.cpp, line 1390]
+Event: 0.279 Thread 0x0109e800 Exception <a 'java/security/PrivilegedActionException'> (0x06bcab80) thrown at [C:\re\workspace\8-2-build-windows-i586-cygwin\jdk8u161\10277\hotspot\src\share\vm\prims\jvm.cpp, line 1390]
+
+Events (10 events):
+Event: 0.281 loading class org/apache/commons/lang3/StringUtils
+Event: 0.281 loading class org/apache/commons/lang3/StringUtils done
+Event: 0.300 loading class sun/util/resources/it/CalendarData_it
+Event: 0.300 loading class sun/util/resources/it/CalendarData_it done
+Event: 0.303 loading class sun/text/resources/it/FormatData_it
+Event: 0.303 loading class sun/text/resources/it/FormatData_it done
+Event: 0.303 Executing VM operation: GenCollectForAllocation
+Event: 0.307 Executing VM operation: GenCollectForAllocation done
+Event: 0.307 loading class sun/text/resources/it/FormatData_it_IT
+Event: 0.307 loading class sun/text/resources/it/FormatData_it_IT done
+
+
+Dynamic libraries:
+0x011e0000 - 0x01213000 	H:\Programmi (x86)\JDK\bin\java.exe
+0x77720000 - 0x778ad000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x77340000 - 0x77410000 	C:\WINDOWS\System32\KERNEL32.DLL
+0x6aff0000 - 0x6b01f000 	C:\Program Files\AVAST Software\Avast\aswhookx.dll
+0x768e0000 - 0x76ab7000 	C:\WINDOWS\System32\KERNELBASE.dll
+0x6ebf0000 - 0x6ec8a000 	C:\WINDOWS\SYSTEM32\apphelp.dll
+0x771d0000 - 0x77248000 	C:\WINDOWS\System32\ADVAPI32.dll
+0x76640000 - 0x766fd000 	C:\WINDOWS\System32\msvcrt.dll
+0x76ac0000 - 0x76b03000 	C:\WINDOWS\System32\sechost.dll
+0x76810000 - 0x768ce000 	C:\WINDOWS\System32\RPCRT4.dll
+0x747b0000 - 0x747d0000 	C:\WINDOWS\System32\SspiCli.dll
+0x747a0000 - 0x747aa000 	C:\WINDOWS\System32\CRYPTBASE.dll
+0x77410000 - 0x77467000 	C:\WINDOWS\System32\bcryptPrimitives.dll
+0x76fd0000 - 0x77145000 	C:\WINDOWS\System32\USER32.dll
+0x74de0000 - 0x74df6000 	C:\WINDOWS\System32\win32u.dll
+0x76780000 - 0x767a2000 	C:\WINDOWS\System32\GDI32.dll
+0x76490000 - 0x765ee000 	C:\WINDOWS\System32\gdi32full.dll
+0x77470000 - 0x774ec000 	C:\WINDOWS\System32\msvcp_win.dll
+0x74b70000 - 0x74c87000 	C:\WINDOWS\System32\ucrtbase.dll
+0x6e9d0000 - 0x6ebe1000 	C:\WINDOWS\WinSxS\x86_microsoft.windows.common-controls_6595b64144ccf1df_6.0.16299.371_none_5d75084fa7e1cb96\COMCTL32.dll
+0x74920000 - 0x74b66000 	C:\WINDOWS\System32\combase.dll
+0x748f0000 - 0x74915000 	C:\WINDOWS\System32\IMM32.DLL
+0x71120000 - 0x711dd000 	H:\Programmi (x86)\JDK\jre\bin\msvcr100.dll
+0x6a060000 - 0x6a430000 	H:\Programmi (x86)\JDK\jre\bin\client\jvm.dll
+0x767b0000 - 0x767b6000 	C:\WINDOWS\System32\PSAPI.DLL
+0x73d70000 - 0x73d78000 	C:\WINDOWS\SYSTEM32\WSOCK32.dll
+0x77160000 - 0x771c6000 	C:\WINDOWS\System32\WS2_32.dll
+0x70bc0000 - 0x70be4000 	C:\WINDOWS\SYSTEM32\WINMM.dll
+0x73950000 - 0x73958000 	C:\WINDOWS\SYSTEM32\VERSION.dll
+0x70b90000 - 0x70bb3000 	C:\WINDOWS\SYSTEM32\WINMMBASE.dll
+0x74040000 - 0x74078000 	C:\WINDOWS\System32\cfgmgr32.dll
+0x71330000 - 0x7133c000 	H:\Programmi (x86)\JDK\jre\bin\verify.dll
+0x71300000 - 0x71322000 	H:\Programmi (x86)\JDK\jre\bin\java.dll
+0x712e0000 - 0x712f4000 	H:\Programmi (x86)\JDK\jre\bin\zip.dll
+0x75000000 - 0x76333000 	C:\WINDOWS\System32\SHELL32.dll
+0x77250000 - 0x772d8000 	C:\WINDOWS\System32\shcore.dll
+0x740e0000 - 0x746a6000 	C:\WINDOWS\System32\windows.storage.dll
+0x767c0000 - 0x76805000 	C:\WINDOWS\System32\shlwapi.dll
+0x768d0000 - 0x768de000 	C:\WINDOWS\System32\kernel.appcore.dll
+0x74c90000 - 0x74cd5000 	C:\WINDOWS\System32\powrprof.dll
+0x747e0000 - 0x747f4000 	C:\WINDOWS\System32\profapi.dll
+0x71110000 - 0x71119000 	H:\Program Files (x86)\apache-maven-3.5.3\lib\jansi-native\windows32\jansi.dll
+0x67590000 - 0x67711000 	C:\WINDOWS\SYSTEM32\dbghelp.dll
+
+VM Arguments:
+jvm_args: -Dclassworlds.conf=H:\Program Files (x86)\apache-maven-3.5.3\bin\..\bin\m2.conf -Dmaven.home=H:\Program Files (x86)\apache-maven-3.5.3\bin\.. -Dlibrary.jansi.path=H:\Program Files (x86)\apache-maven-3.5.3\bin\..\lib\jansi-native -Dmaven.multiModuleProjectDirectory=H:\java\udemy\corso1\PromoWebServices 
+java_command: org.codehaus.plexus.classworlds.launcher.Launcher spring-boot:run
+java_class_path (initial): H:\Program Files (x86)\apache-maven-3.5.3\bin\..\boot\plexus-classworlds-2.5.2.jar
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=H:\Programmi (x86)\JDK
+CLASSPATH=C:\Program Files (x86)\EPSON_FP_POS_for_.NET_Service_Objects;
+USERNAME=Nicola
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=AMD64 Family 21 Model 2 Stepping 0, AuthenticAMD
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 10.0 , 64 bit Build 16299 (10.0.16299.15)
+
+CPU:total 8 (initial active 8) (8 cores per cpu, 1 threads per core) family 21 model 2 stepping 0, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, aes, clmul, mmxext, 3dnowpref, lzcnt, sse4a, tsc, tscinvbit, tscinv, bmi1
+
+Memory: 4k page, physical 16732896k(9812412k free), swap 19223264k(9673656k free)
+
+vm_info: Java HotSpot(TM) Client VM (25.161-b12) for windows-x86 JRE (1.8.0_161-b12), built on Dec 19 2017 17:09:29 by "java_re" with MS VC++ 10.0 (VS2010)
+
+time: Thu May 03 17:05:57 2018
+elapsed time: 4 seconds (0d 0h 0m 4s)
+

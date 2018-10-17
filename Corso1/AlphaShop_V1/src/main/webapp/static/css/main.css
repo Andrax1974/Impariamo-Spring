@@ -42,7 +42,7 @@ footer a {
 	opacity: 0.2;
 	color: #fff;
 	background: #000
-		url("http://localhost:8080/AlphaShop_V1/static/images/grocery.jpg")
+		url("http://localhost:8090/alphashop/static/images/grocery.jpg")
 		top center no-repeat;
 	width: 100%;
 	height: 100%;
