@@ -6,10 +6,6 @@ public interface UtentiDao
 {
 	Utenti SelByIdFidelity(String id);
 	
-	Utenti SelByUserId(String UserId);
-	
-	Utenti SelByUserIdCodFid(String UserId, String CodFid);
-	
 	void Salva(Utenti utente);
 	
 	void Aggiorna(Utenti utente);

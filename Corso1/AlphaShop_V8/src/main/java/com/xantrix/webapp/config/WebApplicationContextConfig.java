@@ -46,7 +46,6 @@ public class WebApplicationContextConfig implements WebMvcConfigurer
 	public void configureViewResolvers(ViewResolverRegistry registry)
 	{
 		TilesViewResolver viewResolver = new TilesViewResolver();
-		
 		registry.viewResolver(viewResolver);
 	}
 
@@ -84,9 +83,8 @@ public class WebApplicationContextConfig implements WebMvcConfigurer
 	public void addResourceHandlers(ResourceHandlerRegistry registry)
 	{
 		registry.addResourceHandler("/img/**").addResourceLocations("/static/images/");
-		registry.addResourceHandler("/static/**").addResourceLocations("/static/");
 	}
-
+	
 	@Bean
 	public InternalResourceViewResolver getInternalResourceViewResolver()
 	{
@@ -188,4 +186,6 @@ public class WebApplicationContextConfig implements WebMvcConfigurer
 		
 		return resolver;
 	}
+
+	
 }

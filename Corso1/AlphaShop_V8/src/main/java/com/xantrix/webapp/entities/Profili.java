@@ -11,8 +11,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.Data;
+
 @Entity
 @Table(name = "PROFILI")
+//@Data
 public class Profili implements Serializable
 {
 	private static final long serialVersionUID = -3270956277534858122L;
@@ -35,7 +38,7 @@ public class Profili implements Serializable
 		this.tipo = Tipo;
 		this.utente = Utente;
 	}
-
+	
 	public long getId()
 	{
 		return id;
@@ -65,5 +68,6 @@ public class Profili implements Serializable
 	{
 		this.utente = utente;
 	}
+	
 
 }

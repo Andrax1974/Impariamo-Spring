@@ -15,6 +15,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -52,6 +53,18 @@ public class ArticoliController
 
 	private int NumArt = 0;
 	private List<Articoli> recordset;
+	
+	private final String PathImages = "static\\images\\articoli\\";
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public String GetArticoli(Model model)
+	{
+		model.addAttribute("Titolo", "Ricerca Articoli");
+		model.addAttribute("Titolo2", "Ricerca gli articoli");
+		model.addAttribute("IsArticoli", true);
+		
+		return "articoli";
+	}
 
 	// http://localhost:8080/alphashop/articoli/cerca/barilla
 	@RequestMapping(value = "/cerca/{filter}", method = RequestMethod.GET)
@@ -66,8 +79,35 @@ public class ArticoliController
 		model.addAttribute("Titolo", "Ricerca Articoli");
 		model.addAttribute("Titolo2", "Risultati Ricerca " + Filter);
 		model.addAttribute("Articoli", recordset);
+		model.addAttribute("IsArticoli", true);
 
 		return "articoli";
+	}
+	
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	public String SearchItem(@RequestParam("filter") String pSearchTerm, Model model)
+	{
+		recordset = articoliService.SelArticoliByFilter(pSearchTerm);
+
+		if (recordset != null)
+			NumArt = recordset.size();
+
+		model.addAttribute("NumArt", NumArt);
+		model.addAttribute("Titolo", "Ricerca Articoli");
+		model.addAttribute("Titolo2", "Risultati Ricerca " + pSearchTerm);
+		model.addAttribute("Articoli", recordset);
+		model.addAttribute("IsArticoli", true);
+
+		return "articoli";
+	}
+	
+	@RequestMapping(value = "/cerca/{filter}/download", method = RequestMethod.GET)
+	public String GetArticoliByFilterDwld(@PathVariable("filter") String Filter, Model model)
+	{
+		recordset = articoliService.SelArticoliByFilter(Filter);
+		model.addAttribute("Articoli", recordset);
+
+		return "";
 	}
 
 	// http://localhost:8080/alphashop/articoli/cerca?filter=barilla&rep=1
@@ -76,8 +116,7 @@ public class ArticoliController
 			Model model)
 	{
 
-		List<Articoli> recordset = articoliService.SelArticoliByFilter(Filter)
-				.stream()
+		List<Articoli> recordset = articoliService.SelArticoliByFilter(Filter).stream()
 				.filter(u -> u.getIdFamAss() == IdRep).collect(Collectors.toList());
 
 		if (recordset != null)
@@ -87,6 +126,7 @@ public class ArticoliController
 		model.addAttribute("Titolo", "Ricerca Articoli");
 		model.addAttribute("Titolo2", "Risultati Ricerca " + Filter);
 		model.addAttribute("Articoli", recordset);
+		model.addAttribute("IsArticoli", true);
 
 		return "articoli";
 	}
@@ -120,11 +160,8 @@ public class ArticoliController
 
 		List<Articoli> recordset = articoliService.SelArticoliByFilter(Filter, orderBy, tipo);
 
-		recordset = recordset.stream()
-				.filter(u -> IdRep.contains(Integer.toString(u.getIdFamAss())))
-				.filter(u -> u.getQtaMag() > 0)
-				.filter(u -> u.getPrezzo() > 0)
-				.collect(Collectors.toList());
+		recordset = recordset.stream().filter(u -> IdRep.contains(Integer.toString(u.getIdFamAss())))
+				.filter(u -> u.getQtaMag() > 0).filter(u -> u.getPrezzo() > 0).collect(Collectors.toList());
 
 		if (recordset != null)
 			NumArt = recordset.size();
@@ -143,6 +180,7 @@ public class ArticoliController
 		model.addAttribute("Articoli", recordset);
 		model.addAttribute("NumArt", NumArt);
 		model.addAttribute("Titolo", "Ricerca Articoli");
+		model.addAttribute("IsArticoli", true);
 
 		return "articoli";
 	}
@@ -165,6 +203,7 @@ public class ArticoliController
 		model.addAttribute("Titolo", "Ricerca Articoli");
 		model.addAttribute("Titolo2", "Risultati Ricerca " + Filter);
 		model.addAttribute("Articoli", recordset);
+		model.addAttribute("IsArticoli", true);
 
 		return "articoli";
 	}
@@ -184,7 +223,7 @@ public class ArticoliController
 		model.addAttribute("Titolo", "Dettaglio Articolo");
 		model.addAttribute("Titolo2", "Dati Articolo " + CodArt);
 		model.addAttribute("articolo", articolo);
-
+		
 		return "infoArticolo";
 	}
 	
@@ -219,6 +258,7 @@ public class ArticoliController
 		model.addAttribute("Titolo", "Ricerca Articoli");
 		model.addAttribute("Titolo2", "Ultimi " + NumArt + " Articoli Creati");
 		model.addAttribute("Articoli", recordset);
+		model.addAttribute("IsArticoli", true);
 
 		return "articoli";
 	}
@@ -273,7 +313,7 @@ public class ArticoliController
 			try
 			{
 				String rootDirectory = request.getSession().getServletContext().getRealPath("/");
-				String PathName = rootDirectory + "static\\images\\articoli\\" + articolo.getCodArt().trim() + ".png";
+				String PathName = rootDirectory + PathImages + articolo.getCodArt().trim() + ".png";
 
 				productImage.transferTo(new File(PathName));
 				
@@ -295,11 +335,70 @@ public class ArticoliController
 
 		return "redirect:/articoli/infoart/" + articolo.getCodArt().trim();
 	}
+	
+	@RequestMapping(value = "/modifica/{CodArt}", method = RequestMethod.GET)
+	public String UpdArticoli(Model model, @PathVariable("CodArt") String CodArt)
+	{
+		recordset = articoliService.SelArticoliByFilter(CodArt);
+		
+		Articoli articolo;
+				
+		if (recordset == null || recordset.isEmpty())
+			throw new NoInfoArtFoundException(CodArt); 
+		else
+			articolo = recordset.get(0);
+
+		model.addAttribute("Titolo", "Modifica Articolo");
+		model.addAttribute("newArticolo", articolo);
+		model.addAttribute("famAssort", getFamAssort());
+		model.addAttribute("Iva", getIva());
+
+		return "insArticolo";
+	}
+	
+	@RequestMapping(value = "/modifica/{CodArt}", method = RequestMethod.POST)
+	public String GestUpdArticoli(@Valid @ModelAttribute("newArticolo") Articoli articolo, BindingResult result,
+			@PathVariable("CodArt") String CodArt, Model model, HttpServletRequest request)
+	{
+
+		if (result.hasErrors())
+		{
+			return "insArticolo";
+		}
+
+		MultipartFile productImage = articolo.getImmagine();
+
+		if (productImage != null && !productImage.isEmpty())
+		{
+			try
+			{
+				String rootDirectory = request.getSession().getServletContext().getRealPath("/");
+				String PathName = rootDirectory + PathImages + articolo.getCodArt().trim() + ".png";
+
+				productImage.transferTo(new File(PathName));
+				
+			} 
+			catch (Exception ex)
+			{
+				throw new RuntimeException("Errore trasferimento file", ex);
+			}
+		}
+
+		if (result.getSuppressedFields().length > 0)
+			throw new RuntimeException("ERRORE: Tentativo di eseguire il binding dei seguenti campi NON consentiti: "
+					+ StringUtils.arrayToCommaDelimitedString(result.getSuppressedFields()));
+		else
+		{
+			articoliService.InsArticolo(articolo);
+		}
+
+		return "redirect:/articoli/infoart/" + CodArt.trim();
+	}
 
 	@InitBinder
 	public void initialiseBinder(WebDataBinder binder)
 	{
-		binder.setAllowedFields("codArt", "descrizione", "um", "pzCart", "pesoNetto", "idIva", "idStatoArt", "idFamAss",
+		binder.setAllowedFields("CodArt", "codArt", "descrizione", "um", "pzCart", "pesoNetto", "idIva", "idStatoArt", "idFamAss",
 				"dataCreaz", "language", "immagine");
 
 		binder.setDisallowedFields("prezzo");
@@ -315,5 +414,28 @@ public class ArticoliController
 		binder.addCustomFormatter(numberFormatter, "pzCart");
 
 	}
+	
+	@RequestMapping(value = "/elimina/{CodArt}", method = RequestMethod.GET)
+	public String DelArticolo(@PathVariable("CodArt") String codArt, Model model)
+	{
+		try
+		{
+			if (codArt.length() > 0)
+			{
+				articoliService.DelArticolo(codArt);
+			}
+		} 
+		catch (Exception ex)
+		{
+			throw new RuntimeException("Errore eliminazione articolo", ex);
+		}
+
+		return "redirect:/articoli/";
+
+	}
 
 }
+
+
+
+

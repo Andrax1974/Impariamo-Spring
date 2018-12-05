@@ -16,7 +16,6 @@ import javax.validation.Valid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -29,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.xantrix.webapp.config.security.SpringSecurityUserContext;
 import com.xantrix.webapp.entities.Cards;
 import com.xantrix.webapp.entities.Clienti;
 import com.xantrix.webapp.entities.Profili;
@@ -52,13 +50,7 @@ public class ClientiController
 
 	@Autowired
 	private ProfiliService profiliService;
-	
-	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
-	
-	private SpringSecurityUserContext userContext;
-	
-	Clienti LoggedUser = null;
+
 	List<Clienti> MainRecordset;
 
 	private Date date = new Date();
@@ -75,9 +67,9 @@ public class ClientiController
 
 	private void GetAllClienti()
 	{
-		userContext = new SpringSecurityUserContext();
 		MainRecordset = clientiService.SelTutti();
 	}
+	
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String GetClienti(Model model)
@@ -85,8 +77,6 @@ public class ClientiController
 		logger.info("Otteniamo tutti i clienti");
 		
 		GetAllClienti();
-		
-		logger.info("Utente Connesso: " + userContext.getCurrentClient());
 
 		List<Clienti> recordset = MainRecordset
 					.stream()
@@ -116,7 +106,6 @@ public class ClientiController
 		model.addAttribute("RecPage", RecForPage);
 		model.addAttribute("Pages", Pages);
 		model.addAttribute("IsClienti", IsClienti);
-		model.addAttribute("User",  userContext.getCurrentClient());
 
 		return "clienti";
 	}
@@ -165,7 +154,6 @@ public class ClientiController
 		model.addAttribute("IsClienti", IsClienti);
 		model.addAttribute("BolFil", BolliniByFilter);
 		model.addAttribute("BolTot", BolliniTot);
-		model.addAttribute("User",  userContext.getCurrentClient());
 
 		return "clienti";
 	}
@@ -284,7 +272,6 @@ public class ClientiController
 		model.addAttribute("IsClienti", IsClienti);
 		model.addAttribute("BolTot", BolliniTot);
 		model.addAttribute("BolFil", BolliniByFilter);
-		model.addAttribute("User",  userContext.getCurrentClient());
 		
 		return "clienti";
 	}
@@ -326,7 +313,8 @@ public class ClientiController
 			{
 
 				recordset = recordset.stream().sorted(byBollini).collect(Collectors.toList());
-			} else
+			} 
+			else
 			{
 
 				recordset = recordset.stream().sorted(byBollini.reversed()).collect(Collectors.toList());
@@ -383,7 +371,6 @@ public class ClientiController
 		model.addAttribute("IsClienti", IsClienti);
 		model.addAttribute("BolTot", BolliniTot);
 		model.addAttribute("BolFil", BolliniByFilter);
-		model.addAttribute("User",  userContext.getCurrentClient());
 
 		return "clienti"; 
 
@@ -432,7 +419,6 @@ public class ClientiController
 		model.addAttribute("IsClienti", IsClienti);
 		model.addAttribute("BolTot", BolliniTot);
 		model.addAttribute("BolFil", BolliniByFilter);
-		model.addAttribute("User",  userContext.getCurrentClient());
 
 		return "clienti"; 
 
@@ -516,7 +502,7 @@ public class ClientiController
 			@ModelAttribute("Utente") Utenti utente, 
 			@ModelAttribute("Profilo") Profili profilo,
 			@PathVariable("idCliente") String IdCliente, 
-			Model model, HttpServletRequest request)
+			 Model model, HttpServletRequest request)
 	{
 		Set<Profili> profili = new HashSet<>();
 		
@@ -539,10 +525,6 @@ public class ClientiController
 			profili.add(new Profili("USER", utente));
 
 			utente.setProfili(profili);
-			
-			//CRITTIAMO LA PASSWORD
-			String encodedPassword = passwordEncoder.encode(utente.getPwd());
-			utente.setPwd(encodedPassword); 
 
 			if (test.getUserId() != null)
 				utentiService.Aggiorna(utente);

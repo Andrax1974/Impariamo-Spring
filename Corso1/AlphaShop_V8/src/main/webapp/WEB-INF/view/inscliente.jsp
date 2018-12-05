@@ -83,7 +83,7 @@
 						<div class="form-group">
 							<label for="indirizzo"><spring:message code="inscliente.form.indirizzo.label"/></label>
 							<form:input id="indirizzo" path="indirizzo" type="text" class="form-control" placeholder="Indirizzo"/>  
-							<form:errors path="codFidelity" cssClass="text-danger"/>
+							<form:errors path="indirizzo" cssClass="text-danger"/>
 						</div>
 						
 						<div class="form-row">

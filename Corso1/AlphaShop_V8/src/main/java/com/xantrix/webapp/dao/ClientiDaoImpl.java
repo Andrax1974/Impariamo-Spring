@@ -39,22 +39,6 @@ public class ClientiDaoImpl extends AbstractDao<Clienti, Integer>
 		return retVal;
 	}
 	
-	@Override
-	public Clienti SelByUserId(String UserId)
-	{
-		
-		Clienti retVal;	
-		 
-		String JPQL = "SELECT a FROM Clienti a JOIN a.utenti b WHERE b.userId = :userId ";
-		 
-		
-		retVal = (Clienti) entityManager.createQuery(JPQL)
-						   .setParameter("userId", UserId)
-						   .getSingleResult();
-		return retVal;
-		
-	}
-	
 	
 	@Override
 	public List<Clienti> SelByNominativo(String Nominativo)
@@ -175,5 +159,4 @@ public class ClientiDaoImpl extends AbstractDao<Clienti, Integer>
 		
 		return retVal;
 	}
-
 }

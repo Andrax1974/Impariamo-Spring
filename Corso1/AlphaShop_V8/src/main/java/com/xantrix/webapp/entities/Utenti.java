@@ -18,9 +18,12 @@ import javax.persistence.Table;
 
 import javax.persistence.UniqueConstraint;
 
+import lombok.Data;
+
 @Entity
 @Table(name = "UTENTI", uniqueConstraints =
 { @UniqueConstraint(columnNames = "CODFIDELITY") })
+@Data
 public class Utenti implements Serializable
 {
 	private static final long serialVersionUID = 8473057964112587082L;
@@ -44,7 +47,7 @@ public class Utenti implements Serializable
 	
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,  mappedBy = "utente", orphanRemoval = true)
 	private Set<Profili> profili = new HashSet<>();
-
+	
 	public Utenti()
 	{
 	}
@@ -54,105 +57,7 @@ public class Utenti implements Serializable
 		this.codFidelity = CodFidelity;
 	}
 	
-	public String getUserId()
-	{
-		return userId;
-	}
-
-	public void setUserId(String userId)
-	{
-		this.userId = userId;
-	}
-
-	public String getPwd()
-	{
-		return pwd;
-	}
-
-	public void setPwd(String pwd)
-	{
-		this.pwd = pwd;
-	}
-
-	public String getAbilitato()
-	{
-		return abilitato;
-	}
-
-	public void setAbilitato(String abilitato)
-	{
-		this.abilitato = abilitato;
-	}
-	
-	public String getCodFidelity()
-	{
-		return codFidelity;
-	}
-
-	public void setCodFidelity(String codFidelity)
-	{
-		this.codFidelity = codFidelity;
-	}
-
-	public Clienti getClienti()
-	{
-		return clienti;
-	}
-
-	public void setClienti(Clienti clienti)
-	{
-		this.clienti = clienti;
-	}
-
-	public Set<Profili> getProfili()
-	{
-		return profili;
-	}
-
-	public void setProfili(Set<Profili> profili)
-	{
-		this.profili = profili;
-	}	
-	
-	
 }
 
 
-
-/*
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-@Column(name = "ID", unique = true, nullable = false)
-private int id;
-*/
-
-/*
-@ManyToOne
-@JoinColumn(name = "CODFIDELITY", referencedColumnName = "CODFIDELITY", nullable = false)
-@JsonBackReference
-private Clienti clienti;
-*/
-
-/*
-public String getCodFidelity()
-{
-	return codFidelity;
-}
-
-public void setCodFidelity(String codFidelity)
-{
-	this.codFidelity = codFidelity;
-}
-
-/*
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-	*/
 

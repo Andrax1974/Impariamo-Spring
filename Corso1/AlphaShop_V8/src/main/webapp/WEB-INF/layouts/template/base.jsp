@@ -1,4 +1,3 @@
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%> 
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%> 
@@ -23,6 +22,7 @@
 
     <title><tiles:insertAttribute name="titolo" /></title>
   </head>
+  <body>
   <!-- Navigation Bar --> 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
     	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,7 +40,7 @@
         				</a>
       				</li>
       				<li class="nav-item">
-        				<a class="nav-link" href="#">
+        				<a class="nav-link" href="<spring:url value="/articoli/" /> ">
         					<span class="oi oi-box" title="prodotti" aria-hidden="true"></span>
         					Prodotti
         				</a>
@@ -107,36 +107,14 @@
     					<span class="caret"></span>
     				</button>
     				<div class="dropdown-menu" aria-labelledby="dropdownMenu1">
-    					<c:choose>
-	    					<c:when test = "${User != null}">
-	    						<a class="dropdown-item disabled" href="#">Accedi</a>
-	    					</c:when>
-	    					<c:otherwise>
-	    						<a class="dropdown-item" href="<spring:url value="/login/form" /> ">Accedi</a>
-	    					</c:otherwise>
-    					</c:choose>
+    					<a class="dropdown-item" href="#">Accedi</a>
     					<a class="dropdown-item" href="#">Registrati</a>
     					<div class="dropdown-divider"></div>
-    					<c:choose>
-    						<c:when test = "${User != null}">
-    							<!--   <a class="dropdown-item" href="<spring:url value="/login/form?logout"/>"  title="Logout">Logout</a> -->
-    							
-    							<form id="myHiddenFormId" action="/alphashop/login/form?logout " method="post" style="display: none">
-  								<input type="hidden" name="logout" value="${User}">
-  								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-								</form>
-								<a class="dropdown-item" href="" onclick="$('#myHiddenFormId').submit(); return false;" title="Logout">Logout ${User}</a>
-								
-    						</c:when>
-    						<c:otherwise>
-    							<a class="dropdown-item disabled" href="#">Log out</a>
-    						</c:otherwise>
-    					</c:choose>
+    					<a class="dropdown-item disabled" href="#">Log out</a>
     				</div>
     			</div>
   		</div>
     </nav> 
-  <body>
     
      <tiles:insertAttribute name="content" /> 
      

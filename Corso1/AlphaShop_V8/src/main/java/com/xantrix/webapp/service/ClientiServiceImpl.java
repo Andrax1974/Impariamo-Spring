@@ -26,12 +26,6 @@ public class ClientiServiceImpl implements ClientiService
 	}
 	
 	@Override
-	public Clienti SelByUserId(String UserId)
-	{
-		return clientiRepository.SelByUserId(UserId);
-	}
-	
-	@Override
 	public List<Clienti> SelByComune(String Comune)
 	{
 		return clientiRepository.SelByComune(Comune);
@@ -86,5 +80,6 @@ public class ClientiServiceImpl implements ClientiService
 		return clientiRepository.QtaTotBollini();
 	}
 
+	
 
 }

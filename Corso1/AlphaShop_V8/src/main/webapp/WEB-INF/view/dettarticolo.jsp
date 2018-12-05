@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <div class="jumbotron jumbotron-billboard">
   <div class="img"></div>
@@ -38,7 +39,9 @@
   			</ul>
   			<div class="card-body">
     		<a href="#" class="card-link">Acquista</a>
-    		<a href="#" class="card-link">Annulla</a>
+    		<a href="<spring:url value="/articoli/cerca/${articolo.codArt}" /> " id="btnAbort" class="btn btn-default form-buttons" >
+					<spring:message code="insarticolo.form.btnAbort.label"/>
+			</a>
   			</div>
 		</div>
 	</div>

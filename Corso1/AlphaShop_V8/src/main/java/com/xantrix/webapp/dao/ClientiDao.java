@@ -8,8 +8,6 @@ public interface ClientiDao
 {
 	Clienti SelByCodFidelity(String CodFidelity);
 	
-	Clienti SelByUserId(String UserId);
-	
 	List<Clienti> SelTutti();
 	
 	List<Clienti> SelByComune(String Comune);

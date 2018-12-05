@@ -18,8 +18,6 @@ public interface ClientiService
 	
 	Clienti SelCliente(String CodFidelity);
 	
-	Clienti SelByUserId(String UserId);
-	
 	long QtaTotBollini();
 	
 	void Salva(Clienti cliente);

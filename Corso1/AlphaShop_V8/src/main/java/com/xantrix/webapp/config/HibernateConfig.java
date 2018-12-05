@@ -2,6 +2,7 @@ package com.xantrix.webapp.config;
 
 import java.util.Properties;
 
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.SharedCacheMode;
 import javax.persistence.ValidationMode;
 import javax.sql.DataSource;
