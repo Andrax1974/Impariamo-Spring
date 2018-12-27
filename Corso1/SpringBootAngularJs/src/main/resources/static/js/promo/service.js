@@ -16,9 +16,9 @@ MyApp.factory('PromoService', [
 					return $q.reject(errResponse);
 				});
 			},
+			
 			SelAllPromo : function() {
-				return $http
-						.get('http://localhost:8091/promo')
+				return $http.get('http://localhost:8091/promo')
 						.then(function(response) {
 							return response.data;
 						}, function(errResponse) {

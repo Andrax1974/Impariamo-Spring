@@ -29,6 +29,7 @@ public class PromoController
 	{
 		model.addAttribute("Titolo", "Creazione Nuova Promozione");
 		model.addAttribute("IdPromo", "");
+		
 		return "GestPromo";
 	}
 }
